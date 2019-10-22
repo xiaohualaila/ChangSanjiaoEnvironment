@@ -1,0 +1,84 @@
+package com.aier.environment;
+
+import android.app.Application;
+import android.content.Context;
+
+import com.aier.environment.entity.NotificationClickEventReceiver;
+import com.aier.environment.utils.SharePreferenceManager;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.android.api.model.Conversation;
+import cn.jpush.im.android.api.model.GroupInfo;
+import cn.jpush.im.android.api.model.Message;
+import cn.jpush.im.android.api.model.UserInfo;
+
+
+public class JGApplication extends Application {
+    public static Context context;
+    public static final String CONV_TITLE = "conv_title";
+
+    public static final String DRAFT = "draft";
+    public static final String CONV_TYPE = "conversationType"; //value使用 ConversationType
+    public static final String ROOM_ID = "roomId";
+    public static final String GROUP_ID = "groupId";
+    public static final String POSITION = "position";
+    public static final String MsgIDs = "msgIDs";
+    public static final String MSG_JSON = "msg_json";
+    public static final String MSG_LIST_JSON = "msg_list_json";
+    public static final String NAME = "name";
+    public static final String ATALL = "atall";
+    public static final String SEARCH_AT_MEMBER_NAME = "search_at_member_name";
+    public static final String SEARCH_AT_MEMBER_USERNAME = "search_at_member_username";
+    public static final String SEARCH_AT_APPKEY = "search_at_appkey";
+
+    public static final String MEMBERS_COUNT = "membersCount";
+
+    public static String PICTURE_DIR = "sdcard/JChatDemo/pictures/";
+    private static final String JCHAT_CONFIGS = "JChat_configs";
+    public static String FILE_DIR = "sdcard/JChatDemo/recvFiles/";
+    public static String VIDEO_DIR = "sdcarVIDEOd/JChatDemo/sendFiles/";
+    public static String THUMP_PICTURE_DIR;
+    public static final String TARGET_ID = "targetId";
+    public static final String ATUSER = "atuser";
+    public static final String TARGET_APP_KEY = "targetAppKey";
+    public static int maxImgCount;               //允许选择图片最大数
+    public static final String GROUP_NAME = "groupName";
+    public static String groupAvatarPath;
+
+    public static long registerOrLogin = 1;
+    public static final int RESULT_CODE_ALL_MEMBER = 22;
+    public static Map<Long, Boolean> isAtMe = new HashMap<>();
+    public static Map<Long, Boolean> isAtall = new HashMap<>();
+    public static List<Message> forwardMsg = new ArrayList<>();
+   // public static LocationService locationService;
+
+    public static List<GroupInfo> mGroupInfoList = new ArrayList<>();
+    public static List<UserInfo> mFriendInfoList = new ArrayList<>();
+    public static List<UserInfo> mSearchGroup = new ArrayList<>();
+    public static List<UserInfo> mSearchAtMember = new ArrayList<>();
+    public static List<Message> ids = new ArrayList<>();
+    public static List<UserInfo> alreadyRead = new ArrayList<>();
+    public static List<UserInfo> unRead = new ArrayList<>();
+    public static List<String> forAddFriend = new ArrayList<>();
+    public static List<String> forAddIntoGroup = new ArrayList<>();
+    public static Conversation delConversation;
+    public static ArrayList<String> selectedUser;
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        context = getApplicationContext();
+
+        JMessageClient.init(getApplicationContext(), true);
+        JMessageClient.setDebugMode(true);
+        SharePreferenceManager.init(getApplicationContext(), JCHAT_CONFIGS);
+        //设置Notification的模式
+      //  JMessageClient.setNotificationFlag(JMessageClient.FLAG_NOTIFY_WITH_SOUND | JMessageClient.FLAG_NOTIFY_WITH_LED | JMessageClient.FLAG_NOTIFY_WITH_VIBRATE);
+        //注册Notification点击的接收器
+      //  new NotificationClickEventReceiver(getApplicationContext());
+    }
+}
