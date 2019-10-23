@@ -25,7 +25,8 @@ public class ChatRoomFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         mContext = this.getActivity();
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-        mRootView = layoutInflater.inflate(R.layout.fragment_chat_room, getActivity().findViewById(R.id.main_view), false);
+        mRootView = layoutInflater.inflate(R.layout.fragment_chat_room,
+                (ViewGroup) getActivity().findViewById(R.id.main_view), false);
 
         mChatRoomView = mRootView.findViewById(R.id.chat_room_view);
         mChatRoomView.initModule();

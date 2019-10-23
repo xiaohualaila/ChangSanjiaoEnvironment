@@ -13,6 +13,12 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <style name="AppTh" parent="android:Theme.Light">
+        <item name="android:windowNoTitle">true</item>
+        <!--<item name="android:windowIsTranslucent">true</item>  -->
+        <item name="android:windowBackground">@color/windows_color</item>
+    </style>
+
     <style name="loading_dialog" parent="android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowNoTitle">true</item>
@@ -39,6 +45,6 @@
         <item name="android:gravity">center_horizontal</item>
         <item name="android:textColor">@color/action_bar_txt_color</item>
         <item name="android:background">#fff</item>
-        <item name="android:textSize">@dimen/text_minimum_size</item>
+        <item name="android:textSize">12sp</item>
     </style>
 </resources>

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">ChangSanjiaoEnvironment</string>
+    <string name="jmui_resend_message_hint">重发该消息？</string>
+    <string name="jmui_resend_commit">重发</string>
+    <string name="jmui_cancel">取消</string>
+    <string name="jmui_loading">正在加载</string>
 </resources>

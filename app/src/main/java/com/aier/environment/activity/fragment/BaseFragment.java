@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.aier.environment.R;
 import com.aier.environment.activity.LoginActivity;
 import com.aier.environment.activity.MainActivity;
+import com.aier.environment.utils.DialogCreator;
 import com.aier.environment.utils.FileHelper;
 import com.aier.environment.utils.SharePreferenceManager;
 
@@ -31,7 +32,7 @@ import cn.jpush.im.api.BasicCallback;
  */
 
 public class BaseFragment extends Fragment {
- //   private Dialog dialog;
+    private Dialog dialog;
 
     private UserInfo myInfo;
     protected float mDensity;
@@ -99,11 +100,11 @@ public class BaseFragment extends Fragment {
                         }
                     }
                 };
-//                dialog = DialogCreator.createLogoutStatusDialog(mContext, "您的账号在其他设备上登陆", listener);
-//                dialog.getWindow().setLayout((int) (0.8 * mWidth), WindowManager.LayoutParams.WRAP_CONTENT);
-//                dialog.setCanceledOnTouchOutside(false);
-//                dialog.setCancelable(false);
-//                dialog.show();
+                dialog = DialogCreator.createLogoutStatusDialog(mContext, "您的账号在其他设备上登陆", listener);
+                dialog.getWindow().setLayout((int) (0.8 * mWidth), WindowManager.LayoutParams.WRAP_CONTENT);
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.setCancelable(false);
+                dialog.show();
                 Log.i("sss","您的账号在其他设备上登陆");
                 break;
             case user_password_change:

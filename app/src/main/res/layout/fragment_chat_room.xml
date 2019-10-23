@@ -72,23 +72,6 @@
                 android:layout_height="wrap_content"/>
         </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
-        <!--<in.srain.cube.views.ptr.PtrClassicFrameLayout-->
-            <!--android:id="@+id/ptr_layout"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent">-->
-
-            <!--<ListView-->
-                <!--android:id="@+id/lv_chatRoom"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:dividerHeight="0.5dp"-->
-                <!--android:listSelector="@android:color/transparent"-->
-                <!--android:cacheColorHint="@android:color/transparent"-->
-                <!--android:layout_marginTop="0dp"-->
-                <!--android:divider="@drawable/main_list_divider_line"/>-->
-
-        <!--</in.srain.cube.views.ptr.PtrClassicFrameLayout>-->
-
 
     </FrameLayout>
 

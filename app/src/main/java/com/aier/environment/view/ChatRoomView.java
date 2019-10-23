@@ -12,8 +12,11 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.aier.environment.R;
+import com.aier.environment.activity.adapter.ChatRoomAdapter;
 import com.aier.environment.controller.ChatRoomController;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 
 /**
