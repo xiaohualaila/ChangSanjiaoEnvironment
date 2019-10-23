@@ -47,4 +47,14 @@
         <item name="android:background">#fff</item>
         <item name="android:textSize">12sp</item>
     </style>
+    <style name="dialogFullscreen">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+    <style name="grid_view" parent="@android:style/Widget.GridView"/>
+
+    <style name="BaseThemes" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor">#FF2DD0CF</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
 </resources>

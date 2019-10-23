@@ -5,10 +5,8 @@ import android.util.AttributeSet;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-
 import com.aier.environment.R;
 import com.aier.environment.utils.SharePreferenceManager;
 
@@ -32,12 +30,12 @@ public class MainView extends RelativeLayout {
 //        mBtnListID = new int[] {
 //                R.id.actionbar_msg_btn, R.id.actionbar_chatroom_btn,
 //                R.id.actionbar_contact_btn, R.id.actionbar_me_btn};
-        mBtnListID = new int[] {R.id.actionbar_chatroom_btn};
+        mBtnListID = new int[] {R.id.actionbar_chatroom_btn,R.id.actionbar_contact_btn};
         mBtnList = new Button[mBtnListID.length];
         for (int i = 0; i < mBtnListID.length; i++) {
-            mBtnList[i] = (Button) findViewById(mBtnListID[i]);
+            mBtnList[i] =  findViewById(mBtnListID[i]);
         }
-        mViewContainer = (ScrollControlViewPager) findViewById(R.id.viewpager);
+        mViewContainer =  findViewById(R.id.viewpager);
         mViewContainer.setOffscreenPageLimit(2);
         mBtnList[0].setTextColor(getResources().getColor(R.color.actionbar_pres_color));
         mBtnList[0].setSelected(true);

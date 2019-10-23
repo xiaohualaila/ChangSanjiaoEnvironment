@@ -8,6 +8,10 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.aier.environment.R;
 import com.aier.environment.utils.FileHelper;
@@ -27,6 +31,11 @@ public class BaseActivity extends Activity {
     protected float mDensity;
     protected int mDensityDpi;
     protected float mRatio;
+
+    private TextView mJmui_title_tv;
+    private ImageButton mReturn_btn;
+    private TextView mJmui_title_left;
+    public Button mJmui_commit_btn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,28 +70,28 @@ public class BaseActivity extends Activity {
         }
         switch (reason) {
             case user_logout:
-//                View.OnClickListener listener = new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        switch (v.getId()) {
-//                            case R.id.jmui_cancel_btn:
-//                                Intent intent = new Intent(BaseActivity.this, LoginActivity.class);
-//                                startActivity(intent);
-//                                break;
-//                            case R.id.jmui_commit_btn:
-//                                JMessageClient.login(SharePreferenceManager.getCachedUsername(), SharePreferenceManager.getCachedPsw(), new BasicCallback() {
-//                                    @Override
-//                                    public void gotResult(int responseCode, String responseMessage) {
-//                                        if (responseCode == 0) {
-//                                            Intent intent = new Intent(BaseActivity.this, MainActivity.class);
-//                                            startActivity(intent);
-//                                        }
-//                                    }
-//                                });
-//                                break;
-//                        }
-//                    }
-//                };
+                View.OnClickListener listener = new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        switch (v.getId()) {
+                            case R.id.jmui_cancel_btn:
+                                Intent intent = new Intent(BaseActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                                break;
+                            case R.id.jmui_commit_btn:
+                                JMessageClient.login(SharePreferenceManager.getCachedUsername(), SharePreferenceManager.getCachedPsw(), new BasicCallback() {
+                                    @Override
+                                    public void gotResult(int responseCode, String responseMessage) {
+                                        if (responseCode == 0) {
+                                            Intent intent = new Intent(BaseActivity.this, MainActivity.class);
+                                            startActivity(intent);
+                                        }
+                                    }
+                                });
+                                break;
+                        }
+                    }
+                };
 
                 Log.i("sss","您的账号在其他设备上登陆");
                 break;
@@ -91,6 +100,40 @@ public class BaseActivity extends Activity {
                 startActivity(intent);
                 break;
         }
+    }
+
+    //初始化各个activity的title
+    public void initTitle(boolean returnBtn, boolean titleLeftDesc, String titleLeft, String title, boolean save, String desc) {
+        mReturn_btn = (ImageButton) findViewById(R.id.return_btn);
+        mJmui_title_left = (TextView) findViewById(R.id.jmui_title_left);
+        mJmui_title_tv = (TextView) findViewById(R.id.jmui_title_tv);
+        mJmui_commit_btn = (Button) findViewById(R.id.jmui_commit_btn);
+
+        if (returnBtn) {
+            mReturn_btn.setVisibility(View.VISIBLE);
+            mReturn_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (imm.isActive() && getCurrentFocus() != null) {
+                        if (getCurrentFocus().getWindowToken() != null) {
+                            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                        }
+                    }
+                    finish();
+                }
+            });
+        }
+        if (titleLeftDesc) {
+            mJmui_title_left.setVisibility(View.VISIBLE);
+            mJmui_title_left.setText(titleLeft);
+        }
+        mJmui_title_tv.setText(title);
+        if (save) {
+            mJmui_commit_btn.setVisibility(View.VISIBLE);
+            mJmui_commit_btn.setText(desc);
+        }
+
     }
 
     public void goToActivity(Context context, Class toActivity) {

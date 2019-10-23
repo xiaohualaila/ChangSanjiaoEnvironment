@@ -6,10 +6,10 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
 import androidx.annotation.NonNull;
-import com.aier.environment.JGApplication;
+
 import com.aier.environment.R;
 import com.aier.environment.activity.SearchChatRoomActivity;
-import com.aier.environment.activity.adapter.ChatRoomAdapter;
+import com.aier.environment.adapter.ChatRoomAdapter;
 import com.aier.environment.utils.DialogCreator;
 import com.aier.environment.utils.HandleResponseCode;
 import com.aier.environment.view.ChatRoomView;
@@ -22,7 +22,6 @@ import java.util.List;
 
 import cn.jpush.im.android.api.ChatRoomManager;
 import cn.jpush.im.android.api.callback.RequestCallback;
-import cn.jpush.im.android.api.enums.ConversationType;
 import cn.jpush.im.android.api.model.ChatRoomInfo;
 
 

@@ -28,12 +28,23 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+    aaptOptions.cruncherEnabled = false
+    aaptOptions.useNewCruncher = false
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    lintOptions {
+        disable 'GoogleAppIndexingWarning'
     }
 }
 
@@ -50,8 +61,8 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.0.0'
 
     implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-26'
-
-
+    implementation 'com.github.mtotschnig:StickyListHeaders:2.7.1'
+    implementation 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
     //https://www.jiguang.cn/dev2/#/app/87d66634731dd22ba047e47f/imSetting
     //http://docs.jiguang.cn/jmessage/client/android_sdk/message/
 

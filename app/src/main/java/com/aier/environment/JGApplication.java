@@ -1,8 +1,8 @@
 package com.aier.environment;
 
-import android.app.Application;
 import android.content.Context;
-
+import com.activeandroid.ActiveAndroid;
+import com.aier.environment.database.UserEntry;
 import com.aier.environment.entity.NotificationClickEventReceiver;
 import com.aier.environment.utils.SharePreferenceManager;
 
@@ -18,7 +18,7 @@ import cn.jpush.im.android.api.model.Message;
 import cn.jpush.im.android.api.model.UserInfo;
 
 
-public class JGApplication extends Application {
+public class JGApplication extends  com.activeandroid.app.Application {
     public static Context context;
     public static final String CONV_TITLE = "conv_title";
 
@@ -72,7 +72,7 @@ public class JGApplication extends Application {
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
-
+        //初始化ActivityAndroid
         JMessageClient.init(getApplicationContext(), true);
         JMessageClient.setDebugMode(true);
         SharePreferenceManager.init(getApplicationContext(), JCHAT_CONFIGS);
@@ -80,5 +80,15 @@ public class JGApplication extends Application {
       //  JMessageClient.setNotificationFlag(JMessageClient.FLAG_NOTIFY_WITH_SOUND | JMessageClient.FLAG_NOTIFY_WITH_LED | JMessageClient.FLAG_NOTIFY_WITH_VIBRATE);
         //注册Notification点击的接收器
       //  new NotificationClickEventReceiver(getApplicationContext());
+    }
+
+    public static UserEntry getUserEntry() {
+        return UserEntry.getUser(JMessageClient.getMyInfo().getUserName(), JMessageClient.getMyInfo().getAppKey());
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        ActiveAndroid.dispose();//清理
     }
 }

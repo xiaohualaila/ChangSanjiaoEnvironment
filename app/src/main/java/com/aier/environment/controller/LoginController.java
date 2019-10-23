@@ -9,6 +9,7 @@ import com.aier.environment.JGApplication;
 import com.aier.environment.R;
 import com.aier.environment.activity.LoginActivity;
 import com.aier.environment.activity.MainActivity;
+import com.aier.environment.database.UserEntry;
 import com.aier.environment.utils.HandleResponseCode;
 import com.aier.environment.utils.SharePreferenceManager;
 import com.aier.environment.utils.ToastUtil;
@@ -123,11 +124,11 @@ public class LoginController implements View.OnClickListener {
                                 }
                                 String username = myInfo.getUserName();
                                 String appKey = myInfo.getAppKey();
-//                                UserEntry user = UserEntry.getUser(username, appKey);
-//                                if (null == user) {
-//                                    user = new UserEntry(username, appKey);
-//                                    user.save();
-//                                }
+                                UserEntry user = UserEntry.getUser(username, appKey);
+                                if (null == user) {
+                                    user = new UserEntry(username, appKey);
+                                    user.save();
+                                }
                                 mContext.goToActivity(mContext, MainActivity.class);
                                 ToastUtil.shortToast(mContext, "登陆成功");
                                 mContext.finish();

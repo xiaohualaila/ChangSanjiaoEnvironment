@@ -8,8 +8,9 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.aier.environment.R;
 import com.aier.environment.activity.MainActivity;
-import com.aier.environment.activity.adapter.ViewPagerAdapter;
+import com.aier.environment.adapter.ViewPagerAdapter;
 import com.aier.environment.activity.fragment.ChatRoomFragment;
+import com.aier.environment.activity.fragment.ContactsFragment;
 import com.aier.environment.view.MainView;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class MainController implements View.OnClickListener, ViewPager.OnPageCha
     private MainActivity mContext;
 //    private ConversationListFragment mConvListFragment;
   //  private MeFragment mMeFragment;
-   // private ContactsFragment mContactsFragment;
+    private ContactsFragment mContactsFragment;
     private ChatRoomFragment mChatRoomFragment;
 
 
@@ -40,12 +41,12 @@ public class MainController implements View.OnClickListener, ViewPager.OnPageCha
         // init Fragment
 //        mConvListFragment = new ConversationListFragment();
         mChatRoomFragment = new ChatRoomFragment();
-//        mContactsFragment = new ContactsFragment();
+        mContactsFragment = new ContactsFragment();
 //        mMeFragment = new MeFragment();
 
       //  fragments.add(mConvListFragment);
         fragments.add(mChatRoomFragment);
-     //   fragments.add(mContactsFragment);
+        fragments.add(mContactsFragment);
      //  fragments.add(mMeFragment);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(mContext.getSupportFragmentManger(),
                 fragments);

@@ -4,4 +4,7 @@
     <string name="jmui_resend_commit">重发</string>
     <string name="jmui_cancel">取消</string>
     <string name="jmui_loading">正在加载</string>
+    <string name="selected_num">(%s)</string>
+    <string name="select_friend_title">添加成员</string>
+    <string name="btn_send">发送</string>
 </resources>

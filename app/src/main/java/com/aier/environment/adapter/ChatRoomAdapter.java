@@ -1,4 +1,4 @@
-package com.aier.environment.activity.adapter;
+package com.aier.environment.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

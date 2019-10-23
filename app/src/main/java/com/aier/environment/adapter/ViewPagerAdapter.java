@@ -1,4 +1,4 @@
-package com.aier.environment.activity.adapter;
+package com.aier.environment.adapter;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;

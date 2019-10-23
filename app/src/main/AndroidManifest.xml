@@ -63,6 +63,20 @@
             android:theme="@style/AppTh"
             android:windowSoftInputMode="stateVisible"/>
 
+        <activity
+            android:name=".activity.GroupActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseThemes"/>
+        <meta-data
+            android:name="AA_DB_NAME"
+            android:value="jchat.db"/>
+        <meta-data
+            android:name="AA_MODELS"
+            android:value="com.aier.environment.database.UserEntry,com.aier.environment.database.FriendEntry,com.aier.environment.database.FriendRecommendEntry,com.aier.environment.database.GroupApplyEntry，com.aier.environment.database.RefuseGroupEntry"/>
+        <meta-data
+            android:name="AA_DB_VERSION"
+            android:value="1"/>
+
         <!-- 可配置android:process参数将PushService放在其他进程中 -->
         <service
             android:name=".MyService"
