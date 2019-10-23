@@ -21,6 +21,21 @@ import cn.jpush.im.android.api.model.UserInfo;
 public class JGApplication extends  com.activeandroid.app.Application {
     public static Context context;
     public static final String CONV_TITLE = "conv_title";
+    public static final int IMAGE_MESSAGE = 1;
+    public static final int TAKE_PHOTO_MESSAGE = 2;
+    public static final int TAKE_LOCATION = 3;
+    public static final int FILE_MESSAGE = 4;
+    public static final int TACK_VIDEO = 5;
+    public static final int TACK_VOICE = 6;
+    public static final int BUSINESS_CARD = 7;
+    public static final int REQUEST_CODE_SEND_FILE = 26;
+
+    public static final int REQUEST_CODE_FRIEND_LIST = 17;
+    public static final int RESULT_CODE_AT_ALL = 32;
+    public static final int RESULT_CODE_SEND_LOCATION = 25;
+    public static final int RESULT_CODE_SEND_FILE = 27;
+    public static final int RESULT_CODE_CHAT_DETAIL = 15;
+    public static final int RESULT_CODE_AT_MEMBER = 31;
 
     public static final String DRAFT = "draft";
     public static final String CONV_TYPE = "conversationType"; //value使用 ConversationType
@@ -52,6 +67,12 @@ public class JGApplication extends  com.activeandroid.app.Application {
 
     public static long registerOrLogin = 1;
     public static final int RESULT_CODE_ALL_MEMBER = 22;
+    public static final int REQUEST_CODE_FRIEND_INFO = 16;
+
+
+
+
+
     public static Map<Long, Boolean> isAtMe = new HashMap<>();
     public static Map<Long, Boolean> isAtall = new HashMap<>();
     public static List<Message> forwardMsg = new ArrayList<>();

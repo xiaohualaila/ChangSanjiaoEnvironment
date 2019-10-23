@@ -43,7 +43,7 @@ public class GroupActivity extends BaseActivity {
         setContentView(R.layout.activity_group);
         initTitle(true, true, "群组", "", false, "");
         ActivityController.addActivity(this);
-        mGroupList = (ListView) findViewById(R.id.group_list);
+        mGroupList = findViewById(R.id.group_list);
 
         //待发送名片的参数
         mUserName = getIntent().getStringExtra("userName");

@@ -1,2 +1,2 @@
-include ':app'
+include ':app', ':reclib-testemoticons', ':emoji'
 rootProject.name='ChangSanjiaoEnvironment'

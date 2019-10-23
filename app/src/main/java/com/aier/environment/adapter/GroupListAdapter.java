@@ -15,7 +15,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aier.environment.JGApplication;
 import com.aier.environment.R;
+import com.aier.environment.activity.ChatActivity;
 import com.aier.environment.entity.Event;
 import com.aier.environment.entity.EventType;
 import com.aier.environment.utils.DialogCreator;
@@ -100,9 +102,9 @@ public class GroupListAdapter extends BaseAdapter {
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = mInflater.inflate(R.layout.item_group_list, parent, false);
-            holder.itemLl = (LinearLayout) convertView.findViewById(R.id.group_ll);
-            holder.avatar = (ImageView) convertView.findViewById(R.id.group_iv);
-            holder.groupName = (TextView) convertView.findViewById(R.id.group_name);
+            holder.itemLl =  convertView.findViewById(R.id.group_ll);
+            holder.avatar =  convertView.findViewById(R.id.group_iv);
+            holder.groupName =  convertView.findViewById(R.id.group_name);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -212,10 +214,10 @@ public class GroupListAdapter extends BaseAdapter {
                                 .build());
                     }
 
-//                    Intent intent = new Intent(mContext, ChatActivity.class);
-//                    intent.putExtra(JGApplication.CONV_TITLE, mGroupName.get(groupInfo.getGroupID()));
-//                    intent.putExtra(JGApplication.GROUP_ID, groupInfo.getGroupID());
-//                    mContext.startActivity(intent);
+                    Intent intent = new Intent(mContext, ChatActivity.class);
+                    intent.putExtra(JGApplication.CONV_TITLE, mGroupName.get(groupInfo.getGroupID()));
+                    intent.putExtra(JGApplication.GROUP_ID, groupInfo.getGroupID());
+                    mContext.startActivity(intent);
 
                 }
             });
