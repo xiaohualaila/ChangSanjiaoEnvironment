@@ -1162,7 +1162,7 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
     public void onEventMainThread(ImageEvent event) {
         Intent intent;
         switch (event.getFlag()) {
-            case JGApplication.IMAGE_MESSAGE:
+            case JGApplication.IMAGE_MESSAGE:         //发图
                 int from = PickImageActivity.FROM_LOCAL;
                 int requestCode = RequestCode.PICK_IMAGE;
                 if (ContextCompat.checkSelfPermission(ChatActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -1173,7 +1173,7 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
                             true, false, 0, 0);
                 }
                 break;
-            case JGApplication.TAKE_PHOTO_MESSAGE:
+            case JGApplication.TAKE_PHOTO_MESSAGE:     //拍照
                 if ((ContextCompat.checkSelfPermission(ChatActivity.this, Manifest.permission.CAMERA)
                         != PackageManager.PERMISSION_GRANTED) || (ContextCompat.checkSelfPermission(ChatActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED) || (ContextCompat.checkSelfPermission(ChatActivity.this, Manifest.permission.RECORD_AUDIO)
@@ -1204,11 +1204,11 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
                     Toast.makeText(this, "请在应用管理中打开“读写存储”访问权限！", Toast.LENGTH_LONG).show();
 
                 } else {
-//                    intent = new Intent(mContext, SendFileActivity.class);
-//                    intent.putExtra(JGApplication.TARGET_ID, mTargetId);
-//                    intent.putExtra(JGApplication.TARGET_APP_KEY, mTargetAppKey);
-//                    intent.putExtra(JGApplication.CONV_TYPE, mConv.getType());
-//                    startActivityForResult(intent, JGApplication.REQUEST_CODE_SEND_FILE);
+                    intent = new Intent(mContext, SendFileActivity.class);
+                    intent.putExtra(JGApplication.TARGET_ID, mTargetId);
+                    intent.putExtra(JGApplication.TARGET_APP_KEY, mTargetAppKey);
+                    intent.putExtra(JGApplication.CONV_TYPE, mConv.getType());
+                    startActivityForResult(intent, JGApplication.REQUEST_CODE_SEND_FILE);
                 }
                 break;
             case JGApplication.BUSINESS_CARD:
@@ -1236,7 +1236,7 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case RequestCode.PICK_IMAGE://4
+            case RequestCode.PICK_IMAGE://4       图片
                 onPickImageActivityResult(requestCode, data);//图片选取回调 回调此处
                 break;
             case JGApplication.REQUEST_CODE_FRIEND_LIST:
