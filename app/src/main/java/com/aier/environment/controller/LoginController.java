@@ -145,7 +145,7 @@ public class LoginController implements View.OnClickListener {
                             if (i == 0) {
                                 SharePreferenceManager.setRegisterName(userId);
                                 SharePreferenceManager.setRegistePass(password);
-                              //  mContext.startActivity(new Intent(mContext, FinishRegisterActivity.class));
+                             //   mContext.startActivity(new Intent(mContext, FinishRegisterActivity.class));
                                 ToastUtil.shortToast(mContext, "注册成功");
                             } else {
                                 HandleResponseCode.onHandle(mContext, i, false);

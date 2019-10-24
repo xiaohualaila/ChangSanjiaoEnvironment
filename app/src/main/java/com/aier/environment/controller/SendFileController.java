@@ -15,6 +15,8 @@ import com.aier.environment.JGApplication;
 import com.aier.environment.R;
 import com.aier.environment.activity.SendFileActivity;
 import com.aier.environment.activity.fragment.DocumentFragment;
+import com.aier.environment.activity.fragment.ImageFragment;
+import com.aier.environment.activity.fragment.VideoFragment;
 import com.aier.environment.adapter.ViewPagerAdapter;
 import com.aier.environment.entity.FileType;
 import com.aier.environment.entity.UpdateSelectedStateListener;
@@ -49,8 +51,8 @@ public class SendFileController implements View.OnClickListener, ViewPager.OnPag
         UpdateSelectedStateListener {
 
     private DocumentFragment mDocumentFragment;
-//    private VideoFragment mVideoFragment;
-//    private ImageFragment mImgFragment;
+    private VideoFragment mVideoFragment;
+    private ImageFragment mImgFragment;
 //    private AudioFragment mAudioFragment;
 //    private OtherFragment mOtherFragment;
     private SendFileActivity mContext;
@@ -73,21 +75,21 @@ public class SendFileController implements View.OnClickListener, ViewPager.OnPag
         List<Fragment> fragments = new ArrayList<Fragment>();
         // init Fragment
         mDocumentFragment = new DocumentFragment();
-//        mVideoFragment = new VideoFragment();
-//        mImgFragment = new ImageFragment();
+        mVideoFragment = new VideoFragment();
+        mImgFragment = new ImageFragment();
 //        mAudioFragment = new AudioFragment();
 //        mOtherFragment = new OtherFragment();
         fragments.add(mDocumentFragment);
-//        fragments.add(mVideoFragment);
-//        fragments.add(mImgFragment);
+        fragments.add(mVideoFragment);
+        fragments.add(mImgFragment);
 //        fragments.add(mAudioFragment);
 //        fragments.add(mOtherFragment);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(mContext.getSupportFragmentManger(),
                 fragments);
         mSFView.setViewPagerAdapter(viewPagerAdapter);
         mDocumentFragment.setController(this);
-//        mVideoFragment.setController(this);
-//        mImgFragment.setController(this);
+        mVideoFragment.setController(this);
+        mImgFragment.setController(this);
 //        mAudioFragment.setController(this);
 //        mOtherFragment.setController(this);
 
