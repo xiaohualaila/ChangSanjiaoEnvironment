@@ -4,10 +4,12 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 
+import com.aier.environment.JGApplication;
+import com.aier.environment.R;
+
 import java.util.Locale;
 
-import jiguang.chat.R;
-import jiguang.chat.application.JGApplication;
+
 
 public class FileUtil {
     private static final String TAG = "FileUtil";

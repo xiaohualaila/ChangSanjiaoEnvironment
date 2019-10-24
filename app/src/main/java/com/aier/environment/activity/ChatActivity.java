@@ -34,7 +34,7 @@ import com.aier.environment.adapter.ChattingListAdapter;
 import com.aier.environment.entity.Event;
 import com.aier.environment.entity.EventType;
 import com.aier.environment.model.Constants;
-import com.aier.environment.pickerimage.PickImageActivity;
+import com.aier.environment.pickerimage.utils.Extras;
 import com.aier.environment.pickerimage.utils.RequestCode;
 import com.aier.environment.pickerimage.utils.StorageType;
 import com.aier.environment.pickerimage.utils.StorageUtil;
@@ -53,6 +53,8 @@ import com.aier.environment.utils.keyboard.interfaces.EmoticonClickListener;
 import com.aier.environment.utils.keyboard.utils.EmoticonsKeyboardUtils;
 import com.aier.environment.utils.keyboard.widget.FuncLayout;
 import com.aier.environment.view.ChatView;
+import com.aier.environment.view.TipItem;
+import com.aier.environment.view.TipView;
 import com.aier.environment.view.listview.DropDownListView;
 import com.sj.emoji.EmojiBean;
 
@@ -70,6 +72,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import cn.jpush.im.android.api.ChatRoomManager;
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.callback.GetGroupInfoCallback;
@@ -78,7 +81,6 @@ import cn.jpush.im.android.api.callback.RequestCallback;
 import cn.jpush.im.android.api.content.EventNotificationContent;
 import cn.jpush.im.android.api.content.FileContent;
 import cn.jpush.im.android.api.content.ImageContent;
-import cn.jpush.im.android.api.content.LocationContent;
 import cn.jpush.im.android.api.content.TextContent;
 import cn.jpush.im.android.api.enums.ContentType;
 import cn.jpush.im.android.api.enums.ConversationType;
@@ -450,7 +452,7 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
             } else if (null != mAtList) {
                 msg = mConv.createSendMessage(content, mAtList, null);
             } else {
-                LogUtils.d("ChatActivity", "create send message conversation = " + mConv + "==content==" + content.toString());
+             //   LogUtils.d("ChatActivity", "create send message conversation = " + mConv + "==content==" + content.toString());
                 msg = mConv.createSendMessage(content);
             }
 
@@ -1075,10 +1077,10 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
                                         mConv.deleteMessage(msg.getId());
                                         mChatAdapter.removeMessage(msg);
                                     } else {
-                                        Intent intent = new Intent(ChatActivity.this, ForwardMsgActivity.class);
-                                        JGApplication.forwardMsg.clear();
-                                        JGApplication.forwardMsg.add(msg);
-                                        startActivity(intent);
+//                                        Intent intent = new Intent(ChatActivity.this, ForwardMsgActivity.class);
+//                                        JGApplication.forwardMsg.clear();
+//                                        JGApplication.forwardMsg.add(msg);
+//                                        startActivity(intent);
                                     }
                                 }
 
@@ -1153,15 +1155,15 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
         Intent intent;
         switch (event.getFlag()) {
             case JGApplication.IMAGE_MESSAGE:
-                int from = PickImageActivity.FROM_LOCAL;
-                int requestCode = RequestCode.PICK_IMAGE;
-                if (ContextCompat.checkSelfPermission(ChatActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "请在应用管理中打开“读写存储”访问权限！", Toast.LENGTH_LONG).show();
-                } else {
-                    PickImageActivity.start(ChatActivity.this, requestCode, from, tempFile(), true, 9,
-                            true, false, 0, 0);
-                }
+//                int from = PickImageActivity.FROM_LOCAL;
+//                int requestCode = RequestCode.PICK_IMAGE;
+//                if (ContextCompat.checkSelfPermission(ChatActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+//                        != PackageManager.PERMISSION_GRANTED) {
+//                    Toast.makeText(this, "请在应用管理中打开“读写存储”访问权限！", Toast.LENGTH_LONG).show();
+//                } else {
+//                    PickImageActivity.start(ChatActivity.this, requestCode, from, tempFile(), true, 9,
+//                            true, false, 0, 0);
+//                }
                 break;
             case JGApplication.TAKE_PHOTO_MESSAGE:
                 if ((ContextCompat.checkSelfPermission(ChatActivity.this, Manifest.permission.CAMERA)
@@ -1372,7 +1374,7 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
         boolean local = data.getBooleanExtra(Extras.EXTRA_FROM_LOCAL, false);
         if (local) {
             // 本地相册
-            sendImageAfterSelfImagePicker(data);
+          //  sendImageAfterSelfImagePicker(data);
         }
     }
 
@@ -1380,25 +1382,25 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
      * 发送图片
      */
 
-    private void sendImageAfterSelfImagePicker(final Intent data) {
-        SendImageHelper.sendImageAfterSelfImagePicker(this, data, new SendImageHelper.Callback() {
-            @Override
-            public void sendImage(final File file, boolean isOrig) {
-
-                //所有图片都在这里拿到
-                ImageContent.createImageContentAsync(file, new ImageContent.CreateImageContentCallback() {
-                    @Override
-                    public void gotResult(int responseCode, String responseMessage, ImageContent imageContent) {
-                        if (responseCode == 0) {
-                            Message msg = mConv.createSendMessage(imageContent);
-                            handleSendMsg(msg);
-                        }
-                    }
-                });
-
-            }
-        });
-    }
+//    private void sendImageAfterSelfImagePicker(final Intent data) {
+//        SendImageHelper.sendImageAfterSelfImagePicker(this, data, new SendImageHelper.Callback() {
+//            @Override
+//            public void sendImage(final File file, boolean isOrig) {
+//
+//                //所有图片都在这里拿到
+//                ImageContent.createImageContentAsync(file, new ImageContent.CreateImageContentCallback() {
+//                    @Override
+//                    public void gotResult(int responseCode, String responseMessage, ImageContent imageContent) {
+//                        if (responseCode == 0) {
+//                            Message msg = mConv.createSendMessage(imageContent);
+//                            handleSendMsg(msg);
+//                        }
+//                    }
+//                });
+//
+//            }
+//        });
+//    }
 
     //发送极光熊
     private void OnSendImage(String iconUri) {

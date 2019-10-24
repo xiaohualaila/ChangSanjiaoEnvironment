@@ -11,14 +11,16 @@ import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.text.TextUtils;
 
+import com.aier.environment.JGApplication;
+import com.aier.environment.R;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import jiguang.chat.R;
-import jiguang.chat.application.JGApplication;
+
 
 public class ImageUtil {
     public static class ImageSize {

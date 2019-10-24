@@ -9,14 +9,16 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
+import com.aier.environment.R;
+import com.aier.environment.pickerimage.adapter.PickerPhotoAdapter;
+import com.aier.environment.pickerimage.model.PhotoInfo;
+import com.aier.environment.pickerimage.utils.Extras;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import jiguang.chat.R;
-import jiguang.chat.pickerimage.adapter.PickerPhotoAdapter;
-import jiguang.chat.pickerimage.model.PhotoInfo;
-import jiguang.chat.pickerimage.utils.Extras;
+
 
 public class PickerImageFragment extends BaseFragment implements OnItemClickListener {
 

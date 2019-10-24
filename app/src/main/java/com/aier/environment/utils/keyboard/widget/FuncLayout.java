@@ -9,10 +9,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.aier.environment.utils.keyboard.utils.EmoticonsKeyboardUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import jiguang.chat.utils.keyboard.utils.EmoticonsKeyboardUtils;
+
 
 public class FuncLayout extends LinearLayout {
 

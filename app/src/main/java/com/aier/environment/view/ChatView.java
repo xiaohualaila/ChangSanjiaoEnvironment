@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.aier.environment.R;
 import com.aier.environment.activity.ChatActivity;
+import com.aier.environment.adapter.ChattingListAdapter;
 import com.aier.environment.view.listview.DropDownListView;
 
 import cn.jpush.im.android.api.model.Conversation;

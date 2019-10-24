@@ -1,8 +1,7 @@
 package com.aier.environment.pickerimage.view;
 
 
-import jiguang.chat.R;
-
+import com.aier.environment.R;
 
 public class ToolBarOptions {
     /**

@@ -3,11 +3,13 @@ package com.aier.environment.pickerimage.model;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.aier.environment.pickerimage.utils.Extras;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import jiguang.chat.pickerimage.utils.Extras;
+
 
 public class PickerContract {
 

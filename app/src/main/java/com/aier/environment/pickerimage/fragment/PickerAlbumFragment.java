@@ -17,17 +17,17 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.aier.environment.R;
+import com.aier.environment.pickerimage.adapter.PickerAlbumAdapter;
+import com.aier.environment.pickerimage.model.AlbumInfo;
+import com.aier.environment.pickerimage.model.PhotoInfo;
+import com.aier.environment.pickerimage.utils.MediaDAO;
+import com.aier.environment.pickerimage.utils.ThumbnailsUtil;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import jiguang.chat.R;
-import jiguang.chat.pickerimage.adapter.PickerAlbumAdapter;
-import jiguang.chat.pickerimage.model.AlbumInfo;
-import jiguang.chat.pickerimage.model.PhotoInfo;
-import jiguang.chat.pickerimage.utils.MediaDAO;
-import jiguang.chat.pickerimage.utils.ThumbnailsUtil;
 
 
 public class PickerAlbumFragment extends BaseFragment implements OnItemClickListener {

@@ -24,7 +24,7 @@
             android:src="@drawable/btn_voice_or_text"/>
 
         <!--语音输入-->
-        <jiguang.chat.view.RecordVoiceButton
+        <com.aier.environment.view.RecordVoiceButton
             android:id="@+id/btn_voice"
             android:layout_width="match_parent"
             android:layout_height="34dp"
@@ -51,7 +51,7 @@
             android:paddingTop="5dp">
 
             <!--输入框-->
-            <jiguang.chat.utils.keyboard.widget.EmoticonsEditText
+            <com.aier.environment.utils.keyboard.widget.EmoticonsEditText
                 android:id="@+id/et_chat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -109,7 +109,7 @@
         </RelativeLayout>
     </RelativeLayout>
 
-    <jiguang.chat.utils.keyboard.widget.FuncLayout
+    <com.aier.environment.utils.keyboard.widget.FuncLayout
         android:id="@+id/ly_kvml"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

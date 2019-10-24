@@ -5,9 +5,10 @@ import android.content.res.Resources;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
+import com.aier.environment.JGApplication;
+
 import java.lang.reflect.Field;
 
-import jiguang.chat.application.JGApplication;
 
 public class ScreenUtil {
     private static final String TAG = "Demo.ScreenUtil";
