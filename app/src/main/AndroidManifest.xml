@@ -72,6 +72,25 @@
             android:name=".activity.ChatActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BaseThemes"/>
+
+        <activity
+            android:name=".pickerimage.PickImageActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".pickerimage.PickerAlbumActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseThemes"/>
+        <activity
+            android:name=".pickerimage.PickerAlbumPreviewActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".utils.photovideo.takevideo.CameraActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppBaseFullTheme"/>
         <meta-data
             android:name="AA_DB_NAME"
             android:value="jchat.db"/>
@@ -92,6 +111,10 @@
                 <action android:name="cn.jiguang.user.service.action"/>
             </intent-filter>
         </service>
+        <provider
+            android:name="com.activeandroid.content.ContentProvider"
+            android:authorities="${applicationId}"
+            android:exported="false"/>
     </application>
 
 </manifest>

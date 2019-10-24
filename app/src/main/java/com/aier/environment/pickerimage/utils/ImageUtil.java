@@ -10,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.aier.environment.JGApplication;
 import com.aier.environment.R;
@@ -285,7 +286,7 @@ public class ImageUtil {
         }
 
         String tempFilePath = getTempFilePath(FileUtil.getExtensionName(filePath));
-
+        Log.i("xxx","tempFilePath " +tempFilePath );
         File tempImageFile = AttachmentStore.create(tempFilePath);
         if (tempImageFile == null) {
             return null;

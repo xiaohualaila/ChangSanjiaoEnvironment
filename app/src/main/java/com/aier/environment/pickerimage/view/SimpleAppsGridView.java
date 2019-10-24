@@ -31,7 +31,7 @@ public class SimpleAppsGridView extends RelativeLayout {
     }
 
     protected void init() {
-        GridView gv_apps = (GridView) view.findViewById(R.id.gv_apps);
+        GridView gv_apps = view.findViewById(R.id.gv_apps);
         ArrayList<AppBean> mAppBeanList = new ArrayList<>();
         mAppBeanList.add(new AppBean(R.mipmap.icon_photo, "图片"));
         mAppBeanList.add(new AppBean(R.mipmap.icon_camera, "拍摄"));
