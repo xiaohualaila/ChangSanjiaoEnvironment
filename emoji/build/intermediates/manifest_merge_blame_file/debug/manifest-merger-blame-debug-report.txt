@@ -4,8 +4,8 @@
 4
 5    <uses-sdk
 6        android:minSdkVersion="18"
-6-->C:\companyapp\ChangSanjiaoEnvironment\emoji\src\main\AndroidManifest.xml
+6-->F:\company\ChangsanjiaoeEnvironment\emoji\src\main\AndroidManifest.xml
 7        android:targetSdkVersion="22" />
-7-->C:\companyapp\ChangSanjiaoEnvironment\emoji\src\main\AndroidManifest.xml
+7-->F:\company\ChangsanjiaoeEnvironment\emoji\src\main\AndroidManifest.xml
 8
 9</manifest>

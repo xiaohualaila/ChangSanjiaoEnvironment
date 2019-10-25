@@ -2,19 +2,22 @@ package com.aier.environment.activity.historyfile.activity;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import androidx.viewpager.widget.PagerAdapter;
+
+import com.aier.environment.R;
+import com.aier.environment.activity.BaseActivity;
+import com.aier.environment.utils.BitmapLoader;
+import com.aier.environment.view.ImgBrowserViewPager;
+import com.aier.environment.view.PhotoView;
+
 import java.io.File;
 import java.util.ArrayList;
 
-import jiguang.chat.R;
-import jiguang.chat.activity.BaseActivity;
-import jiguang.chat.utils.BitmapLoader;
-import jiguang.chat.view.ImgBrowserViewPager;
-import jiguang.chat.view.PhotoView;
+
 
 /**
  * Created by ${chenyn} on 2017/8/24.

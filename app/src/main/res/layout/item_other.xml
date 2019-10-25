@@ -7,13 +7,13 @@
     android:gravity="center_vertical">
 
     <LinearLayout
-        android:id="@+id/document_item_ll"
+        android:id="@+id/other_item_ll"
         android:layout_width="match_parent"
         android:layout_height="84dp"
         android:gravity="center_vertical">
 
         <CheckBox
-            android:id="@+id/document_cb"
+            android:id="@+id/other_cb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="14dp"
@@ -21,39 +21,37 @@
             android:button="@null"/>
 
         <com.aier.environment.view.MyImageView
-            android:id="@+id/document_iv"
+            android:id="@+id/other_iv"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginLeft="13.33dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/jmui_document"/>
+            android:src="@drawable/jmui_other"/>
 
         <LinearLayout
-            android:layout_marginLeft="11dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="11.67dp"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/document_title"
+                android:id="@+id/other_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:text="@string/file"
+                android:text="@string/other"
                 android:textSize="15sp"
                 android:textColor="#2C2C2C"/>
 
             <TextView
-                android:layout_marginTop="3dp"
-                android:id="@+id/document_size"
+                android:id="@+id/other_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
                 android:textColor="#999999"/>
 
             <TextView
-                android:layout_marginTop="0.67dp"
-                android:id="@+id/document_date"
+                android:id="@+id/other_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"

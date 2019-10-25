@@ -14,8 +14,10 @@ import androidx.viewpager.widget.ViewPager;
 import com.aier.environment.JGApplication;
 import com.aier.environment.R;
 import com.aier.environment.activity.SendFileActivity;
+import com.aier.environment.activity.fragment.AudioFragment;
 import com.aier.environment.activity.fragment.DocumentFragment;
 import com.aier.environment.activity.fragment.ImageFragment;
+import com.aier.environment.activity.fragment.OtherFragment;
 import com.aier.environment.activity.fragment.VideoFragment;
 import com.aier.environment.adapter.ViewPagerAdapter;
 import com.aier.environment.entity.FileType;
@@ -53,8 +55,8 @@ public class SendFileController implements View.OnClickListener, ViewPager.OnPag
     private DocumentFragment mDocumentFragment;
     private VideoFragment mVideoFragment;
     private ImageFragment mImgFragment;
-//    private AudioFragment mAudioFragment;
-//    private OtherFragment mOtherFragment;
+    private AudioFragment mAudioFragment;
+    private OtherFragment mOtherFragment;
     private SendFileActivity mContext;
     private SendFileView mSFView;
     // 选中的文件路径集合
@@ -77,13 +79,13 @@ public class SendFileController implements View.OnClickListener, ViewPager.OnPag
         mDocumentFragment = new DocumentFragment();
         mVideoFragment = new VideoFragment();
         mImgFragment = new ImageFragment();
-//        mAudioFragment = new AudioFragment();
-//        mOtherFragment = new OtherFragment();
+        mAudioFragment = new AudioFragment();
+        mOtherFragment = new OtherFragment();
         fragments.add(mDocumentFragment);
         fragments.add(mVideoFragment);
         fragments.add(mImgFragment);
-//        fragments.add(mAudioFragment);
-//        fragments.add(mOtherFragment);
+        fragments.add(mAudioFragment);
+        fragments.add(mOtherFragment);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(mContext.getSupportFragmentManger(),
                 fragments);
         mSFView.setViewPagerAdapter(viewPagerAdapter);

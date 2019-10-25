@@ -20,7 +20,7 @@ public class SendFileActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_file);
-        mView = (SendFileView) findViewById(R.id.send_file_view);
+        mView =  findViewById(R.id.send_file_view);
         mView.initModule();
         mController = new SendFileController(this, mView);
         mView.setOnClickListener(mController);
