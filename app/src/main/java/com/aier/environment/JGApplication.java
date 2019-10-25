@@ -40,8 +40,11 @@ public class JGApplication extends  com.activeandroid.app.Application {
     public static final int RESULT_CODE_CHAT_DETAIL = 15;
     public static final int RESULT_CODE_AT_MEMBER = 31;
     public static final int REQUEST_CODE_SEND_LOCATION = 24;
-
-
+    public static final int RESULT_CODE_EDIT_NOTENAME = 29;
+    public static final int RESULT_CODE_FRIEND_INFO = 17;
+    public static final int RESULT_CODE_SELECT_PICTURE = 8;
+    public static final int RESULT_CODE_BROWSER_PICTURE = 13;
+    public static final String NOTENAME = "notename";
     public static final String DRAFT = "draft";
     public static final String CONV_TYPE = "conversationType"; //value使用 ConversationType
     public static final String ROOM_ID = "roomId";

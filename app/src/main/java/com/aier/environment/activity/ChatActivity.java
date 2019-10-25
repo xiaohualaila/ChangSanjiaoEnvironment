@@ -1031,10 +1031,10 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
                                         //转发
                                         if (msg.getContentType() == ContentType.text || msg.getContentType() == ContentType.image ||
                                                 (msg.getContentType() == ContentType.file && (msg.getContent()).getStringExtra("video") != null)) {
-//                                            Intent intent = new Intent(ChatActivity.this, ForwardMsgActivity.class);
-//                                            JGApplication.forwardMsg.clear();
-//                                            JGApplication.forwardMsg.add(msg);
-//                                            startActivity(intent);
+                                            Intent intent = new Intent(ChatActivity.this, ForwardMsgActivity.class);
+                                            JGApplication.forwardMsg.clear();
+                                            JGApplication.forwardMsg.add(msg);
+                                            startActivity(intent);
                                         } else {
                                             Toast.makeText(ChatActivity.this, "只支持转发文本,图片,小视频", Toast.LENGTH_SHORT).show();
                                         }
