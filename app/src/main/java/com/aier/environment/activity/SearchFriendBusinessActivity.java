@@ -79,11 +79,11 @@ public class SearchFriendBusinessActivity extends BaseActivity implements Adapte
 
 
     public void initView() {
-        mSearchEditText = (EditText) findViewById(R.id.ac_et_search);
-        mFriendListView = (ListView) findViewById(R.id.ac_lv_friend_list_detail_info);
-        mSearchNoResultsTextView = (TextView) findViewById(R.id.ac_tv_search_no_results);
-        mPressBackImageView = (LinearLayout) findViewById(R.id.ac_iv_press_back);
-        mFriendListResultLinearLayout = (LinearLayout) findViewById(R.id.ac_ll_friend_list_result);
+        mSearchEditText =  findViewById(R.id.ac_et_search);
+        mFriendListView =  findViewById(R.id.ac_lv_friend_list_detail_info);
+        mSearchNoResultsTextView =  findViewById(R.id.ac_tv_search_no_results);
+        mPressBackImageView =  findViewById(R.id.ac_iv_press_back);
+        mFriendListResultLinearLayout =  findViewById(R.id.ac_ll_friend_list_result);
     }
 
     public void initData() {
