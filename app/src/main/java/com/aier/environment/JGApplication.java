@@ -4,8 +4,10 @@ import android.content.Context;
 import com.activeandroid.ActiveAndroid;
 import com.aier.environment.database.UserEntry;
 import com.aier.environment.entity.NotificationClickEventReceiver;
+import com.aier.environment.location.service.LocationService;
 import com.aier.environment.pickerimage.utils.StorageUtil;
 import com.aier.environment.utils.SharePreferenceManager;
+import com.baidu.mapapi.SDKInitializer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,6 +39,8 @@ public class JGApplication extends  com.activeandroid.app.Application {
     public static final int RESULT_CODE_SEND_FILE = 27;
     public static final int RESULT_CODE_CHAT_DETAIL = 15;
     public static final int RESULT_CODE_AT_MEMBER = 31;
+    public static final int REQUEST_CODE_SEND_LOCATION = 24;
+
 
     public static final String DRAFT = "draft";
     public static final String CONV_TYPE = "conversationType"; //value使用 ConversationType
@@ -70,7 +74,7 @@ public class JGApplication extends  com.activeandroid.app.Application {
     public static final int RESULT_CODE_ALL_MEMBER = 22;
     public static final int REQUEST_CODE_FRIEND_INFO = 16;
 
-
+    public static LocationService locationService;
 
 
 
@@ -97,6 +101,10 @@ public class JGApplication extends  com.activeandroid.app.Application {
         context = getApplicationContext();
         THUMP_PICTURE_DIR = context.getFilesDir().getAbsolutePath() + "/JChatDemo";
         StorageUtil.init(context, null);
+        SDKInitializer.initialize(getApplicationContext());
+        locationService = new LocationService(getApplicationContext());
+
+
         //初始化ActivityAndroid
         JMessageClient.init(getApplicationContext(), true);
         JMessageClient.setDebugMode(true);

@@ -33,6 +33,7 @@ import com.aier.environment.R;
 import com.aier.environment.adapter.ChattingListAdapter;
 import com.aier.environment.entity.Event;
 import com.aier.environment.entity.EventType;
+import com.aier.environment.location.activity.MapPickerActivity;
 import com.aier.environment.model.Constants;
 import com.aier.environment.pickerimage.PickImageActivity;
 import com.aier.environment.pickerimage.utils.Extras;
@@ -84,6 +85,7 @@ import cn.jpush.im.android.api.callback.RequestCallback;
 import cn.jpush.im.android.api.content.EventNotificationContent;
 import cn.jpush.im.android.api.content.FileContent;
 import cn.jpush.im.android.api.content.ImageContent;
+import cn.jpush.im.android.api.content.LocationContent;
 import cn.jpush.im.android.api.content.TextContent;
 import cn.jpush.im.android.api.enums.ContentType;
 import cn.jpush.im.android.api.enums.ConversationType;
@@ -1189,15 +1191,15 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
                         != PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this, "请在应用管理中打开“位置”访问权限！", Toast.LENGTH_LONG).show();
                 } else {
-//                    intent = new Intent(mContext, MapPickerActivity.class);
-//                    intent.putExtra(JGApplication.CONV_TYPE, mConv.getType());
-//                    intent.putExtra(JGApplication.TARGET_ID, mTargetId);
-//                    intent.putExtra(JGApplication.TARGET_APP_KEY, mTargetAppKey);
-//                    intent.putExtra("sendLocation", true);
-//                    startActivityForResult(intent, JGApplication.REQUEST_CODE_SEND_LOCATION);
+                    intent = new Intent(mContext, MapPickerActivity.class);
+                    intent.putExtra(JGApplication.CONV_TYPE, mConv.getType());
+                    intent.putExtra(JGApplication.TARGET_ID, mTargetId);
+                    intent.putExtra(JGApplication.TARGET_APP_KEY, mTargetAppKey);
+                    intent.putExtra("sendLocation", true);
+                    startActivityForResult(intent, JGApplication.REQUEST_CODE_SEND_LOCATION);
                 }
                 break;
-            case JGApplication.FILE_MESSAGE:
+            case JGApplication.FILE_MESSAGE:  //发送文件
                 if (ContextCompat.checkSelfPermission(this,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED) {
@@ -1211,12 +1213,12 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
                     startActivityForResult(intent, JGApplication.REQUEST_CODE_SEND_FILE);
                 }
                 break;
-            case JGApplication.BUSINESS_CARD:
-//                intent = new Intent(mContext, FriendListActivity.class);
-//                intent.putExtra(JGApplication.CONV_TYPE, mConv.getType());
-//                intent.putExtra(JGApplication.TARGET_ID, mTargetId);
-//                intent.putExtra(JGApplication.TARGET_APP_KEY, mTargetAppKey);;
-//                startActivityForResult(intent, JGApplication.REQUEST_CODE_FRIEND_LIST);
+            case JGApplication.BUSINESS_CARD:  //发送名片
+                intent = new Intent(mContext, FriendListActivity.class);
+                intent.putExtra(JGApplication.CONV_TYPE, mConv.getType());
+                intent.putExtra(JGApplication.TARGET_ID, mTargetId);
+                intent.putExtra(JGApplication.TARGET_APP_KEY, mTargetAppKey);;
+                startActivityForResult(intent, JGApplication.REQUEST_CODE_FRIEND_LIST);
                 break;
             case JGApplication.TACK_VIDEO:
             case JGApplication.TACK_VOICE:
@@ -1311,26 +1313,26 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
                 //之前是在地图选择那边做的发送逻辑,这里是通过msgID拿到的message放到ui上.但是发现问题,message的status始终是send_going状态
                 //因为那边发送的是自己创建的对象,这里通过id取出来的不是同一个对象.尽管内容都是一样的.所以为了保证发送的对象个ui上拿出来的
                 //对象是同一个,就地图那边传过来数据,在这边进行创建message
-//                double latitude = data.getDoubleExtra("latitude", 0);
-//                double longitude = data.getDoubleExtra("longitude", 0);
-//                int mapview = data.getIntExtra("mapview", 0);
-//                String street = data.getStringExtra("street");
-//                String path = data.getStringExtra("path");
-//                LocationContent locationContent = new LocationContent(latitude,
-//                        longitude, mapview, street);
-//                locationContent.setStringExtra("path", path);
-//                Message message = mConv.createSendMessage(locationContent);
-//                MessageSendingOptions options = new MessageSendingOptions();
-//                options.setNeedReadReceipt(true);
-//                JMessageClient.sendMessage(message, options);
-//                mChatAdapter.addMsgFromReceiptToList(message);
-//
-//                int customMsgId = data.getIntExtra("customMsg", -1);
-//                if (-1 != customMsgId) {
-//                    Message customMsg = mConv.getMessage(customMsgId);
-//                    mChatAdapter.addMsgToList(customMsg);
-//                }
-//                mChatView.setToBottom();
+                double latitude = data.getDoubleExtra("latitude", 0);
+                double longitude = data.getDoubleExtra("longitude", 0);
+                int mapview = data.getIntExtra("mapview", 0);
+                String street = data.getStringExtra("street");
+                String path = data.getStringExtra("path");
+                LocationContent locationContent = new LocationContent(latitude,
+                        longitude, mapview, street);
+                locationContent.setStringExtra("path", path);
+                Message message = mConv.createSendMessage(locationContent);
+                MessageSendingOptions options = new MessageSendingOptions();
+                options.setNeedReadReceipt(true);
+                JMessageClient.sendMessage(message, options);
+                mChatAdapter.addMsgFromReceiptToList(message);
+
+                int customMsgId = data.getIntExtra("customMsg", -1);
+                if (-1 != customMsgId) {
+                    Message customMsg = mConv.getMessage(customMsgId);
+                    mChatAdapter.addMsgToList(customMsg);
+                }
+                mChatView.setToBottom();
                 break;
             case JGApplication.RESULT_CODE_SEND_FILE:
                 String msgListJson = data.getStringExtra(JGApplication.MSG_LIST_JSON);

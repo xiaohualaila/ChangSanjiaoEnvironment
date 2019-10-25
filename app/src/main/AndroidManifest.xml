@@ -97,6 +97,21 @@
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/AppBaseTheme"/>
+
+        <activity
+            android:name=".location.activity.MapPickerActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
+
+        <activity
+            android:name=".activity.SearchFriendBusinessActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseThemes"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".activity.FriendListActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseThemes"/>
         <meta-data
             android:name="AA_DB_NAME"
             android:value="jchat.db"/>
@@ -117,6 +132,15 @@
                 <action android:name="cn.jiguang.user.service.action"/>
             </intent-filter>
         </service>
+
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote">
+        </service> <!-- 如果需要使用到位置服务，需要更换百度地图apikey为自己的apikey -->
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="glA1iV14TuHwlwySDYGQ8L7YPmGRWpuE"/>
         <provider
             android:name="com.activeandroid.content.ContentProvider"
             android:authorities="${applicationId}"
