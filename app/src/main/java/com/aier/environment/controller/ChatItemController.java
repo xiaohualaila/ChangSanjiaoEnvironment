@@ -28,7 +28,10 @@ import androidx.core.content.ContextCompat;
 
 import com.aier.environment.JGApplication;
 import com.aier.environment.R;
+import com.aier.environment.activity.BrowserViewPagerActivity;
+import com.aier.environment.activity.DownLoadActivity;
 import com.aier.environment.adapter.ChattingListAdapter;
+import com.aier.environment.location.activity.MapPickerActivity;
 import com.aier.environment.pickerimage.utils.BitmapDecoder;
 import com.aier.environment.utils.FileHelper;
 import com.aier.environment.utils.FileUtils;
@@ -1144,6 +1147,7 @@ public class ChatItemController {
         }
     }
 
+
     public class BtnOrTxtListener implements View.OnClickListener {
 
         private int position;
@@ -1224,45 +1228,45 @@ public class ChatItemController {
                     }
                     break;
                 case image:
-//                    if (holder.picture != null && v.getId() == holder.picture.getId()) {
-//                        Intent intent = new Intent();
-//                        String targetId = "";
-//                        intent.putExtra("msgId", msg.getId());
-//                        Object targetInfo = mConv.getTargetInfo();
-//                        switch (mConv.getType()) {
-//                            case single:
-//                                targetId = ((UserInfo) targetInfo).getUserName();
-//                                break;
-//                            case group:
-//                                targetId = String.valueOf(((GroupInfo) targetInfo).getGroupID());
-//                                break;
-//                            case chatroom:
-//                                targetId = String.valueOf(((ChatRoomInfo) targetInfo).getRoomID());
-//                                intent.putExtra(BrowserViewPagerActivity.MSG_JSON, msg.toJson());
-//                                intent.putExtra(BrowserViewPagerActivity.MSG_LIST_JSON, getImsgMsgListJson());
-//                                break;
-//                            default:
-//                        }
-//                        intent.putExtra(JGApplication.CONV_TYPE, mConv.getType());
-//                        intent.putExtra(JGApplication.TARGET_ID, targetId);
-//                        intent.putExtra(JGApplication.TARGET_APP_KEY, mConv.getTargetAppKey());
-//                        intent.putExtra("msgCount", mMsgList.size());
-//                        intent.putIntegerArrayListExtra(JGApplication.MsgIDs, getImgMsgIDList());
-//                        intent.putExtra("fromChatActivity", true);
-//                        intent.setClass(mContext, BrowserViewPagerActivity.class);
-//                        mContext.startActivity(intent);
-//                    }
+                    if (holder.picture != null && v.getId() == holder.picture.getId()) {
+                        Intent intent = new Intent();
+                        String targetId = "";
+                        intent.putExtra("msgId", msg.getId());
+                        Object targetInfo = mConv.getTargetInfo();
+                        switch (mConv.getType()) {
+                            case single:
+                                targetId = ((UserInfo) targetInfo).getUserName();
+                                break;
+                            case group:
+                                targetId = String.valueOf(((GroupInfo) targetInfo).getGroupID());
+                                break;
+                            case chatroom:
+                                targetId = String.valueOf(((ChatRoomInfo) targetInfo).getRoomID());
+                                intent.putExtra(BrowserViewPagerActivity.MSG_JSON, msg.toJson());
+                                intent.putExtra(BrowserViewPagerActivity.MSG_LIST_JSON, getImsgMsgListJson());
+                                break;
+                            default:
+                        }
+                        intent.putExtra(JGApplication.CONV_TYPE, mConv.getType());
+                        intent.putExtra(JGApplication.TARGET_ID, targetId);
+                        intent.putExtra(JGApplication.TARGET_APP_KEY, mConv.getTargetAppKey());
+                        intent.putExtra("msgCount", mMsgList.size());
+                        intent.putIntegerArrayListExtra(JGApplication.MsgIDs, getImgMsgIDList());
+                        intent.putExtra("fromChatActivity", true);
+                        intent.setClass(mContext, BrowserViewPagerActivity.class);
+                        mContext.startActivity(intent);
+                    }
                     break;
                 case location:
-//                    if (holder.picture != null && v.getId() == holder.picture.getId()) {
-//                        Intent intent = new Intent(mContext, MapPickerActivity.class);
-//                        LocationContent locationContent = (LocationContent) msg.getContent();
-//                        intent.putExtra("latitude", locationContent.getLatitude().doubleValue());
-//                        intent.putExtra("longitude", locationContent.getLongitude().doubleValue());
-//                        intent.putExtra("locDesc", locationContent.getAddress());
-//                        intent.putExtra("sendLocation", false);
-//                        mContext.startActivity(intent);
-//                    }
+                    if (holder.picture != null && v.getId() == holder.picture.getId()) {
+                        Intent intent = new Intent(mContext, MapPickerActivity.class);
+                        LocationContent locationContent = (LocationContent) msg.getContent();
+                        intent.putExtra("latitude", locationContent.getLatitude().doubleValue());
+                        intent.putExtra("longitude", locationContent.getLongitude().doubleValue());
+                        intent.putExtra("locDesc", locationContent.getAddress());
+                        intent.putExtra("sendLocation", false);
+                        mContext.startActivity(intent);
+                    }
                     break;
                 case file:
                     FileContent content = (FileContent) msg.getContent();
@@ -1288,9 +1292,9 @@ public class ChatItemController {
                                     });
                         }
                     } else {
-//                        org.greenrobot.eventbus.EventBus.getDefault().postSticky(msg);
-//                        Intent intent = new Intent(mContext, DownLoadActivity.class);
-//                        mContext.startActivity(intent);
+                        org.greenrobot.eventbus.EventBus.getDefault().postSticky(msg);
+                        Intent intent = new Intent(mContext, DownLoadActivity.class);
+                        mContext.startActivity(intent);
                     }
                     break;
             }

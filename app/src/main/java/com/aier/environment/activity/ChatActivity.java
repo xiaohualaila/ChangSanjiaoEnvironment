@@ -977,10 +977,10 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
                                             Toast.makeText(ChatActivity.this, "只支持复制文字", Toast.LENGTH_SHORT).show();
                                         }
                                     } else if (position == 1) {
-//                                        Intent intent = new Intent(ChatActivity.this, ForwardMsgActivity.class);
-//                                        JGApplication.forwardMsg.clear();
-//                                        JGApplication.forwardMsg.add(msg);
-//                                        startActivity(intent);
+                                        Intent intent = new Intent(ChatActivity.this, ForwardMsgActivity.class);
+                                        JGApplication.forwardMsg.clear();
+                                        JGApplication.forwardMsg.add(msg);
+                                        startActivity(intent);
                                     } else {
                                         //删除
                                         mConv.deleteMessage(msg.getId());
@@ -1083,10 +1083,10 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
                                         mConv.deleteMessage(msg.getId());
                                         mChatAdapter.removeMessage(msg);
                                     } else {
-//                                        Intent intent = new Intent(ChatActivity.this, ForwardMsgActivity.class);
-//                                        JGApplication.forwardMsg.clear();
-//                                        JGApplication.forwardMsg.add(msg);
-//                                        startActivity(intent);
+                                        Intent intent = new Intent(ChatActivity.this, ForwardMsgActivity.class);
+                                        JGApplication.forwardMsg.clear();
+                                        JGApplication.forwardMsg.add(msg);
+                                        startActivity(intent);
                                     }
                                 }
 
@@ -1122,10 +1122,10 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
                                             }
                                         });
                                     } else if (position == 0) {
-//                                        Intent intent = new Intent(ChatActivity.this, ForwardMsgActivity.class);
-//                                        JGApplication.forwardMsg.clear();
-//                                        JGApplication.forwardMsg.add(msg);
-//                                        startActivity(intent);
+                                        Intent intent = new Intent(ChatActivity.this, ForwardMsgActivity.class);
+                                        JGApplication.forwardMsg.clear();
+                                        JGApplication.forwardMsg.add(msg);
+                                        startActivity(intent);
                                     } else {
                                         //删除
                                         mConv.deleteMessage(msg.getId());

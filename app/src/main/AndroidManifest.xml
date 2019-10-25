@@ -112,6 +112,22 @@
             android:name=".activity.FriendListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BaseThemes"/>
+
+        <activity
+            android:name=".activity.ForwardMsgActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseThemes"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity
+            android:name=".activity.BrowserViewPagerActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".activity.DownLoadActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseThemes"/>
+
         <meta-data
             android:name="AA_DB_NAME"
             android:value="jchat.db"/>
