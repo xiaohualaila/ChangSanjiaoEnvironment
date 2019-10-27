@@ -13,6 +13,7 @@ import com.activeandroid.ActiveAndroid;
 import com.aier.environment.JGApplication;
 import com.aier.environment.R;
 import com.aier.environment.activity.GroupActivity;
+import com.aier.environment.activity.SearchContactsActivity;
 import com.aier.environment.adapter.StickyListAdapter;
 import com.aier.environment.database.FriendEntry;
 import com.aier.environment.database.UserEntry;
@@ -61,7 +62,7 @@ public class ContactsController implements View.OnClickListener, SideBar.OnTouch
                 break;
             case R.id.verify_ll://验证消息
                 Log.i("sss","验证消息+++");
-             //   intent.setClass(mContext, VerificationMessageActivity.class);
+//                intent.setClass(mContext, VerificationMessageActivity.class);
 //                mContext.startActivity(intent);
 //                mContactsView.dismissNewFriends();
 //                mAllContactNumber.setVisibility(View.GONE);
@@ -72,8 +73,8 @@ public class ContactsController implements View.OnClickListener, SideBar.OnTouch
                 mContext.startActivity(intent);
                 break;
             case R.id.search_title://查找
-//                intent.setClass(mContext, SearchContactsActivity.class);
-//                mContext.startActivity(intent);
+                intent.setClass(mContext, SearchContactsActivity.class);
+                mContext.startActivity(intent);
                 break;
             default:
                 break;
@@ -149,7 +150,7 @@ public class ContactsController implements View.OnClickListener, SideBar.OnTouch
                         del.delete();
                         mList.remove(del);
                     }
-                    Collections.sort(mList, new PinyinComparator());
+                    Collections.sort(mList, new PinyinComparator());//按拼音排序
                     mAdapter = new StickyListAdapter(mContext, mList, false);
                     mContactsView.setAdapter(mAdapter);
                 }

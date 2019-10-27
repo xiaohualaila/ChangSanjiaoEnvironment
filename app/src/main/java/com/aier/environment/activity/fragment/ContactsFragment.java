@@ -46,7 +46,7 @@ import cn.jpush.im.android.api.model.UserInfo;
 
 
 /**
- * Created by ${chenyn} on 2017/2/20.
+ * 通讯录
  */
 
 public class ContactsFragment extends BaseFragment {
@@ -63,9 +63,9 @@ public class ContactsFragment extends BaseFragment {
 
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         mRootView = layoutInflater.inflate(R.layout.fragment_contacts,
-                (ViewGroup) getActivity().findViewById(R.id.main_view), false);
+                 getActivity().findViewById(R.id.main_view), false);
 
-        mContactsView = (ContactsView) mRootView.findViewById(R.id.contacts_view);
+        mContactsView =  mRootView.findViewById(R.id.contacts_view);
         mAllContactNumber = getActivity().findViewById(R.id.all_contact_number);
 
         mContactsView.initModule(mRatio, mDensity);

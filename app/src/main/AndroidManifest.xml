@@ -128,6 +128,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/BaseThemes"/>
 
+        <activity
+            android:name=".activity.SearchContactsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseThemes"
+            android:windowSoftInputMode="adjustResize"/>
         <meta-data
             android:name="AA_DB_NAME"
             android:value="jchat.db"/>

@@ -49,9 +49,9 @@ public class DialogCreator {
     public static Dialog createLoadingDialog(Context context, String msg) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View v = inflater.inflate(IdHelper.getLayout(context, "jmui_loading_view"), null);
-        RelativeLayout layout = (RelativeLayout) v.findViewById(IdHelper.getViewID(context, "jmui_dialog_view"));
-        ImageView mLoadImg = (ImageView) v.findViewById(IdHelper.getViewID(context, "jmui_loading_img"));
-        TextView mLoadText = (TextView) v.findViewById(IdHelper.getViewID(context, "jmui_loading_txt"));
+        RelativeLayout layout =  v.findViewById(IdHelper.getViewID(context, "jmui_dialog_view"));
+        ImageView mLoadImg =  v.findViewById(IdHelper.getViewID(context, "jmui_loading_img"));
+        TextView mLoadText =  v.findViewById(IdHelper.getViewID(context, "jmui_loading_txt"));
         AnimationDrawable mDrawable = (AnimationDrawable) mLoadImg.getDrawable();
         mDrawable.start();
         mLoadText.setText(msg);
@@ -69,9 +69,9 @@ public class DialogCreator {
         LayoutInflater inflater = LayoutInflater.from(context);
         View v = inflater.inflate(IdHelper.getLayout(context, "jmui_dialog_base"), null);
         baseDialog.setContentView(v);
-        TextView titleTv = (TextView) v.findViewById(IdHelper.getViewID(context, "jmui_dialog_base_title_tv"));
-        TextView textTv = (TextView) v.findViewById(IdHelper.getViewID(context, "jmui_dialog_base_text_tv"));
-        Button confirmBtn = (Button) v.findViewById(IdHelper.getViewID(context, "jmui_dialog_base_confirm_btn"));
+        TextView titleTv =  v.findViewById(IdHelper.getViewID(context, "jmui_dialog_base_title_tv"));
+        TextView textTv =  v.findViewById(IdHelper.getViewID(context, "jmui_dialog_base_text_tv"));
+        Button confirmBtn =  v.findViewById(IdHelper.getViewID(context, "jmui_dialog_base_confirm_btn"));
         titleTv.setText(title);
         textTv.setText(text);
         confirmBtn.setOnClickListener(onClickListener);

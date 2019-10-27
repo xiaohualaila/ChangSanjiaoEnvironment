@@ -104,24 +104,21 @@ public class BaseActivity extends Activity {
 
     //初始化各个activity的title
     public void initTitle(boolean returnBtn, boolean titleLeftDesc, String titleLeft, String title, boolean save, String desc) {
-        mReturn_btn = (ImageButton) findViewById(R.id.return_btn);
-        mJmui_title_left = (TextView) findViewById(R.id.jmui_title_left);
-        mJmui_title_tv = (TextView) findViewById(R.id.jmui_title_tv);
-        mJmui_commit_btn = (Button) findViewById(R.id.jmui_commit_btn);
+        mReturn_btn =  findViewById(R.id.return_btn);
+        mJmui_title_left =  findViewById(R.id.jmui_title_left);
+        mJmui_title_tv =  findViewById(R.id.jmui_title_tv);
+        mJmui_commit_btn = findViewById(R.id.jmui_commit_btn);
 
         if (returnBtn) {
             mReturn_btn.setVisibility(View.VISIBLE);
-            mReturn_btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    if (imm.isActive() && getCurrentFocus() != null) {
-                        if (getCurrentFocus().getWindowToken() != null) {
-                            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                        }
+            mReturn_btn.setOnClickListener(v -> {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm.isActive() && getCurrentFocus() != null) {
+                    if (getCurrentFocus().getWindowToken() != null) {
+                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     }
-                    finish();
                 }
+                finish();
             });
         }
         if (titleLeftDesc) {

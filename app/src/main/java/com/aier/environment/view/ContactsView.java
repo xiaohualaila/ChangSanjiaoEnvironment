@@ -66,17 +66,18 @@ public class ContactsView extends LinearLayout {
 
 
         View header = mInflater.inflate(R.layout.contact_list_header, null);
-        mVerify_ll = (LinearLayout) header.findViewById(R.id.verify_ll);
-        mGroup_ll = (LinearLayout) header.findViewById(R.id.group_ll);
-        mGroup_verification_num = (TextView) header.findViewById(R.id.group_verification_num);
-        mNewFriendNum = (TextView) header.findViewById(R.id.friend_verification_num);
-        mSearch_title = (LinearLayout) header.findViewById(R.id.search_title);
+        mVerify_ll = header.findViewById(R.id.verify_ll);
+        mGroup_ll =  header.findViewById(R.id.group_ll);
+        mGroup_verification_num =  header.findViewById(R.id.group_verification_num);
+        mNewFriendNum =  header.findViewById(R.id.friend_verification_num);
+        mSearch_title =  header.findViewById(R.id.search_title);
         mView_line = header.findViewById(R.id.view_line);
         mGroup_verification_num.setVisibility(INVISIBLE);
 
         RelativeLayout loadingHeader = (RelativeLayout) mInflater.inflate(R.layout.jmui_drop_down_list_header, null);
-        mLoadingIv = (ImageView) loadingHeader.findViewById(R.id.jmui_loading_img);
-        mLoadingTv = (LinearLayout) loadingHeader.findViewById(R.id.loading_view);
+        mLoadingIv =  loadingHeader.findViewById(R.id.jmui_loading_img);
+        mLoadingTv =  loadingHeader.findViewById(R.id.loading_view);
+
         mListView.addHeaderView(loadingHeader);
         mListView.addHeaderView(header, null, false);
         mListView.setDrawingListUnderStickyHeader(true);

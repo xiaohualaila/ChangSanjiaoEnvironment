@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.widget.ListView;
 
+import com.activeandroid.util.Log;
 import com.aier.environment.R;
 import com.aier.environment.adapter.GroupListAdapter;
 import com.aier.environment.controller.ActivityController;
@@ -73,7 +74,6 @@ public class GroupActivity extends BaseActivity {
                                         if (groupSize[0] == 0) {
                                             setAdapter(infoList, dialog);
                                         }
-
                                     }
                                 }
                             });

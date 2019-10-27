@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         requestPermission();
-        mMainView = (MainView) findViewById(R.id.main_view);
+        mMainView =  findViewById(R.id.main_view);
         mMainView.initModule();
         mMainController = new MainController(mMainView, this);
 

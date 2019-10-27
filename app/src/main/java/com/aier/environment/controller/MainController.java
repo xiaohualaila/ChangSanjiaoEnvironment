@@ -61,7 +61,8 @@ public class MainController implements View.OnClickListener, ViewPager.OnPageCha
                 mMainView.setCurrentItem(0, false);
                 break;
             case R.id.actionbar_chatroom_btn:
-                mMainView.setCurrentItem(1, false);
+                mMainView.setCurrentItem(0, false);
+              //  mMainView.setCurrentItem(1, false);
                 break;
             case R.id.actionbar_contact_btn:
                 mMainView.setCurrentItem(2, false);
