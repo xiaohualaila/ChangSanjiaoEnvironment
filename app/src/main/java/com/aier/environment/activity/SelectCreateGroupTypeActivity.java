@@ -186,12 +186,12 @@ public class SelectCreateGroupTypeActivity extends BaseActivity implements TextW
     }
 
     private void initView() {
-        mIv_groupAvatar = (ImageView) findViewById(R.id.iv_groupAvatar);
-        mEt_groupName = (EditText) findViewById(R.id.et_groupName);
-        mLl_groupType = (LinearLayout) findViewById(R.id.ll_groupType);
-        mTv_groupSelect = (TextView) findViewById(R.id.tv_groupSelect);
-        tvInGroupDesc = (TextView) findViewById(R.id.tvInGroupDesc);
-        mBtn_createGroup = (Button) findViewById(R.id.btn_createGroup);
+        mIv_groupAvatar =  findViewById(R.id.iv_groupAvatar);
+        mEt_groupName =  findViewById(R.id.et_groupName);
+        mLl_groupType =  findViewById(R.id.ll_groupType);
+        mTv_groupSelect =  findViewById(R.id.tv_groupSelect);
+        tvInGroupDesc =  findViewById(R.id.tvInGroupDesc);
+        mBtn_createGroup =  findViewById(R.id.btn_createGroup);
 
         mBtn_createGroup.setClickable(false);
         mBtn_createGroup.setEnabled(false);

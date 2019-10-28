@@ -151,6 +151,21 @@
             android:name=".activity.SelectCreateGroupTypeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BaseThemes"/>
+
+        <activity
+            android:name=".activity.SearchForAddFriendActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseThemes"/>
+
+        <activity
+            android:name=".activity.VerificationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseThemes"/>
+
+        <activity
+            android:name=".activity.NotFriendSettingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseThemes"/>
         <meta-data
             android:name="AA_DB_NAME"
             android:value="jchat.db"/>
