@@ -54,13 +54,13 @@ public class ContactsView extends LinearLayout {
 
 
     public void initModule(float ratio, float density) {
-        mIb_goToAddFriend = (ImageButton) findViewById(R.id.ib_goToAddFriend);
+        mIb_goToAddFriend =  findViewById(R.id.ib_goToAddFriend);
 
-        mListView = (StickyListHeadersListView) findViewById(R.id.listview);
-        mSideBar = (SideBar) findViewById(R.id.sidebar);
+        mListView =  findViewById(R.id.listview);
+        mSideBar =  findViewById(R.id.sidebar);
         mSideBar.setTextView(mDialogTextView);
 
-        mLetterHintTv = (TextView) findViewById(R.id.group_dialog);
+        mLetterHintTv =  findViewById(R.id.group_dialog);
         mSideBar.setTextView(mLetterHintTv);
         mSideBar.bringToFront();
 
