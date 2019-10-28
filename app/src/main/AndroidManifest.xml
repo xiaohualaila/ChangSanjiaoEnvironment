@@ -141,8 +141,16 @@
             android:name=".activity.PersonalActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BaseThemes"/>
-
-
+        <activity
+            android:name=".activity.CreateGroupActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseThemes"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity
+            android:name=".activity.SelectCreateGroupTypeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseThemes"/>
         <meta-data
             android:name="AA_DB_NAME"
             android:value="jchat.db"/>

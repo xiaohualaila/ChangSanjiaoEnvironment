@@ -173,12 +173,11 @@
             android:textSize="30dp"
             android:visibility="invisible"/>
 
-        <jiguang.chat.utils.sidebar.SideBar
+        <com.aier.environment.utils.sidebar.SideBar
             android:id="@+id/sidebar"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            />
+            android:layout_gravity="end" />
     </FrameLayout>
 
 </com.aier.environment.view.SelectFriendView>

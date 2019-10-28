@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.view.View;
 
 import com.aier.environment.R;
+import com.aier.environment.activity.CreateGroupActivity;
 import com.aier.environment.activity.fragment.ConversationListFragment;
 
 
@@ -25,9 +26,9 @@ public class MenuItemController implements View.OnClickListener {
         Intent intent;
         switch (v.getId()) {
             case R.id.create_group_ll:
-//                mFragment.dismissPopWindow();
-//                intent = new Intent(mFragment.getContext(), CreateGroupActivity.class);
-//                mFragment.getContext().startActivity(intent);
+                mFragment.dismissPopWindow();
+                intent = new Intent(mFragment.getContext(), CreateGroupActivity.class);
+                mFragment.getContext().startActivity(intent);
                 break;
             case R.id.add_friend_with_confirm_ll:
 //                mFragment.dismissPopWindow();
