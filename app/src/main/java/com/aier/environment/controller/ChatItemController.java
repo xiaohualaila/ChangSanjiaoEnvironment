@@ -14,7 +14,9 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 
+import android.os.Build;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -25,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
 import com.aier.environment.JGApplication;
 import com.aier.environment.R;
@@ -1329,35 +1332,29 @@ public class ChatItemController {
                 mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
             }
             mp.prepare();
-            mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    mVoiceAnimation.start();
-                    mp.start();
-                }
+            mp.setOnPreparedListener(mp -> {
+                mVoiceAnimation.start();
+                mp.start();
             });
-            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    mVoiceAnimation.stop();
-                    mp.reset();
-                    mSetData = false;
-                    if (isSender) {
-                        holder.voice.setImageResource(R.drawable.send_3);
+            mp.setOnCompletionListener(mp -> {
+                mVoiceAnimation.stop();
+                mp.reset();
+                mSetData = false;
+                if (isSender) {
+                    holder.voice.setImageResource(R.drawable.send_3);
+                } else {
+                    holder.voice.setImageResource(R.drawable.jmui_receive_3);
+                }
+                if (autoPlay) {
+                    int curCount = mIndexList.indexOf(position);
+                    if (curCount + 1 >= mIndexList.size()) {
+                        nextPlayPosition = -1;
+                        autoPlay = false;
                     } else {
-                        holder.voice.setImageResource(R.drawable.jmui_receive_3);
+                        nextPlayPosition = mIndexList.get(curCount + 1);
+                        mAdapter.notifyDataSetChanged();
                     }
-                    if (autoPlay) {
-                        int curCount = mIndexList.indexOf(position);
-                        if (curCount + 1 >= mIndexList.size()) {
-                            nextPlayPosition = -1;
-                            autoPlay = false;
-                        } else {
-                            nextPlayPosition = mIndexList.get(curCount + 1);
-                            mAdapter.notifyDataSetChanged();
-                        }
-                        mIndexList.remove(curCount);
-                    }
+                    mIndexList.remove(curCount);
                 }
             });
         } catch (Exception e) {
@@ -1525,9 +1522,19 @@ public class ChatItemController {
             String ext = fileName.substring(fileName.lastIndexOf('.') + 1).toLowerCase();
             MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
             String mime = mimeTypeMap.getMimeTypeFromExtension(ext);
-            File file = new File(path);
+            Uri uri;
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setDataAndType(Uri.fromFile(file), mime);
+            intent.addCategory("android.intent.category.DEFAULT");
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            Log.i("sss","path  "+path);
+            File file = new File(path);
+            if(Build.VERSION.SDK_INT >= 24){
+                uri = FileProvider.getUriForFile(mContext, "com.aier.environment.fileprovider", file);
+            } else {//7.0以下
+                uri= Uri.fromFile(file);
+            }
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.setDataAndType(uri, mime);
             mContext.startActivity(intent);
         } catch (Exception e) {
             e.printStackTrace();

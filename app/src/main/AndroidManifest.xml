@@ -166,6 +166,17 @@
             android:name="com.activeandroid.content.ContentProvider"
             android:authorities="${applicationId}"
             android:exported="false"/>
+        <provider
+
+            android:authorities="com.aier.environment.fileprovider"
+            android:name="androidx.core.content.FileProvider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths"/>
+        </provider>
+
     </application>
 
 </manifest>
