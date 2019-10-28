@@ -79,8 +79,7 @@ public class ConversationListFragment extends BaseFragment {
         mContext = this.getActivity();
 
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-        mRootView = layoutInflater.inflate(R.layout.fragment_conv_list,
-                (ViewGroup) getActivity().findViewById(R.id.main_view), false);
+        mRootView = layoutInflater.inflate(R.layout.fragment_conv_list, getActivity().findViewById(R.id.main_view), false);
         mConvListView = new ConversationListView(mRootView, this.getActivity(), this);
         mConvListView.initModule();
         mThread = new HandlerThread("MainActivity");

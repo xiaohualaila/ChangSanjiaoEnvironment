@@ -100,7 +100,7 @@ public class ConversationListController implements View.OnClickListener,
             case R.id.create_group_btn:
                 mContext.showPopWindow();
                 break;
-            case R.id.search_title:
+            case R.id.search_title://搜索
                 Intent intent = new Intent();
                 intent.setClass(mContext.getActivity(), SearchContactsActivity.class);
                 mContext.startActivity(intent);

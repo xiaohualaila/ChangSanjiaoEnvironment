@@ -62,7 +62,7 @@
                     <View
                         style="@style/ac_search_list_view_divider"/>
 
-                    <jiguang.chat.view.listview.NestedListView
+                    <com.aier.environment.view.listview.NestedListView
                         android:id="@+id/ac_lv_filtered_friends_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -101,12 +101,11 @@
                     <View
                         style="@style/ac_search_list_view_divider"/>
 
-                    <jiguang.chat.view.listview.NestedListView
+                    <com.aier.environment.view.listview.NestedListView
                         android:id="@+id/ac_lv_filtered_groups_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:divider="@drawable/main_list_divider_line"
-                        />
+                        android:divider="@drawable/main_list_divider_line" />
 
                     <LinearLayout
                         android:id="@+id/ac_ll_more_groups"
