@@ -147,19 +147,19 @@ public class PersonalActivity extends BaseActivity implements SelectAddressInter
 
     private void initView() {
         initTitle(true, true, "个人信息", "", false, "");
-        mRl_cityChoose = (RelativeLayout) findViewById(R.id.rl_cityChoose);
-        mTv_city = (TextView) findViewById(R.id.tv_city);
-        mRl_gender = (RelativeLayout) findViewById(R.id.rl_gender);
-        mRl_birthday = (RelativeLayout) findViewById(R.id.rl_birthday);
-        mTv_birthday = (TextView) findViewById(R.id.tv_birthday);
-        mTv_gender = (TextView) findViewById(R.id.tv_gender);
-        mSign = (RelativeLayout) findViewById(R.id.sign);
-        mTv_sign = (TextView) findViewById(R.id.tv_sign);
-        mRl_nickName = (RelativeLayout) findViewById(R.id.rl_nickName);
-        mTv_nickName = (TextView) findViewById(R.id.tv_nickName);
-        mIv_photo = (ImageView) findViewById(R.id.iv_photo);
-        mTv_userName = (TextView) findViewById(R.id.tv_userName);
-        mRl_zxing = (RelativeLayout) findViewById(R.id.rl_zxing);
+        mRl_cityChoose =  findViewById(R.id.rl_cityChoose);
+        mTv_city =  findViewById(R.id.tv_city);
+        mRl_gender =  findViewById(R.id.rl_gender);
+        mRl_birthday =  findViewById(R.id.rl_birthday);
+        mTv_birthday =  findViewById(R.id.tv_birthday);
+        mTv_gender =  findViewById(R.id.tv_gender);
+        mSign =  findViewById(R.id.sign);
+        mTv_sign =  findViewById(R.id.tv_sign);
+        mRl_nickName =  findViewById(R.id.rl_nickName);
+        mTv_nickName =  findViewById(R.id.tv_nickName);
+        mIv_photo =  findViewById(R.id.iv_photo);
+        mTv_userName =  findViewById(R.id.tv_userName);
+        mRl_zxing =  findViewById(R.id.rl_zxing);
 
         mChoosePhoto = new ChoosePhoto();
         mChoosePhoto.setPortraitChangeListener(PersonalActivity.this, mIv_photo, 2);
