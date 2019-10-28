@@ -30,7 +30,7 @@ public class MainView extends RelativeLayout {
 //        mBtnListID = new int[] {
 //                R.id.actionbar_msg_btn, R.id.actionbar_chatroom_btn,
 //                R.id.actionbar_contact_btn, R.id.actionbar_me_btn};
-        mBtnListID = new int[] {R.id.actionbar_chatroom_btn,R.id.actionbar_contact_btn};
+        mBtnListID = new int[] { R.id.actionbar_msg_btn,R.id.actionbar_chatroom_btn,R.id.actionbar_contact_btn};
         mBtnList = new Button[mBtnListID.length];
         for (int i = 0; i < mBtnListID.length; i++) {
             mBtnList[i] =  findViewById(mBtnListID[i]);

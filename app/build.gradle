@@ -72,6 +72,7 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife:7.0.1'
     implementation 'io.reactivex:rxandroid:1.2.1'
     implementation 'org.jetbrains:annotations:15.0'
+    implementation 'com.contrarywind:Android-PickerView:3.2.4'
     //https://www.jiguang.cn/dev2/#/app/87d66634731dd22ba047e47f/imSetting
     //http://docs.jiguang.cn/jmessage/client/android_sdk/message/
 

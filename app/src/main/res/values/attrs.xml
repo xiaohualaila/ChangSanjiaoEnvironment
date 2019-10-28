@@ -149,4 +149,6 @@
         <attr name="maxProgress" format="integer"/>
         <attr name="progres" format="integer"/>
     </declare-styleable>
+
+
 </resources>

@@ -8,6 +8,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.aier.environment.R;
 import com.aier.environment.activity.MainActivity;
+import com.aier.environment.activity.fragment.ConversationListFragment;
 import com.aier.environment.adapter.ViewPagerAdapter;
 import com.aier.environment.activity.fragment.ChatRoomFragment;
 import com.aier.environment.activity.fragment.ContactsFragment;
@@ -24,7 +25,7 @@ import java.util.List;
 public class MainController implements View.OnClickListener, ViewPager.OnPageChangeListener {
     private MainView mMainView;
     private MainActivity mContext;
-//    private ConversationListFragment mConvListFragment;
+    private ConversationListFragment mConvListFragment;
   //  private MeFragment mMeFragment;
     private ContactsFragment mContactsFragment;
     private ChatRoomFragment mChatRoomFragment;
@@ -39,12 +40,12 @@ public class MainController implements View.OnClickListener, ViewPager.OnPageCha
     private void setViewPager() {
         final List<Fragment> fragments = new ArrayList<>();
         // init Fragment
-//        mConvListFragment = new ConversationListFragment();
+        mConvListFragment = new ConversationListFragment();
         mChatRoomFragment = new ChatRoomFragment();
         mContactsFragment = new ContactsFragment();
 //        mMeFragment = new MeFragment();
 
-      //  fragments.add(mConvListFragment);
+        fragments.add(mConvListFragment);
         fragments.add(mChatRoomFragment);
         fragments.add(mContactsFragment);
      //  fragments.add(mMeFragment);
@@ -61,8 +62,7 @@ public class MainController implements View.OnClickListener, ViewPager.OnPageCha
                 mMainView.setCurrentItem(0, false);
                 break;
             case R.id.actionbar_chatroom_btn:
-                mMainView.setCurrentItem(0, false);
-              //  mMainView.setCurrentItem(1, false);
+                mMainView.setCurrentItem(1, false);
                 break;
             case R.id.actionbar_contact_btn:
                 mMainView.setCurrentItem(2, false);

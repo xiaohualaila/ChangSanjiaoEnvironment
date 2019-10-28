@@ -129,10 +129,18 @@
             android:theme="@style/BaseThemes"/>
 
         <activity
+            android:name=".activity.NickSignActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseThemes"/>
+        <activity
             android:name=".activity.SearchContactsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BaseThemes"
             android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".activity.PersonalActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseThemes"/>
         <meta-data
             android:name="AA_DB_NAME"
             android:value="jchat.db"/>

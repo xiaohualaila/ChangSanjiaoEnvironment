@@ -20,6 +20,8 @@ import android.widget.TextView;
 
 import com.aier.environment.JGApplication;
 import com.aier.environment.R;
+import com.aier.environment.activity.FriendInfoActivity;
+import com.aier.environment.activity.PersonalActivity;
 import com.aier.environment.controller.ChatItemController;
 import com.aier.environment.utils.DialogCreator;
 import com.aier.environment.utils.HandleResponseCode;
@@ -581,21 +583,21 @@ public class ChattingListAdapter extends BaseAdapter {
                 public void onClick(View arg0) {
                     Intent intent = new Intent();
                     if (msg.getDirect() == MessageDirect.send) {
-//                        intent.putExtra(JGApplication.TARGET_ID, JMessageClient.getMyInfo().getUserName());
-//                        intent.setClass(mContext, PersonalActivity.class);
-//                        mContext.startActivity(intent);
+                        intent.putExtra(JGApplication.TARGET_ID, JMessageClient.getMyInfo().getUserName());
+                        intent.setClass(mContext, PersonalActivity.class);
+                        mContext.startActivity(intent);
                     } else {
-//                        String targetID = userInfo.getUserName();
-//                        intent.putExtra(JGApplication.TARGET_ID, targetID);
-//                        intent.putExtra(JGApplication.TARGET_APP_KEY, userInfo.getAppKey());
-//                        intent.putExtra(JGApplication.GROUP_ID, mGroupId);
-//                        if (userInfo.isFriend()) {
-//                            intent.setClass(mContext, FriendInfoActivity.class);
-//                        } else {
-//                            intent.setClass(mContext, GroupNotFriendActivity.class);
-//                        }
-//                        ((Activity) mContext).startActivityForResult(intent,
-//                                JGApplication.REQUEST_CODE_FRIEND_INFO);
+                        String targetID = userInfo.getUserName();
+                        intent.putExtra(JGApplication.TARGET_ID, targetID);
+                        intent.putExtra(JGApplication.TARGET_APP_KEY, userInfo.getAppKey());
+                        intent.putExtra(JGApplication.GROUP_ID, mGroupId);
+                        if (userInfo.isFriend()) {
+                            intent.setClass(mContext, FriendInfoActivity.class);
+                        } else {
+                          //  intent.setClass(mContext, GroupNotFriendActivity.class);
+                        }
+                        ((Activity) mContext).startActivityForResult(intent,
+                                JGApplication.REQUEST_CODE_FRIEND_INFO);
                     }
                 }
             });

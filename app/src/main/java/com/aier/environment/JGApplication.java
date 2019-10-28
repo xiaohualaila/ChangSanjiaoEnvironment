@@ -44,6 +44,8 @@ public class JGApplication extends  com.activeandroid.app.Application {
     public static final int RESULT_CODE_FRIEND_INFO = 17;
     public static final int RESULT_CODE_SELECT_PICTURE = 8;
     public static final int RESULT_CODE_BROWSER_PICTURE = 13;
+    public static final String DELETE_MODE = "deleteMode";
+    public static final int REQUEST_CODE_ALL_MEMBER = 21;
     public static final String NOTENAME = "notename";
     public static final String DRAFT = "draft";
     public static final String CONV_TYPE = "conversationType"; //value使用 ConversationType
@@ -76,6 +78,10 @@ public class JGApplication extends  com.activeandroid.app.Application {
     public static long registerOrLogin = 1;
     public static final int RESULT_CODE_ALL_MEMBER = 22;
     public static final int REQUEST_CODE_FRIEND_INFO = 16;
+
+    public static final int START_YEAR = 1900;
+    public static final int END_YEAR = 2050;
+    public static final int ON_GROUP_EVENT = 3004;
 
     public static LocationService locationService;
 
