@@ -27,7 +27,7 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <jiguang.chat.view.GroupGridView
+                <com.aier.environment.view.GroupGridView
                     android:id="@+id/chat_detail_group_gv"
                     android:layout_width="match_parent"
                     android:layout_height="47.33dp"
@@ -251,7 +251,7 @@
                     style="@style/ChatDetailItemHit"
                     android:text="@string/set_do_not_disturb"/>
 
-                <jiguang.chat.view.SlipButton
+                <com.aier.environment.view.SlipButton
                     android:id="@+id/no_disturb_slip_btn"
                     android:layout_width="46dp"
                     android:layout_height="25dp"
@@ -275,7 +275,7 @@
                     style="@style/ChatDetailItemHit"
                     android:text="@string/set_to_block"/>
 
-                <jiguang.chat.view.SlipButton
+                <com.aier.environment.view.SlipButton
                     android:id="@+id/block_slip_btn"
                     android:layout_width="46dp"
                     android:layout_height="25dp"

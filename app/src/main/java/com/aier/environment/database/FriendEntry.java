@@ -39,8 +39,8 @@ public class FriendEntry extends Model {
         super();
     }
 
-    public FriendEntry(Long uid, String username, String noteName, String nickName, String appKey, String avatar, String displayName, String letter,
-                       UserEntry user) {
+    public FriendEntry(Long uid, String username, String noteName, String nickName, String appKey, String avatar, String displayName,
+                       String letter, UserEntry user) {
         super();
         this.uid = uid;
         this.username = username;

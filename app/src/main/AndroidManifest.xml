@@ -166,6 +166,21 @@
             android:name=".activity.NotFriendSettingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BaseThemes"/>
+
+        <activity
+            android:name=".activity.FriendInfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseThemes"/>
+
+        <activity
+            android:name=".activity.GroupNotFriendActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseThemes"/>
+
+        <activity
+            android:name=".activity.ChatDetailActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseThemes"/>
         <meta-data
             android:name="AA_DB_NAME"
             android:value="jchat.db"/>

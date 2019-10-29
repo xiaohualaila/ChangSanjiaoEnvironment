@@ -4,6 +4,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
@@ -24,7 +25,9 @@ import android.widget.LinearLayout;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
+import com.aier.environment.JGApplication;
 import com.aier.environment.R;
+import com.aier.environment.activity.FriendInfoActivity;
 import com.aier.environment.database.FriendEntry;
 import com.aier.environment.utils.photochoose.SelectableRoundedImageView;
 
@@ -420,11 +423,11 @@ public class StickyListAdapter extends BaseAdapter implements StickyListHeadersA
             holder.itemLl.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    Intent intent = new Intent(mContext, FriendInfoActivity.class);
-//                    intent.putExtra("fromContact", true);
-//                    intent.putExtra(JGApplication.TARGET_ID, friend.username);
-//                    intent.putExtra(JGApplication.TARGET_APP_KEY, friend.appKey);
-//                    mContext.startActivity(intent);
+                    Intent intent = new Intent(mContext, FriendInfoActivity.class);
+                    intent.putExtra("fromContact", true);
+                    intent.putExtra(JGApplication.TARGET_ID, friend.username);
+                    intent.putExtra(JGApplication.TARGET_APP_KEY, friend.appKey);
+                    mContext.startActivity(intent);
                 }
             });
         }

@@ -43,11 +43,13 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!--隐藏添加好友的消息验证功能-->
             <LinearLayout
                 android:id="@+id/verify_ll"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
                 android:gravity="center_vertical"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <FrameLayout

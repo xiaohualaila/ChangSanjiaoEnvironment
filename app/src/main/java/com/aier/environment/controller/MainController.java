@@ -26,9 +26,9 @@ public class MainController implements View.OnClickListener, ViewPager.OnPageCha
     private MainView mMainView;
     private MainActivity mContext;
     private ConversationListFragment mConvListFragment;
-  //  private MeFragment mMeFragment;
-    private ContactsFragment mContactsFragment;
     private ChatRoomFragment mChatRoomFragment;
+    private ContactsFragment mContactsFragment;
+    //  private MeFragment mMeFragment;
 
 
     public MainController(MainView mMainView, MainActivity context) {

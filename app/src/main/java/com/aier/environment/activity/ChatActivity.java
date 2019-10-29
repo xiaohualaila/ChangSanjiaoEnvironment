@@ -583,12 +583,12 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
     }
 
     public void startChatDetailActivity(String targetId, String appKey, long groupId) {
-//        Intent intent = new Intent();
-//        intent.putExtra(TARGET_ID, targetId);
-//        intent.putExtra(TARGET_APP_KEY, appKey);
-//        intent.putExtra(GROUP_ID, groupId);
-//        intent.setClass(this, ChatDetailActivity.class);
-//        startActivityForResult(intent, JGApplication.REQUEST_CODE_CHAT_DETAIL);
+        Intent intent = new Intent();
+        intent.putExtra(TARGET_ID, targetId);
+        intent.putExtra(TARGET_APP_KEY, appKey);
+        intent.putExtra(GROUP_ID, groupId);
+        intent.setClass(this, ChatDetailActivity.class);
+        startActivityForResult(intent, JGApplication.REQUEST_CODE_CHAT_DETAIL);
     }
 
     EmoticonClickListener emoticonClickListener = new EmoticonClickListener() {

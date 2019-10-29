@@ -32,7 +32,7 @@ public class JGApplication extends  com.activeandroid.app.Application {
     public static final int TACK_VOICE = 6;
     public static final int BUSINESS_CARD = 7;
     public static final int REQUEST_CODE_SEND_FILE = 26;
-
+    public static final int REQUEST_CODE_CHAT_DETAIL = 14;
     public static final int REQUEST_CODE_FRIEND_LIST = 17;
     public static final int RESULT_CODE_AT_ALL = 32;
     public static final int RESULT_CODE_SEND_LOCATION = 25;

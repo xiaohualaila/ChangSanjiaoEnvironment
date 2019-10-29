@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.aier.environment.JGApplication;
 import com.aier.environment.R;
 import com.aier.environment.activity.FriendInfoActivity;
+import com.aier.environment.activity.GroupNotFriendActivity;
 import com.aier.environment.activity.PersonalActivity;
 import com.aier.environment.controller.ChatItemController;
 import com.aier.environment.utils.DialogCreator;
@@ -594,7 +595,7 @@ public class ChattingListAdapter extends BaseAdapter {
                         if (userInfo.isFriend()) {
                             intent.setClass(mContext, FriendInfoActivity.class);
                         } else {
-                          //  intent.setClass(mContext, GroupNotFriendActivity.class);
+                            intent.setClass(mContext, GroupNotFriendActivity.class);
                         }
                         ((Activity) mContext).startActivityForResult(intent,
                                 JGApplication.REQUEST_CODE_FRIEND_INFO);
