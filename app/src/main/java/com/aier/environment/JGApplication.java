@@ -119,9 +119,10 @@ public class JGApplication extends  com.activeandroid.app.Application {
         JMessageClient.setDebugMode(true);
         SharePreferenceManager.init(getApplicationContext(), JCHAT_CONFIGS);
         //设置Notification的模式
-      //  JMessageClient.setNotificationFlag(JMessageClient.FLAG_NOTIFY_WITH_SOUND | JMessageClient.FLAG_NOTIFY_WITH_LED | JMessageClient.FLAG_NOTIFY_WITH_VIBRATE);
+        JMessageClient.setNotificationFlag(JMessageClient.FLAG_NOTIFY_WITH_SOUND |
+          JMessageClient.FLAG_NOTIFY_WITH_LED | JMessageClient.FLAG_NOTIFY_WITH_VIBRATE);
         //注册Notification点击的接收器
-      //  new NotificationClickEventReceiver(getApplicationContext());
+        new NotificationClickEventReceiver(getApplicationContext());
 
     }
 
