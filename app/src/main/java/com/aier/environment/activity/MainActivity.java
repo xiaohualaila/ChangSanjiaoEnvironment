@@ -2,8 +2,6 @@ package com.aier.environment.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
-
-import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,15 +13,14 @@ import android.widget.Toast;
 import com.aier.environment.R;
 import com.aier.environment.controller.MainController;
 import com.aier.environment.view.MainView;
+import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
-import com.yanzhenjie.permission.PermissionListener;
-
+import com.yanzhenjie.permission.runtime.Permission;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.List;
 
 import cn.jiguang.api.JCoreInterface;
@@ -43,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         mMainView.setOnClickListener(mMainController);
         mMainView.setOnPageChangeListener(mMainController);
-        socket();
+      //  socket();
     }
     Socket socket;
     private void socket() {
@@ -75,14 +72,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-   private static Handler handler = new Handler(){
+   private  Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (msg.what == 1){
                 Log.i("ssss","这是来自服务器的数据:"+msg.obj.toString());
-              //  Intent intent = new Intent(this,);
-              //  startActivity();
+                Intent intent = new Intent(MainActivity.this,ReceivePhoneActivity.class);
+                intent.putExtra("VIDEO_HOMES","111");
+                startActivity(intent);
             }
         }
     };
@@ -112,48 +110,33 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void requestPermission() {
-        permissions = new ArrayList<>();
-        permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-        permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        permissions.add(Manifest.permission.CAMERA);
-        permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-        permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-        permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
-        permissions.add(Manifest.permission.ACCESS_WIFI_STATE);
-        permissions.add(Manifest.permission.RECORD_AUDIO);
-        if (AndPermission.hasPermission(this, permissions)) {
+        String[]  perm = {Permission.RECORD_AUDIO,
+                Permission.CAMERA,
+                Permission.READ_EXTERNAL_STORAGE,
+                Permission.WRITE_EXTERNAL_STORAGE,
+                Permission.ACCESS_COARSE_LOCATION,
+                Permission.ACCESS_FINE_LOCATION,
+                Permission.RECORD_AUDIO
+        };
+
+        if (AndPermission.hasPermissions(MainActivity.this,perm)){
             return;
         }else {
-            AndPermission.with(this)
-                    .requestCode(100)
-                    .permission(Manifest.permission.READ_EXTERNAL_STORAGE,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            Manifest.permission.CAMERA,
-                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                            Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.ACCESS_WIFI_STATE,
-                            Manifest.permission.RECORD_AUDIO)
-                    .callback(listener)
-                    .start();
+            AndPermission.with(MainActivity.this).runtime().permission(perm).onDenied(new Action<List<String>>() {
+                @Override
+                public void onAction(List<String> data) {
+                    Toast.makeText(MainActivity.this, "请打开音视频,文件读写权限,定位权限！", Toast.LENGTH_SHORT).show();
+                }
+            }).onGranted(new Action<List<String>>() {
+                @Override
+                public void onAction(List<String> data) {
+                    Toast.makeText(MainActivity.this, "获取权限成功！", Toast.LENGTH_SHORT).show();
+                }
+            }).start();
         }
     }
 
-    private PermissionListener listener = new PermissionListener() {
-        @Override
-        public void onSucceed(int requestCode, List<String> grantedPermissions) {
-            // Successfully.
-            if(requestCode == 100) {
-                Toast.makeText(MainActivity.this, "成功", Toast.LENGTH_SHORT).show();
-            }
-        }
 
-        @Override
-        public void onFailed(int requestCode, List<String> deniedPermissions) {
-            // Failure.
-
-        }
-    };
 
     public FragmentManager getSupportFragmentManger() {
         return getSupportFragmentManager();

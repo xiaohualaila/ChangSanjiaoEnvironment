@@ -9,6 +9,8 @@ import com.aier.environment.pickerimage.utils.StorageUtil;
 import com.aier.environment.utils.SharePreferenceManager;
 import com.baidu.mapapi.SDKInitializer;
 
+import org.ar.meet_kit.ARMeetEngine;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -120,12 +122,11 @@ public class JGApplication extends  com.activeandroid.app.Application {
         SharePreferenceManager.init(getApplicationContext(), JCHAT_CONFIGS);
         //设置Notification的模式
         JMessageClient.setNotificationFlag(JMessageClient.FLAG_NOTIFY_WITH_SOUND |
-          JMessageClient.FLAG_NOTIFY_WITH_LED | JMessageClient.FLAG_NOTIFY_WITH_VIBRATE);
+        JMessageClient.FLAG_NOTIFY_WITH_LED | JMessageClient.FLAG_NOTIFY_WITH_VIBRATE);
         //注册Notification点击的接收器
         new NotificationClickEventReceiver(getApplicationContext());
-
+        ARMeetEngine.Inst().initEngine(getApplicationContext(),"anyrtciHabishp1qCK","351294440e2ba820a325a19be201a42a");
     }
-
 
 
     public static UserEntry getUserEntry() {
