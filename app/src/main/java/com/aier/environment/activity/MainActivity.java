@@ -2,33 +2,40 @@ package com.aier.environment.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
+import com.aier.environment.JGApplication;
 import com.aier.environment.R;
 import com.aier.environment.controller.MainController;
+import com.aier.environment.database.UserEntry;
 import com.aier.environment.view.MainView;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.runtime.Permission;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.Socket;
-import java.net.UnknownHostException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.URISyntaxException;
 import java.util.List;
 
+import io.socket.client.IO;
+import io.socket.client.Socket;
 import cn.jiguang.api.JCoreInterface;
+import io.socket.emitter.Emitter;
+
 
 public class MainActivity extends AppCompatActivity {
     private MainController mMainController;
     private MainView mMainView;
-    private List<String> permissions;
+
+    private Socket mSocket;
+    private Boolean isConnected = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,50 +47,27 @@ public class MainActivity extends AppCompatActivity {
 
         mMainView.setOnClickListener(mMainController);
         mMainView.setOnPageChangeListener(mMainController);
-      //  socket();
+        socket();
     }
-    Socket socket;
+
     private void socket() {
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    socket = new Socket("192.168.1.101", 30000);
-                    // socket.setSoTimeout(10000);//设置10秒超时
-                    Log.i("Android", "与服务器建立连接：" + socket);
-                    BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                    String line = br.readLine();
-                    Log.i("Android", "与服务器建立连接：" + line);
-                    Message msg = new Message();
-                    msg.what = 1;
-                    msg.obj = line;
-                    handler.sendMessage(msg);
-                } catch (UnknownHostException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-
+        try {
+            Log.i("aaa",JGApplication.getUserEntry().getId()+"");
+            mSocket = IO.socket("http://192.168.0.68:3002/chat?userid="+JGApplication.getUserEntry().getId()+"&type=mobile");
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+            mSocket.on(Socket.EVENT_CONNECT,onConnect);
+            mSocket.on(Socket.EVENT_DISCONNECT,onDisconnect);
+            mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
+            mSocket.on(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
+            mSocket.on("message", message);
+            mSocket.on("call", call);
+            mSocket.on("join", join);
+            mSocket.on("leave", leave);
+            mSocket.connect();
     }
 
-
-   private  Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (msg.what == 1){
-                Log.i("ssss","这是来自服务器的数据:"+msg.obj.toString());
-                Intent intent = new Intent(MainActivity.this,ReceivePhoneActivity.class);
-                intent.putExtra("VIDEO_HOMES","111");
-                startActivity(intent);
-            }
-        }
-    };
 
 
     @Override
@@ -101,6 +85,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mSocket.disconnect();
+        mSocket.off(Socket.EVENT_CONNECT,onConnect);
+        mSocket.off(Socket.EVENT_DISCONNECT,onDisconnect);
+        mSocket.off(Socket.EVENT_CONNECT_ERROR, onConnectError);
+        mSocket.off(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
+        mSocket.off("message", message);
+        mSocket.off("call", call);
+        mSocket.off("join", join);
+        mSocket.off("leave", leave);
     }
 
     @Override
@@ -141,4 +134,95 @@ public class MainActivity extends AppCompatActivity {
     public FragmentManager getSupportFragmentManger() {
         return getSupportFragmentManager();
     }
+    //连接成功
+    private Emitter.Listener onConnect = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if(!isConnected) {
+                        Log.i("aaa","connected success");
+                        isConnected = true;
+                    }
+                }
+            });
+        }
+    };
+   //连接失败
+    private Emitter.Listener onDisconnect = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+                //    Log.i(TAG, "diconnected");
+                    isConnected = false;
+            Log.i("aaa","diconnected");
+        }
+    };
+    //连接错误
+    private Emitter.Listener onConnectError = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+           runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+            //       Log.e(TAG, "Error connecting");
+                    Log.i("aaa","Error connecting");
+                }
+            });
+        }
+    };
+
+    private Emitter.Listener call = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    Log.i("aaa",data.toString());
+                    Intent intent =new Intent(MainActivity.this,ReceivePhoneActivity.class);
+                    intent.putExtra("VIDEO_HOMES","");
+                }
+            });
+        }
+    };
+    private Emitter.Listener join = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    Log.i("aaa",data.toString());
+
+                }
+            });
+        }
+    };
+    private Emitter.Listener leave = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    Log.i("aaa",data.toString());
+
+                }
+            });
+        }
+    };
+    private Emitter.Listener message = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    Log.i("aaa","message "+data.toString());
+
+                }
+            });
+        }
+    };
 }

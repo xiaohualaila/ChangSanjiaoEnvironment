@@ -56,7 +56,7 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
         this.setContentView(this.getLayoutId());
         mImmersionBar = ImmersionBar.with(this);
         mImmersionBar.init();
-        this.initView(savedInstanceState);
+        this.initView();
     }
 
 
@@ -64,7 +64,7 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
         return R.layout.activity_meeting;
     }
 
-    public void initView(Bundle savedInstanceState) {
+    public void initView() {
 
         space = findViewById(R.id.view_space);
         mImmersionBar.titleBar(space).init();

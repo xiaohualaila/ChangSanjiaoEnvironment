@@ -11,6 +11,7 @@ import com.baidu.mapapi.SDKInitializer;
 
 import org.ar.meet_kit.ARMeetEngine;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,8 @@ import cn.jpush.im.android.api.model.Conversation;
 import cn.jpush.im.android.api.model.GroupInfo;
 import cn.jpush.im.android.api.model.Message;
 import cn.jpush.im.android.api.model.UserInfo;
+import io.socket.client.IO;
+import io.socket.client.Socket;
 
 
 public class JGApplication extends  com.activeandroid.app.Application {
@@ -106,6 +109,18 @@ public class JGApplication extends  com.activeandroid.app.Application {
     public static Conversation delConversation;
     public static ArrayList<String> selectedUser;
 
+//    private static Socket mSocket;
+//    {
+//        try {
+//            mSocket = IO.socket("http://192.168.0.68:3002/chat?userid="+getUserEntry().getId()+"&type=mobile");
+//        } catch (URISyntaxException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+//
+//    public static Socket getSocket() {
+//        return mSocket;
+//    }
     @Override
     public void onCreate() {
         super.onCreate();

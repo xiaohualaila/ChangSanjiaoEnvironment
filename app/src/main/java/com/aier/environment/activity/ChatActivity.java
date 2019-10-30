@@ -27,6 +27,7 @@ import android.widget.AbsListView;
 import android.widget.Toast;
 
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import com.aier.environment.JGApplication;
@@ -36,6 +37,7 @@ import com.aier.environment.entity.Event;
 import com.aier.environment.entity.EventType;
 import com.aier.environment.location.activity.MapPickerActivity;
 import com.aier.environment.model.Constants;
+import com.aier.environment.model.FriendBean;
 import com.aier.environment.pickerimage.PickImageActivity;
 import com.aier.environment.pickerimage.utils.Extras;
 import com.aier.environment.pickerimage.utils.RequestCode;
@@ -61,6 +63,7 @@ import com.aier.environment.view.ChatView;
 import com.aier.environment.view.TipItem;
 import com.aier.environment.view.TipView;
 import com.aier.environment.view.listview.DropDownListView;
+import com.google.gson.Gson;
 import com.sj.emoji.EmojiBean;
 
 import org.greenrobot.eventbus.EventBus;
@@ -70,9 +73,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,8 +109,16 @@ import cn.jpush.im.android.api.model.Message;
 import cn.jpush.im.android.api.model.UserInfo;
 import cn.jpush.im.android.api.options.MessageSendingOptions;
 import cn.jpush.im.api.BasicCallback;
-
-
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 
 /**
@@ -162,7 +175,8 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
     private boolean mAtAll = false;
     private boolean isChatRoom = false;
 
-
+    private Socket mSocket;
+    private Boolean isConnected = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -192,13 +206,133 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
         } else {
             initData();
         }
+        socket();
+    }
+
+    private void socket() {
+        try {
+            Log.i("aaa",JGApplication.getUserEntry().getId()+"");
+            mSocket = IO.socket("http://192.168.0.68:3002/chat?userid="+JGApplication.getUserEntry().getId()+"&type=mobile");
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+        mSocket.on(Socket.EVENT_CONNECT,onConnect);
+        mSocket.on(Socket.EVENT_DISCONNECT,onDisconnect);
+        mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
+        mSocket.on(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
+        mSocket.on("message", message);
+        mSocket.on("call", call);
+        mSocket.on("join", join);
+        mSocket.on("leave", leave);
+        mSocket.connect();
     }
 
     @Override
     public void onDestroy() {
         EventBus.getDefault().unregister(this);
+        mSocket.disconnect();
+        mSocket.off(Socket.EVENT_CONNECT,onConnect);
+        mSocket.off(Socket.EVENT_DISCONNECT,onDisconnect);
+        mSocket.off(Socket.EVENT_CONNECT_ERROR, onConnectError);
+        mSocket.off(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
+        mSocket.off("message", message);
+        mSocket.off("call", call);
+        mSocket.off("join", join);
+        mSocket.off("leave", leave);
         super.onDestroy();
     }
+
+    //连接成功
+    private Emitter.Listener onConnect = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if(!isConnected) {
+                        Log.i("aaa","connected success");
+                        isConnected = true;
+                    }
+                }
+            });
+        }
+    };
+    //连接失败
+    private Emitter.Listener onDisconnect = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            //    Log.i(TAG, "diconnected");
+            isConnected = false;
+            Log.i("aaa","diconnected");
+        }
+    };
+    //连接错误
+    private Emitter.Listener onConnectError = new Emitter.Listener() {
+        @Override
+        public void call(Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    //       Log.e(TAG, "Error connecting");
+                    Log.i("aaa","Error connecting");
+                }
+            });
+        }
+    };
+
+    private Emitter.Listener call = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    Log.i("aaa",data.toString());
+                    Intent intent =new Intent(ChatActivity.this,ReceivePhoneActivity.class);
+                    intent.putExtra("VIDEO_HOMES","");
+                }
+            });
+        }
+    };
+    private Emitter.Listener join = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    Log.i("aaa",data.toString());
+
+                }
+            });
+        }
+    };
+    private Emitter.Listener leave = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    Log.i("aaa",data.toString());
+
+                }
+            });
+        }
+    };
+    private Emitter.Listener message = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONObject data = (JSONObject) args[0];
+                    Log.i("aaa","message "+data.toString());
+
+                }
+            });
+        }
+    };
 
     private void initChatRoom(long chatRoomId) {
         ProgressDialog dialog = new ProgressDialog(mContext);
@@ -1223,6 +1357,14 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
                 startActivityForResult(intent, JGApplication.REQUEST_CODE_FRIEND_LIST);
                 break;
             case JGApplication.TACK_VIDEO:
+                // TODO: 2019/10/30
+                intent = new Intent(mContext, MeetingActivity.class);
+                intent.putExtra("meet_id", "1111");
+                startActivity(intent);
+
+                String message = "{room:3333,data:\"743287\"}";
+                mSocket.emit("call", message);
+                 break;
             case JGApplication.TACK_VOICE:
                 ToastUtil.shortToast(mContext, "该功能正在添加中");
                 break;
@@ -1506,6 +1648,53 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
                 }
             }
         }
+    }
+
+    public void sendMeetingData(){
+        OkHttpClient client = new OkHttpClient();//创建OkHttpClient对象。
+        MediaType json = MediaType.parse("application/json; charset=utf-8");
+        JSONObject object = new JSONObject();
+        JSONObject obj1 = new JSONObject();
+
+        try {
+            object.put("method", "ENVIRONMENTAPI_IMADMINLIST");
+            obj1.put("start", 0);
+            obj1.put("count", 100);
+            object.put("params",obj1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        Log.i("sss",object.toString());
+
+        RequestBody body = RequestBody.create(json, object.toString());
+        Request request = new Request.Builder()//创建Request 对象。
+                .url("http://121.41.52.56:3001/environmentalapi")
+                .post(body)
+                .build();
+        Call call = client.newCall(request);
+        //请求加入调度
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+
+                if (response.isSuccessful()) {//回调的方法执行在子线程。
+                    String str = response.body().string();
+                    Gson gson = new Gson();
+                    Log.i("sss", str);
+
+
+
+                }
+            }
+
+        });
     }
 
 }
