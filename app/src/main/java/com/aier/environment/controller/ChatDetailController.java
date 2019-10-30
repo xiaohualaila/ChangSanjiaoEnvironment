@@ -22,7 +22,10 @@ import com.aier.environment.JGApplication;
 import com.aier.environment.R;
 import com.aier.environment.activity.ChatDetailActivity;
 import com.aier.environment.activity.FriendInfoActivity;
+import com.aier.environment.activity.GroupNotFriendActivity;
+import com.aier.environment.activity.GroupUserInfoActivity;
 import com.aier.environment.activity.MainActivity;
+import com.aier.environment.activity.MembersInChatActivity;
 import com.aier.environment.activity.PersonalActivity;
 import com.aier.environment.activity.historyfile.activity.HistoryFileActivity;
 import com.aier.environment.adapter.GroupMemberGridAdapter;
@@ -509,11 +512,11 @@ public class ChatDetailController implements OnClickListener, OnItemClickListene
                 if (mMemberInfoList.get(position).getUserName().equals(mMyUsername)) {
                     intent.setClass(mContext, PersonalActivity.class);
                 } else {
-//                    UserInfo userInfo = mMemberInfoList.get(position);
-//                    intent.setClass(mContext, GroupUserInfoActivity.class);
-//                    intent.putExtra("groupID",mGroupId);
-//                    intent.putExtra("groupUserName",userInfo.getUserName());
-//                    intent.putExtra("groupOwner",mGroupOwnerId);
+                    UserInfo userInfo = mMemberInfoList.get(position);
+                    intent.setClass(mContext, GroupUserInfoActivity.class);
+                    intent.putExtra("groupID",mGroupId);
+                    intent.putExtra("groupUserName",userInfo.getUserName());
+                    intent.putExtra("groupOwner",mGroupOwnerId);
                     //是否是好友
 //                    if (userInfo.isFriend()) {
 //                        intent.setClass(mContext, FriendInfoActivity.class);
@@ -532,10 +535,10 @@ public class ChatDetailController implements OnClickListener, OnItemClickListene
 
                 // 是群主, 成员个数大于1并点击删除按钮
             } else if (position == mCurrentNum + 1 && mIsCreator && mCurrentNum > 1) {
-//                intent.putExtra(JGApplication.DELETE_MODE, true);
-//                intent.putExtra(JGApplication.GROUP_ID, mGroupId);
-//                intent.setClass(mContext, MembersInChatActivity.class);
-//                mContext.startActivityForResult(intent, JGApplication.REQUEST_CODE_ALL_MEMBER);
+                intent.putExtra(JGApplication.DELETE_MODE, true);
+                intent.putExtra(JGApplication.GROUP_ID, mGroupId);
+                intent.setClass(mContext, MembersInChatActivity.class);
+                mContext.startActivityForResult(intent, JGApplication.REQUEST_CODE_ALL_MEMBER);
             }
             //单聊
         } else if (position < mCurrentNum) {
@@ -543,7 +546,7 @@ public class ChatDetailController implements OnClickListener, OnItemClickListene
             if (mFriend) {
                 intent.setClass(mContext, FriendInfoActivity.class);
             } else {
-//                intent.setClass(mContext, GroupNotFriendActivity.class);
+                intent.setClass(mContext, GroupNotFriendActivity.class);
             }
             intent.putExtra(JGApplication.TARGET_ID, mTargetId);
             intent.putExtra(JGApplication.TARGET_APP_KEY, mTargetAppKey);

@@ -18,6 +18,7 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -523,6 +524,7 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
     }
 
     private void startChatRoomActivity(long chatRoomId) {
+        Log.i("sss","是聊天室");
 //        Intent intent = new Intent(ChatActivity.this, ChatRoomInfoActivity.class);
 //        intent.putExtra("chatRoomId", chatRoomId);
 //        startActivity(intent);
