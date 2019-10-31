@@ -1248,11 +1248,8 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
                 intent = new Intent(mContext, ReceivePhoneActivity.class);
                 intent.putExtra("isCallToOther", true);
                 intent.putExtra("mIsSingle", mIsSingle);
-                if(mIsSingle){
-                    intent.putExtra("mTargetId", mTargetId);
-                }else {
-                    intent.putExtra("mGroupId", mGroupId);
-                }
+                intent.putExtra("mTargetId", mTargetId);
+                intent.putExtra("mGroupId", mGroupId);
                 startActivity(intent);
 
                  break;
@@ -1563,51 +1560,5 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
         }
     }
 
-    public void sendMeetingData(){
-        OkHttpClient client = new OkHttpClient();//创建OkHttpClient对象。
-        MediaType json = MediaType.parse("application/json; charset=utf-8");
-        JSONObject object = new JSONObject();
-        JSONObject obj1 = new JSONObject();
-
-        try {
-            object.put("method", "ENVIRONMENTAPI_IMADMINLIST");
-            obj1.put("start", 0);
-            obj1.put("count", 100);
-            object.put("params",obj1);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-        Log.i("sss",object.toString());
-
-        RequestBody body = RequestBody.create(json, object.toString());
-        Request request = new Request.Builder()//创建Request 对象。
-                .url("http://121.41.52.56:3001/environmentalapi")
-                .post(body)
-                .build();
-        Call call = client.newCall(request);
-        //请求加入调度
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(@NonNull Call call, IOException e) {
-
-            }
-
-            @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-
-                if (response.isSuccessful()) {//回调的方法执行在子线程。
-                    String str = response.body().string();
-                    Gson gson = new Gson();
-                    Log.i("sss", str);
-
-
-
-                }
-            }
-
-        });
-    }
 
 }

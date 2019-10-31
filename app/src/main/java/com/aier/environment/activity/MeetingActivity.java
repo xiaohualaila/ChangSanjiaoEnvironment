@@ -1,6 +1,8 @@
 package com.aier.environment.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.aier.environment.R;
 import com.aier.environment.adapter.LogAdapter;
+import com.aier.environment.utils.SingleSocket;
 import com.aier.environment.view.ARVideoView;
 import com.gyf.barlibrary.ImmersionBar;
 import org.ar.common.enums.ARNetQuality;
@@ -30,6 +33,13 @@ import org.ar.meet_kit.ARMeetZoomMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.webrtc.VideoRenderer;
+
+import java.util.Random;
+
+import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.android.api.model.UserInfo;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 
 public class MeetingActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -48,7 +58,12 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
     private String userId = (int) ((Math.random() * 9 + 1) * 100000) + "";
     //    private String userId="654321";
     AR_AudioManager arAudioManager;
+    private String nickname = "";
 
+    private Socket mSocket;
+    private boolean isCallToOther;
+    private boolean mIsSingle;
+    private String userName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -57,8 +72,48 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
         mImmersionBar = ImmersionBar.with(this);
         mImmersionBar.init();
         this.initView();
+        Intent intent = getIntent();
+        isCallToOther = intent.getBooleanExtra("isCallToOther",false);
+        mIsSingle = intent.getBooleanExtra("mIsSingle",false);
+        userName = intent.getStringExtra("userName");
+        socket();
+
     }
 
+
+
+    private void socket() {
+        UserInfo myInfo = JMessageClient.getMyInfo();
+        nickname = myInfo.getNickname();
+        String url = "http://192.168.0.68:3002/chat?userid="+myInfo.getUserName()+"&type=mobile";
+        mSocket = SingleSocket.getInstance().getSocket(url);
+        //注册  事件
+        mSocket.on("message", messageData);
+    }
+
+
+    private Emitter.Listener messageData = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    //{"type":"quit","data":{"userid":"0002"}}
+                    JSONObject data = (JSONObject) args[0];
+                    if(data.optString("type").equals("quit")){
+                        if(isCallToOther&&mIsSingle){
+                            if (mMeetKit != null) {
+                                mMeetKit.clean();
+                            }
+                            finishAnimActivity();
+                        }
+                    }
+
+                    Log.i("xxx","message "+data.toString());
+                }
+            });
+        }
+    };
 
     public int getLayoutId() {
         return R.layout.activity_meeting;
@@ -89,6 +144,7 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
         rvLog.setLayoutManager(new LinearLayoutManager(this));
         logAdapter.bindToRecyclerView(rvLog);
         meetId = getIntent().getStringExtra("meet_id");
+        nickname = getIntent().getStringExtra("nickname");
         tvRoomId.setText("房间ID：" + meetId);
         mVideoView = new ARVideoView(rlVideo, ARMeetEngine.Inst().Egl(), this);
         mVideoView.setVideoViewLayout(false, Gravity.CENTER, LinearLayout.HORIZONTAL);
@@ -123,7 +179,7 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
         try {
             jsonObject.put("MaxJoiner", 6);
             jsonObject.put("userId", userId);
-            jsonObject.put("nickName", "android" + userId);
+            jsonObject.put("nickName", nickname);
             jsonObject.put("headUrl", "");
         } catch (JSONException e) {
             e.printStackTrace();
@@ -174,6 +230,17 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
                     mMeetKit.clean();
                 }
                 finishAnimActivity();
+
+                try {
+                    JSONObject object = new JSONObject();
+                    object.put("userid", userName);
+                    object.put("room", meetId);
+                    object.put("from_type", "mobile");
+                    mSocket.emit("leave", object.toString());// 拒绝电话
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
                 break;
         }
     }
@@ -512,6 +579,7 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
         }
         if (mImmersionBar != null)
             mImmersionBar.destroy();
+        mSocket.off("message", messageData);
     }
 
     @Override

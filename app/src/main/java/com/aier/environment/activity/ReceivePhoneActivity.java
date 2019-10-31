@@ -16,9 +16,13 @@ import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.runtime.Permission;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.android.api.model.Conversation;
+import cn.jpush.im.android.api.model.GroupInfo;
 import cn.jpush.im.android.api.model.UserInfo;
 import io.socket.client.Socket;
 import io.socket.emitter.Emitter;
@@ -30,12 +34,14 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
     private LinearLayout ll_toOther_people;
     private boolean isCallToOther;
     private boolean mIsSingle;
-    private String mGroupId;
+    private Long mGroupId;
     private String mTargetId;
 
     private Socket mSocket;
     private String roomId;
-    private String userName;
+    private String userName,nickname;
+    private GroupInfo mGroupInfo;
+    private List<UserInfo> mMemberInfoList = new ArrayList<UserInfo>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +50,7 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
         Intent intent = getIntent();
         isCallToOther = intent.getBooleanExtra("isCallToOther",false);
         mIsSingle = intent.getBooleanExtra("mIsSingle",false);
-//        mGroupId = intent.getStringExtra("mGroupId");
+        mGroupId = intent.getLongExtra("mGroupId",0);
         mTargetId = intent.getStringExtra("mTargetId");
         roomId = intent.getStringExtra("meet_id");
         ll_toOther_people = findViewById(R.id.ll_toOther_people);
@@ -68,6 +74,7 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
         }
         UserInfo myInfo = JMessageClient.getMyInfo();
         userName=myInfo.getUserName();
+        nickname = myInfo.getNickname();
         Log.i("aaa","房间号随机数"+roomId);
         Log.i("aaa",userName + "");
         String url = "http://192.168.0.68:3002/chat?userid="+userName+"&type=mobile";
@@ -76,7 +83,7 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
 
         mSocket.on("message", messageData);
         if(isCallToOther){
-       //     if(mIsSingle){//单人聊天
+            if(mIsSingle){//单人聊天
                 try {
                     JSONObject object = new JSONObject();
                     object.put("userid", mTargetId);//mTargetId 对方id
@@ -90,19 +97,39 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-        //    }
-//            else {//多人聊天
-//                try {
+            } else {//多人聊天
+
+                try {
+                    Conversation conv = JMessageClient.getGroupConversation(mGroupId);
+                    mGroupInfo = (GroupInfo) conv.getTargetInfo();
+                    mMemberInfoList = mGroupInfo.getGroupMembers();
+                    UserInfo userInfo;
+                    for(int i=0;i<mMemberInfoList.size();i++){
+                        userInfo = mMemberInfoList.get(i);
+                        if(userInfo.getUserName()!=userName){
+                            JSONObject object = new JSONObject();
+                            object.put("userid", userInfo.getUserName());//mTargetId 对方id
+                            object.put("data", "");
+                            object.put("room", roomId);
+                            object.put("type", "is-join");
+                            Log.i("aaa",object.toString());
+                            mSocket.emit("call-user", object.toString());// 单个用户呼叫
+                            Log.i("aaa","单个用户呼叫 call-user 用户id "+mTargetId);
+                        }
+                    }
+
+
+
 //                    JSONObject obj1 = new JSONObject();
 //                    obj1.put("room", "111");
 //                    obj1.put("data", mGroupId);
 //                    Log.i("aaa",obj1.toString());
 //                    mSocket.emit("call", obj1.toString());//用户群呼
 //                    Log.i("aaa","发送群聊信息 call 群组id"+mGroupId);
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
     }
@@ -120,6 +147,9 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
                       //  {"type":"joined","data":{"userid":"0002"}}
                         Intent intent = new Intent(ReceivePhoneActivity.this, MeetingActivity.class);
                         intent.putExtra("meet_id", roomId);
+                        intent.putExtra("nickname", nickname);
+                        intent.putExtra("isCallToOther", isCallToOther);
+                        intent.putExtra("mIsSingle", mIsSingle);
                         startActivity(intent);
                         finish();
                     }else {
@@ -183,6 +213,8 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
     private void toMeetingActivity() {
         Intent intent = new Intent(ReceivePhoneActivity.this, MeetingActivity.class);
         intent.putExtra("meet_id", roomId);
+        intent.putExtra("nickname", nickname);
+        intent.putExtra("userName", userName);
         startActivity(intent);
         finish();
     }
