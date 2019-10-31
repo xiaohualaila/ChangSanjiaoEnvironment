@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:background="@color/white"
+    android:background="#000000"
     android:layout_height="match_parent">
 <LinearLayout
+    android:id="@+id/ll_toOther_people"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
     android:layout_centerHorizontal="true"
     android:layout_marginBottom="100dp"
+    android:visibility="gone"
     android:orientation="horizontal">
-    <TextView
+    <Button
         android:id="@+id/btn_receive"
         android:layout_width="80dp"
         android:layout_height="50dp"
@@ -19,15 +21,31 @@
         android:gravity="center"
         android:text="接听"/>
 
-    <TextView
+    <Button
         android:id="@+id/btn_cancel"
-        android:layout_width="80dp"
-        android:layout_height="50dp"
-        android:textColor="@color/red"
-        android:layout_marginLeft="100dp"
-        android:background="@color/gray"
-        android:gravity="center"
-        android:text="拒绝"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:text="离开"
+        android:textColor="#ffffff"
+        android:layout_gravity="center"
+        android:drawablePadding="12dp"
+        android:drawableTop="@drawable/img_hang_up"/>
 </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_cancel_"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:text="离开"
+        android:visibility="gone"
+        android:textColor="#ffffff"
+        android:layout_gravity="center"
+        android:drawablePadding="12dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="100dp"
+        android:drawableTop="@drawable/img_hang_up"/>
 
 </RelativeLayout>

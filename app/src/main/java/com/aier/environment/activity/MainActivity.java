@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         mSocket.on(Socket.EVENT_DISCONNECT,onDisconnect);
         mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
         mSocket.on(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
-
+        mSocket.on("message", messageData);
 
     }
 
@@ -69,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    //{"type":"is-join","data":{"from":"0002","room":"51289945","from_type":"pc"}}
+                    //接听外面打进的电话
                     JSONObject data = (JSONObject) args[0];
                     if(data.optString("type").equals("is-join")) {
                        JSONObject obj = data.optJSONObject("data");
@@ -83,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                     Log.i("aaa","message "+data.toString());
-//{"type":"is-join","data":{"from":"0002","room":"51289945","from_type":"pc"}}
+
                     Log.i("aaa","+++++++++++++++++++++");
                 }
             });
@@ -94,14 +96,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         JCoreInterface.onResume(this);
         mMainController.sortConvList();
-        mSocket.on("message", messageData);
+
         super.onResume();
     }
 
     @Override
     protected void onPause() {
         JCoreInterface.onPause(this);
-        mSocket.off("message", messageData);
         super.onPause();
     }
 

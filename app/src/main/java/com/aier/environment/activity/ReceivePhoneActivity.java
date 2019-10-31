@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.aier.environment.R;
@@ -24,7 +26,8 @@ import io.socket.emitter.Emitter;
 
 public class ReceivePhoneActivity extends BaseActivity implements View.OnClickListener{
     private Context mContext;
-    private TextView btn_receive,btn_cancel;
+    private Button btn_receive, btn_cancel,btn_cancel_;
+    private LinearLayout ll_toOther_people;
     private boolean isCallToOther;
     private boolean mIsSingle;
     private String mGroupId;
@@ -44,10 +47,13 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
 //        mGroupId = intent.getStringExtra("mGroupId");
         mTargetId = intent.getStringExtra("mTargetId");
         roomId = intent.getStringExtra("meet_id");
+        ll_toOther_people = findViewById(R.id.ll_toOther_people);
         btn_receive = findViewById(R.id.btn_receive);
         btn_cancel = findViewById(R.id.btn_cancel);
+        btn_cancel_ = findViewById(R.id.btn_cancel_);
         btn_receive.setOnClickListener(this);
         btn_cancel.setOnClickListener(this);
+        btn_cancel_.setOnClickListener(this);
         socket();
         Log.i("aaa","onCreate+++++++++++");
     }
@@ -56,7 +62,9 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
         if(isCallToOther){//打给别人的情况
             Random r = new Random();
             roomId = String.valueOf(r.nextInt(1000));
-            btn_receive.setVisibility(View.GONE);
+            btn_cancel_.setVisibility(View.VISIBLE);
+        }else {
+            ll_toOther_people.setVisibility(View.VISIBLE);
         }
         UserInfo myInfo = JMessageClient.getMyInfo();
         userName=myInfo.getUserName();
@@ -68,8 +76,7 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
 
         mSocket.on("message", messageData);
         if(isCallToOther){
-
-            if(mIsSingle){//单人聊天
+       //     if(mIsSingle){//单人聊天
                 try {
                     JSONObject object = new JSONObject();
                     object.put("userid", mTargetId);//mTargetId 对方id
@@ -83,18 +90,19 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }else {//多人聊天
-                try {
-                    JSONObject obj1 = new JSONObject();
-                    obj1.put("room", "111");
-                    obj1.put("data", mGroupId);
-                    Log.i("aaa",obj1.toString());
-                    mSocket.emit("call", obj1.toString());//用户群呼
-                    Log.i("aaa","发送群聊信息 call 群组id"+mGroupId);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
+        //    }
+//            else {//多人聊天
+//                try {
+//                    JSONObject obj1 = new JSONObject();
+//                    obj1.put("room", "111");
+//                    obj1.put("data", mGroupId);
+//                    Log.i("aaa",obj1.toString());
+//                    mSocket.emit("call", obj1.toString());//用户群呼
+//                    Log.i("aaa","发送群聊信息 call 群组id"+mGroupId);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
         }
 
     }
@@ -109,7 +117,7 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
 
                     JSONObject data = (JSONObject) args[0];
                     if(data.optString("type").equals("joined")){
-                        Log.i("aaa","++++++++++++++++++roomId++++"+roomId);
+                      //  {"type":"joined","data":{"userid":"0002"}}
                         Intent intent = new Intent(ReceivePhoneActivity.this, MeetingActivity.class);
                         intent.putExtra("meet_id", roomId);
                         startActivity(intent);
@@ -140,12 +148,12 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
                     }).onGranted(new Action<List<String>>() {
                         @Override
                         public void onAction(List<String> data) {
-                            JSONObject object = new JSONObject();
                             try {
+                                JSONObject object = new JSONObject();
                                 object.put("userid", userName);
                                 object.put("room", roomId);
                                 object.put("from_type", "mobile");
-                                mSocket.emit("join", object.toString());// 接听
+                                mSocket.emit("join", object.toString());// 接听电话
                                 toMeetingActivity();
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -155,12 +163,14 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
                 }
                 break;
             case R.id.btn_cancel:
-                JSONObject object = new JSONObject();
+            case R.id.btn_cancel_:
+
                 try {
+                    JSONObject object = new JSONObject();
                     object.put("userid", userName);
                     object.put("room", "");
                     object.put("from_type", "mobile");
-                    mSocket.emit("join", object.toString());// 拒绝
+                    mSocket.emit("join", object.toString());// 拒绝电话
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
