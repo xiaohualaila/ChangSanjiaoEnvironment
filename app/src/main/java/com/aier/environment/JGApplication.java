@@ -109,18 +109,7 @@ public class JGApplication extends  com.activeandroid.app.Application {
     public static Conversation delConversation;
     public static ArrayList<String> selectedUser;
 
-//    private static Socket mSocket;
-//    {
-//        try {
-//            mSocket = IO.socket("http://192.168.0.68:3002/chat?userid="+getUserEntry().getId()+"&type=mobile");
-//        } catch (URISyntaxException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-//
-//    public static Socket getSocket() {
-//        return mSocket;
-//    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -140,7 +129,7 @@ public class JGApplication extends  com.activeandroid.app.Application {
         JMessageClient.FLAG_NOTIFY_WITH_LED | JMessageClient.FLAG_NOTIFY_WITH_VIBRATE);
         //注册Notification点击的接收器
         new NotificationClickEventReceiver(getApplicationContext());
-        ARMeetEngine.Inst().initEngine(getApplicationContext(),"anyrtciHabishp1qCK","351294440e2ba820a325a19be201a42a");
+        ARMeetEngine.Inst().initEngine(getApplicationContext(),"anyrtcKjCo8Y0xQnfB","13dec6389e3c7d2f4be6602fb8061b99");
     }
 
 

@@ -33,6 +33,7 @@ import androidx.core.content.ContextCompat;
 import com.aier.environment.JGApplication;
 import com.aier.environment.R;
 import com.aier.environment.adapter.ChattingListAdapter;
+import com.aier.environment.database.UserEntry;
 import com.aier.environment.entity.Event;
 import com.aier.environment.entity.EventType;
 import com.aier.environment.location.activity.MapPickerActivity;
@@ -50,6 +51,7 @@ import com.aier.environment.utils.CommonUtils;
 import com.aier.environment.utils.IdHelper;
 import com.aier.environment.utils.SharePreferenceManager;
 import com.aier.environment.utils.SimpleCommonUtils;
+import com.aier.environment.utils.SingleSocket;
 import com.aier.environment.utils.ToastUtil;
 import com.aier.environment.utils.event.ImageEvent;
 import com.aier.environment.utils.imagepicker.bean.ImageItem;
@@ -175,8 +177,7 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
     private boolean mAtAll = false;
     private boolean isChatRoom = false;
 
-    private Socket mSocket;
-    private Boolean isConnected = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -206,133 +207,19 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
         } else {
             initData();
         }
-        socket();
     }
 
-    private void socket() {
-        try {
-            Log.i("aaa",JGApplication.getUserEntry().getId()+"");
-            mSocket = IO.socket("http://192.168.0.68:3002/chat?userid="+JGApplication.getUserEntry().getId()+"&type=mobile");
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-        mSocket.on(Socket.EVENT_CONNECT,onConnect);
-        mSocket.on(Socket.EVENT_DISCONNECT,onDisconnect);
-        mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
-        mSocket.on(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
-        mSocket.on("message", message);
-        mSocket.on("call", call);
-        mSocket.on("join", join);
-        mSocket.on("leave", leave);
-        mSocket.connect();
-    }
+
 
     @Override
     public void onDestroy() {
         EventBus.getDefault().unregister(this);
-        mSocket.disconnect();
-        mSocket.off(Socket.EVENT_CONNECT,onConnect);
-        mSocket.off(Socket.EVENT_DISCONNECT,onDisconnect);
-        mSocket.off(Socket.EVENT_CONNECT_ERROR, onConnectError);
-        mSocket.off(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
-        mSocket.off("message", message);
-        mSocket.off("call", call);
-        mSocket.off("join", join);
-        mSocket.off("leave", leave);
         super.onDestroy();
     }
 
-    //连接成功
-    private Emitter.Listener onConnect = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if(!isConnected) {
-                        Log.i("aaa","connected success");
-                        isConnected = true;
-                    }
-                }
-            });
-        }
-    };
-    //连接失败
-    private Emitter.Listener onDisconnect = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            //    Log.i(TAG, "diconnected");
-            isConnected = false;
-            Log.i("aaa","diconnected");
-        }
-    };
-    //连接错误
-    private Emitter.Listener onConnectError = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    //       Log.e(TAG, "Error connecting");
-                    Log.i("aaa","Error connecting");
-                }
-            });
-        }
-    };
 
-    private Emitter.Listener call = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    JSONObject data = (JSONObject) args[0];
-                    Log.i("aaa",data.toString());
-                    Intent intent =new Intent(ChatActivity.this,ReceivePhoneActivity.class);
-                    intent.putExtra("VIDEO_HOMES","");
-                }
-            });
-        }
-    };
-    private Emitter.Listener join = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    JSONObject data = (JSONObject) args[0];
-                    Log.i("aaa",data.toString());
 
-                }
-            });
-        }
-    };
-    private Emitter.Listener leave = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    JSONObject data = (JSONObject) args[0];
-                    Log.i("aaa",data.toString());
 
-                }
-            });
-        }
-    };
-    private Emitter.Listener message = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    JSONObject data = (JSONObject) args[0];
-                    Log.i("aaa","message "+data.toString());
-
-                }
-            });
-        }
-    };
 
     private void initChatRoom(long chatRoomId) {
         ProgressDialog dialog = new ProgressDialog(mContext);
@@ -1358,12 +1245,16 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
                 break;
             case JGApplication.TACK_VIDEO:
                 // TODO: 2019/10/30
-                intent = new Intent(mContext, MeetingActivity.class);
-                intent.putExtra("meet_id", "1111");
+                intent = new Intent(mContext, ReceivePhoneActivity.class);
+                intent.putExtra("isCallToOther", true);
+                intent.putExtra("mIsSingle", mIsSingle);
+                if(mIsSingle){
+                    intent.putExtra("mTargetId", mTargetId);
+                }else {
+                    intent.putExtra("mGroupId", mGroupId);
+                }
                 startActivity(intent);
 
-                String message = "{room:3333,data:\"743287\"}";
-                mSocket.emit("call", message);
                  break;
             case JGApplication.TACK_VOICE:
                 ToastUtil.shortToast(mContext, "该功能正在添加中");
@@ -1371,8 +1262,30 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
             default:
                 break;
         }
-
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private String tempFile() {
         String filename = StringUtil.get32UUID() + JPG;
