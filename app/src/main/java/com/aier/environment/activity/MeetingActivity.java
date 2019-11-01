@@ -13,14 +13,17 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.aier.environment.R;
 import com.aier.environment.adapter.LogAdapter;
 import com.aier.environment.utils.SingleSocket;
 import com.aier.environment.view.ARVideoView;
 import com.gyf.barlibrary.ImmersionBar;
+
 import org.ar.common.enums.ARNetQuality;
 import org.ar.common.enums.ARVideoCommon;
 import org.ar.common.utils.AR_AudioManager;
@@ -33,6 +36,7 @@ import org.ar.meet_kit.ARMeetZoomMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.webrtc.VideoRenderer;
+
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.model.UserInfo;
 import io.socket.client.Socket;
@@ -60,6 +64,7 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
     private Socket mSocket;
     private boolean isCallToOther;
     private boolean mIsSingle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -69,17 +74,16 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
         mImmersionBar.init();
         this.initView();
         Intent intent = getIntent();
-        isCallToOther = intent.getBooleanExtra("isCallToOther",false);
-        mIsSingle = intent.getBooleanExtra("mIsSingle",false);
+        isCallToOther = intent.getBooleanExtra("isCallToOther", false);
+        mIsSingle = intent.getBooleanExtra("mIsSingle", false);
         socket();
     }
-
 
 
     private void socket() {
         UserInfo myInfo = JMessageClient.getMyInfo();
         nickname = myInfo.getNickname();
-        String url = "http://192.168.0.68:3002/chat?userid="+myInfo.getUserName()+"&type=mobile";
+        String url = "http://192.168.0.68:3002/chat?userid=" + myInfo.getUserName() + "&type=mobile";
         mSocket = SingleSocket.getInstance().getSocket(url);
         //注册  事件
         mSocket.on("message", messageData);
@@ -94,8 +98,8 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
                 public void run() {
                     //{"type":"quit","data":{"userid":"0002"}}
                     JSONObject data = (JSONObject) args[0];
-                    if(data.optString("type").equals("quit")){
-                        if(isCallToOther&&mIsSingle){
+                    if (data.optString("type").equals("quit")) {
+                        if (isCallToOther && mIsSingle) {
                             if (mMeetKit != null) {
                                 mMeetKit.clean();
                             }
@@ -103,7 +107,7 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
                         }
                     }
 
-                    Log.i("xxx","message "+data.toString());
+                    Log.i("xxx", "message " + data.toString());
                 }
             });
         }
@@ -220,25 +224,26 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
                 rl_log_layout.setVisibility(View.GONE);
                 break;
             case R.id.ib_leave:
-                if (mMeetKit != null) {
-                    mMeetKit.clean();
-                }
-                finishAnimActivity();
                 try {
                     JSONObject object = new JSONObject();
                     object.put("room", meetId);
-                    mSocket.emit("leave", object.toString());// 拒绝电话
+                    mSocket.emit("leave", object.toString());// 挂掉电话
+                    mSocket.off("message", messageData);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
+                if (mMeetKit != null) {
+                    mMeetKit.clean();
+                }
+                finishAnimActivity();
                 break;
         }
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode== KeyEvent.KEYCODE_BACK){
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (mMeetKit != null) {
                 mMeetKit.clean();
             }
@@ -560,7 +565,7 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mVideoView!=null){
+        if (mVideoView != null) {
             mVideoView.removeLocalVideoRender();
             mVideoView.removeAllRemoteRender();
         }
@@ -570,7 +575,7 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
         }
         if (mImmersionBar != null)
             mImmersionBar.destroy();
-        mSocket.off("message", messageData);
+
     }
 
     @Override
@@ -583,6 +588,7 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
             }
         }, 100);
     }
+
     public void finishAnimActivity() {
         finish();
     }

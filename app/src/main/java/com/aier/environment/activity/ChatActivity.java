@@ -1251,7 +1251,6 @@ public class ChatActivity extends BaseActivity implements FuncLayout.OnFuncKeyBo
                 intent.putExtra("mTargetId", mTargetId);
                 intent.putExtra("mGroupId", mGroupId);
                 startActivity(intent);
-
                  break;
             case JGApplication.TACK_VOICE:
                 ToastUtil.shortToast(mContext, "该功能正在添加中");
