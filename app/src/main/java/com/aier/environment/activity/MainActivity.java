@@ -2,7 +2,6 @@ package com.aier.environment.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,7 +10,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
-
 import com.aier.environment.JGApplication;
 import com.aier.environment.R;
 import com.aier.environment.controller.MainController;
@@ -20,24 +18,15 @@ import com.aier.environment.utils.SingleSocket;
 import com.aier.environment.view.MainView;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.mapapi.map.MapStatusUpdate;
-import com.baidu.mapapi.map.MapStatusUpdateFactory;
-import com.baidu.mapapi.map.MyLocationConfiguration;
-import com.baidu.mapapi.map.MyLocationData;
-import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.runtime.Permission;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import cn.jpush.im.android.api.JMessageClient;
-import cn.jpush.im.android.api.content.LocationContent;
 import cn.jpush.im.android.api.model.UserInfo;
 import io.socket.client.Socket;
 import cn.jiguang.api.JCoreInterface;
@@ -70,9 +59,12 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     JSONObject object = new JSONObject();
                     JSONObject obj = new JSONObject();
+                    JSONObject obj1 = new JSONObject();
                     object.put("username", userName);
-                    obj.put(String.valueOf(mLocation.getLatitude()), String.valueOf(mLocation.getLongitude()));
-                    object.put("position", obj);
+                    obj1.put("longitude", String.valueOf(mLocation.getLongitude()));
+                    obj1.put("latitude",String.valueOf(mLocation.getLatitude()));
+                    obj.put("position", obj1);
+                    object.put("data",obj);
                     Log.i("aaa",object.toString());
                     mSocket.emit("push-position",object.toString());
                 } catch (JSONException e) {
@@ -86,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     private void heartinterval(){
        timer = new Timer();
        task = new Task();
-       timer.schedule(task, 5000,1000*60);
+       timer.schedule(task, 2000,5000);
     }
 
     public class Task extends TimerTask {
@@ -147,10 +139,7 @@ public class MainActivity extends AppCompatActivity {
         mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
         mSocket.on(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
         mSocket.on("message", messageData);
-
     }
-
-
 
     private Emitter.Listener messageData = new Emitter.Listener() {
         @Override
@@ -172,9 +161,7 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                     }
-                    Log.i("aaa","message "+data.toString());
-
-                    Log.i("aaa","+++++++++++++++++++++");
+                //    Log.i("aaa","message "+data.toString());
                 }
             });
         }
