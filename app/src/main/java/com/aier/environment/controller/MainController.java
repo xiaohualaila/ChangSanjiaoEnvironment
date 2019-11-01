@@ -2,18 +2,16 @@ package com.aier.environment.controller;
 
 
 import android.view.View;
-
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
-
 import com.aier.environment.R;
 import com.aier.environment.activity.MainActivity;
 import com.aier.environment.activity.fragment.ConversationListFragment;
+import com.aier.environment.activity.fragment.MeFragment;
 import com.aier.environment.adapter.ViewPagerAdapter;
 import com.aier.environment.activity.fragment.ChatRoomFragment;
 import com.aier.environment.activity.fragment.ContactsFragment;
 import com.aier.environment.view.MainView;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,9 +24,9 @@ public class MainController implements View.OnClickListener, ViewPager.OnPageCha
     private MainView mMainView;
     private MainActivity mContext;
     private ConversationListFragment mConvListFragment;
-    private ChatRoomFragment mChatRoomFragment;
+    private ChatRoomFragment mChatRoomFragment;//改成地图
     private ContactsFragment mContactsFragment;
-    //  private MeFragment mMeFragment;
+    private MeFragment mMeFragment;
 
 
     public MainController(MainView mMainView, MainActivity context) {
@@ -43,12 +41,11 @@ public class MainController implements View.OnClickListener, ViewPager.OnPageCha
         mConvListFragment = new ConversationListFragment();
         mChatRoomFragment = new ChatRoomFragment();
         mContactsFragment = new ContactsFragment();
-//        mMeFragment = new MeFragment();
-
-        fragments.add(mConvListFragment);
-        fragments.add(mChatRoomFragment);
-        fragments.add(mContactsFragment);
-     //  fragments.add(mMeFragment);
+        mMeFragment = new MeFragment();
+        fragments.add(mConvListFragment);//会话
+        fragments.add(mChatRoomFragment);//聊天室
+        fragments.add(mContactsFragment);//通信录
+        fragments.add(mMeFragment);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(mContext.getSupportFragmentManger(),
                 fragments);
         mMainView.setViewPagerAdapter(viewPagerAdapter);

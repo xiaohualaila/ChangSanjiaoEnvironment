@@ -53,7 +53,7 @@
                     android:id="@+id/actionbar_chatroom_btn"
                     style="@style/ActionBarItem"
 
-                    android:text="聊天室"/>
+                    android:text="地图"/>
             </FrameLayout>
 
             <FrameLayout
@@ -92,8 +92,7 @@
                 <Button
                     android:id="@+id/actionbar_me_btn"
                     style="@style/ActionBarItem"
-
-                    android:text="我"/>
+                    android:text="我的"/>
 
             </FrameLayout>
         </LinearLayout>

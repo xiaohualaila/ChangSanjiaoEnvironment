@@ -205,6 +205,11 @@
             android:name=".activity.SetGroupSilenceActivity"
             android:screenOrientation="portrait"
             android:theme="@style/BaseThemes"/>
+
+        <activity
+            android:name=".activity.ResetPasswordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseThemes"/>
         <meta-data
             android:name="AA_DB_NAME"
             android:value="jchat.db"/>
