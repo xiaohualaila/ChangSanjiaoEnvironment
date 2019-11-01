@@ -7,6 +7,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.aier.environment.R;
 import com.aier.environment.activity.MainActivity;
 import com.aier.environment.activity.fragment.ConversationListFragment;
+import com.aier.environment.activity.fragment.FirstFragment;
 import com.aier.environment.activity.fragment.MeFragment;
 import com.aier.environment.adapter.ViewPagerAdapter;
 import com.aier.environment.activity.fragment.ChatRoomFragment;
@@ -23,6 +24,7 @@ import java.util.List;
 public class MainController implements View.OnClickListener, ViewPager.OnPageChangeListener {
     private MainView mMainView;
     private MainActivity mContext;
+    private FirstFragment firstFragment;
     private ConversationListFragment mConvListFragment;
     private ChatRoomFragment mChatRoomFragment;//改成地图
     private ContactsFragment mContactsFragment;
@@ -38,6 +40,7 @@ public class MainController implements View.OnClickListener, ViewPager.OnPageCha
     private void setViewPager() {
         final List<Fragment> fragments = new ArrayList<>();
         // init Fragment
+        firstFragment= new FirstFragment();
         mConvListFragment = new ConversationListFragment();
         mChatRoomFragment = new ChatRoomFragment();
         mContactsFragment = new ContactsFragment();

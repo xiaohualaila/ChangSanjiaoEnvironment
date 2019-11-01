@@ -639,7 +639,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, Vers
 	/**
 	 * Helper method that maps the supplied Matrix to the current Drawable
 	 * 
-	 * @param matrix - Matrix to map Drawable against
+	 * @param matrix - Matrix to map_ Drawable against
 	 * @return RectF - Displayed Rectangle
 	 */
 	private RectF getDisplayRect(Matrix matrix) {

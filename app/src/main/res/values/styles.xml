@@ -187,7 +187,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center_horizontal</item>
-        <item name="android:textColor">@color/action_bar_txt_color</item>
+        <item name="android:textColor">@color/menu_item_back_pres_color</item>
         <item name="android:background">#fff</item>
         <item name="android:textSize">@dimen/text_minimum_size</item>
     </style>

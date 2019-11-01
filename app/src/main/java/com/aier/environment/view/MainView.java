@@ -1,6 +1,7 @@
 package com.aier.environment.view;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -36,7 +37,7 @@ public class MainView extends RelativeLayout {
         }
         mViewContainer =  findViewById(R.id.viewpager);
         mViewContainer.setOffscreenPageLimit(2);
-        mBtnList[0].setTextColor(getResources().getColor(R.color.actionbar_pres_color));
+        mBtnList[0].setTextColor(getResources().getColor(R.color.menu_item_back_pres_color));
         mBtnList[0].setSelected(true);
         mAllContactNumber = findViewById(R.id.all_contact_number);
         if (SharePreferenceManager.getCachedNewFriendNum() > 0) {
@@ -69,10 +70,44 @@ public class MainView extends RelativeLayout {
         for (int i = 0; i < mBtnListID.length; i++) {
             if (index == i) {
                 mBtnList[i].setSelected(true);
-                mBtnList[i].setTextColor(getResources().getColor(R.color.actionbar_pres_color));
+                mBtnList[i].setTextColor(getResources().getColor(R.color.menu_item_back_pres_color));
+                if(i==0){
+                   Drawable drawable = getResources().getDrawable(R.drawable.first);
+                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                    mBtnList[i].setCompoundDrawables(null,drawable,null,null);
+                }else if(i==1){
+                    Drawable drawable = getResources().getDrawable(R.drawable.map);
+                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                    mBtnList[i].setCompoundDrawables(null,drawable,null,null);
+                }else if(i==2){
+                    Drawable drawable = getResources().getDrawable(R.drawable.contacts);
+                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                    mBtnList[i].setCompoundDrawables(null,drawable,null,null);
+                }else if(i==3){
+                    Drawable drawable = getResources().getDrawable(R.drawable.me);
+                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                    mBtnList[i].setCompoundDrawables(null,drawable,null,null);
+                }
             } else {
                 mBtnList[i].setSelected(false);
                 mBtnList[i].setTextColor(getResources().getColor(R.color.action_bar_txt_color));
+                if(i==0){
+                    Drawable drawable = getResources().getDrawable(R.drawable.first_);
+                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                    mBtnList[i].setCompoundDrawables(null,drawable,null,null);
+                }else if(i==1){
+                    Drawable drawable = getResources().getDrawable(R.drawable.map_);
+                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                    mBtnList[i].setCompoundDrawables(null,drawable,null,null);
+                }else if(i==2){
+                    Drawable drawable = getResources().getDrawable(R.drawable.contacts_);
+                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                    mBtnList[i].setCompoundDrawables(null,drawable,null,null);
+                }else if(i==3){
+                    Drawable drawable = getResources().getDrawable(R.drawable.me_);
+                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                    mBtnList[i].setCompoundDrawables(null,drawable,null,null);
+                }
             }
         }
     }

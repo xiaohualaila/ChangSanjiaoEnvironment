@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.aier.environment.view.FirstView android:id="@+id/me_view"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <TextView
+        android:id="@+id/tv_update_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:text="19时更新"/>
+    <TextView
+        android:id="@+id/tv_air"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/tv_update_time"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_update_time"
+        android:text="当前空气质量"/>
+    <ImageView
+        android:id="@+id/iv_air"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        app:layout_constraintLeft_toLeftOf="@+id/tv_update_time"
+        app:layout_constraintTop_toBottomOf="@+id/tv_air" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@+id/iv_air"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_air"
+        android:text="良好"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_update_time"
+        android:src="@drawable/conv_location_icon"/>
+
+</com.aier.environment.view.FirstView>
