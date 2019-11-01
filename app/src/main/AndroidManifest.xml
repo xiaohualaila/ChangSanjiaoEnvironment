@@ -185,7 +185,7 @@
         <activity
             android:name=".activity.ReceivePhoneActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/BaseThemes"/>
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity
             android:name=".activity.MeetingActivity"
             android:screenOrientation="portrait"
