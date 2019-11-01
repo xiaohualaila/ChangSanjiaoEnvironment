@@ -33,9 +33,6 @@ import org.ar.meet_kit.ARMeetZoomMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.webrtc.VideoRenderer;
-
-import java.util.Random;
-
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.model.UserInfo;
 import io.socket.client.Socket;
@@ -63,7 +60,6 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
     private Socket mSocket;
     private boolean isCallToOther;
     private boolean mIsSingle;
-    private String userName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -75,9 +71,7 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
         Intent intent = getIntent();
         isCallToOther = intent.getBooleanExtra("isCallToOther",false);
         mIsSingle = intent.getBooleanExtra("mIsSingle",false);
-        userName = intent.getStringExtra("userName");
         socket();
-
     }
 
 
@@ -230,12 +224,9 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
                     mMeetKit.clean();
                 }
                 finishAnimActivity();
-
                 try {
                     JSONObject object = new JSONObject();
-                    object.put("userid", userName);
                     object.put("room", meetId);
-                    object.put("from_type", "mobile");
                     mSocket.emit("leave", object.toString());// 拒绝电话
                 } catch (JSONException e) {
                     e.printStackTrace();

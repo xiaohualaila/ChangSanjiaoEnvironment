@@ -51,7 +51,7 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
         isCallToOther = intent.getBooleanExtra("isCallToOther",false);
         mIsSingle = intent.getBooleanExtra("mIsSingle",false);
         mGroupId = intent.getLongExtra("mGroupId",0);
-        mTargetId = intent.getStringExtra("mTargetId");
+        mTargetId = intent.getStringExtra("mTargetId");//要呼叫人的id
         roomId = intent.getStringExtra("meet_id");
         ll_toOther_people = findViewById(R.id.ll_toOther_people);
         btn_receive = findViewById(R.id.btn_receive);
@@ -75,8 +75,7 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
         UserInfo myInfo = JMessageClient.getMyInfo();
         userName=myInfo.getUserName();
         nickname = myInfo.getNickname();
-        Log.i("aaa","房间号随机数"+roomId);
-        Log.i("aaa",userName + "");
+        Log.i("aaa", "userName " +userName + "房间号随机数"+roomId);
         String url = "http://192.168.0.68:3002/chat?userid="+userName+"&type=mobile";
         mSocket = SingleSocket.getInstance().getSocket(url);
         //注册  事件
@@ -117,21 +116,11 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
                             Log.i("aaa","单个用户呼叫 call-user 用户id "+mTargetId);
                         }
                     }
-
-
-
-//                    JSONObject obj1 = new JSONObject();
-//                    obj1.put("room", "111");
-//                    obj1.put("data", mGroupId);
-//                    Log.i("aaa",obj1.toString());
-//                    mSocket.emit("call", obj1.toString());//用户群呼
-//                    Log.i("aaa","发送群聊信息 call 群组id"+mGroupId);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         }
-
     }
 
 
@@ -145,13 +134,7 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
                     JSONObject data = (JSONObject) args[0];
                     if(data.optString("type").equals("joined")){
                       //  {"type":"joined","data":{"userid":"0002"}}
-                        Intent intent = new Intent(ReceivePhoneActivity.this, MeetingActivity.class);
-                        intent.putExtra("meet_id", roomId);
-                        intent.putExtra("nickname", nickname);
-                        intent.putExtra("isCallToOther", isCallToOther);
-                        intent.putExtra("mIsSingle", mIsSingle);
-                        startActivity(intent);
-                        finish();
+                        toMeetingActivity();
                     }else {
                         finish();
                     }
@@ -194,7 +177,6 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
                 break;
             case R.id.btn_cancel:
             case R.id.btn_cancel_:
-
                 try {
                     JSONObject object = new JSONObject();
                     object.put("userid", userName);
@@ -207,17 +189,18 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
                 finish();
                 break;
         }
-
     }
 
     private void toMeetingActivity() {
         Intent intent = new Intent(ReceivePhoneActivity.this, MeetingActivity.class);
         intent.putExtra("meet_id", roomId);
         intent.putExtra("nickname", nickname);
-        intent.putExtra("userName", userName);
+        intent.putExtra("isCallToOther", isCallToOther);
+        intent.putExtra("mIsSingle", mIsSingle);
         startActivity(intent);
         finish();
     }
+
 
     @Override
     public void onDestroy() {

@@ -75,11 +75,10 @@ public class MainActivity extends AppCompatActivity {
                     if(data.optString("type").equals("is-join")) {
                        JSONObject obj = data.optJSONObject("data");
                         String roomId = obj.optString("room");
-                        if(!TextUtils.isEmpty(roomId)){
+                        if(!TextUtils.isEmpty(roomId)){//外面打进电话
                             Intent intent = new Intent(MainActivity.this, ReceivePhoneActivity.class);
                             intent.putExtra("isCallToOther", false);
                             intent.putExtra("meet_id", roomId);
-
                             startActivity(intent);
                         }
 
