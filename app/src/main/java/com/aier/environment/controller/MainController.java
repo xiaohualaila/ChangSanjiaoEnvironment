@@ -45,8 +45,10 @@ public class MainController implements View.OnClickListener, ViewPager.OnPageCha
         mChatRoomFragment = new ChatRoomFragment();
         mContactsFragment = new ContactsFragment();
         mMeFragment = new MeFragment();
+
         fragments.add(mConvListFragment);//会话
-        fragments.add(mChatRoomFragment);//聊天室
+       // fragments.add(mChatRoomFragment);//聊天室
+        fragments.add(firstFragment);
         fragments.add(mContactsFragment);//通信录
         fragments.add(mMeFragment);
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(mContext.getSupportFragmentManger(),

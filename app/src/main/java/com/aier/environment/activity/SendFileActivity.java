@@ -2,14 +2,11 @@ package com.aier.environment.activity;
 
 
 import android.os.Bundle;
-
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-
 import com.aier.environment.R;
 import com.aier.environment.controller.SendFileController;
 import com.aier.environment.view.SendFileView;
-
 
 public class SendFileActivity extends FragmentActivity {
 

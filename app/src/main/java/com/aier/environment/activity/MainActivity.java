@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
     private void heartinterval(){
        timer = new Timer();
        task = new Task();
-       timer.schedule(task, 2000,5000);
+       timer.schedule(task, 2000,1000*60);
     }
 
     public class Task extends TimerTask {
