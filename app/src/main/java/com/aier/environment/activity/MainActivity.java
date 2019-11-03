@@ -14,6 +14,7 @@ import com.aier.environment.JGApplication;
 import com.aier.environment.R;
 import com.aier.environment.controller.MainController;
 import com.aier.environment.location.service.LocationService;
+import com.aier.environment.utils.CityCodeManager;
 import com.aier.environment.utils.SingleSocket;
 import com.aier.environment.view.MainView;
 import com.baidu.location.BDLocation;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private LocationService locationService;
     private BDLocation mLocation;
     private String userName;
+    public String city,cityCode;
     private Handler handler = new Handler()
     {
         @Override
@@ -119,6 +121,12 @@ public class MainActivity extends AppCompatActivity {
             // TODO Auto-generated method stub
             if (null != location && location.getLocType() != BDLocation.TypeServerError) {
                 mLocation= location;
+                city = location.getCity();
+               // cityCode = location.getCityCode();
+               // CityCodeManager manager  = new CityCodeManager();
+              //  cityCode = manager.getCityCodeByCity(city.substring(0,city.length()-1));
+               // http://t.weather.sojson.com/api/weather/city/101210101
+                Log.i("sss","city "+city + " cityCode "+ cityCode);
             }
         }
 
