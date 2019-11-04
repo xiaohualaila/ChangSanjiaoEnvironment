@@ -1,5 +1,6 @@
 package com.aier.environment.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import android.content.Intent;
@@ -14,16 +15,20 @@ import com.aier.environment.JGApplication;
 import com.aier.environment.R;
 import com.aier.environment.controller.MainController;
 import com.aier.environment.location.service.LocationService;
+import com.aier.environment.model.WeatherBean;
 import com.aier.environment.utils.CityCodeManager;
 import com.aier.environment.utils.SingleSocket;
 import com.aier.environment.view.MainView;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
+import com.google.gson.Gson;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.runtime.Permission;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -32,6 +37,13 @@ import cn.jpush.im.android.api.model.UserInfo;
 import io.socket.client.Socket;
 import cn.jiguang.api.JCoreInterface;
 import io.socket.emitter.Emitter;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -47,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private BDLocation mLocation;
     private String userName;
     public String city,cityCode;
+    private boolean isFirst = true;
     private Handler handler = new Handler()
     {
         @Override
@@ -122,11 +135,16 @@ public class MainActivity extends AppCompatActivity {
             if (null != location && location.getLocType() != BDLocation.TypeServerError) {
                 mLocation= location;
                 city = location.getCity();
+                city = "杭州市";
                // cityCode = location.getCityCode();
                // CityCodeManager manager  = new CityCodeManager();
               //  cityCode = manager.getCityCodeByCity(city.substring(0,city.length()-1));
                // http://t.weather.sojson.com/api/weather/city/101210101
-                Log.i("sss","city "+city + " cityCode "+ cityCode);
+             //   Log.i("sss","city "+city );
+                if(isFirst==true&&!TextUtils.isEmpty(city)){
+                    isFirst = false;
+                    getWeatherData();
+                }
             }
         }
 
@@ -135,6 +153,53 @@ public class MainActivity extends AppCompatActivity {
         }
 
     };
+
+
+    private void getWeatherData() {
+
+        OkHttpClient client = new OkHttpClient();//创建OkHttpClient对象。
+        MediaType json = MediaType.parse("application/json; charset=utf-8");
+        JSONObject object = new JSONObject();
+
+        try {
+            object.put("method", "ENVIRONMENTAPI_GETCITYWEARTHER");
+            city = city.substring(0,city.length()-1);
+            Log.i("sss",city);
+            object.put("city",city );
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        Log.i("sss",object.toString());
+
+        RequestBody body = RequestBody.create(json, object.toString());
+        Request request = new Request.Builder()//创建Request 对象。
+                .url("http://192.168.0.68:3001/environmentalapi")
+                .post(body)
+                .build();
+        Call call = client.newCall(request);
+        //请求加入调度
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, IOException e) {
+                   Log.i("sss",e.getMessage());
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+               String string = response.body().string();
+               Log.i("sss",string);
+                Gson gson = new Gson();
+                WeatherBean weatherBean =  gson.fromJson(string, WeatherBean.class);
+               if(weatherBean.isSuccess()){
+                   mMainController.setWeatherBean(weatherBean);
+               }
+
+            }
+        });
+
+    }
 
     private void socket() {
         UserInfo myInfo = JMessageClient.getMyInfo();
@@ -279,6 +344,7 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     };
+
 
 
 }

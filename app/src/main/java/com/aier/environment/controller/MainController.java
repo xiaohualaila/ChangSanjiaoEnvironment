@@ -12,8 +12,12 @@ import com.aier.environment.activity.fragment.MeFragment;
 import com.aier.environment.adapter.ViewPagerAdapter;
 import com.aier.environment.activity.fragment.ChatRoomFragment;
 import com.aier.environment.activity.fragment.ContactsFragment;
+import com.aier.environment.model.WeatherBean;
 import com.aier.environment.view.MainView;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -95,5 +99,46 @@ public class MainController implements View.OnClickListener, ViewPager.OnPageCha
        // mChatRoomFragment.sortConvList();
     }
 
+    public void setWeatherBean(WeatherBean weatherBean ) {
+        mContext.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                WeatherBean.ResultBean resultBean =  weatherBean.getResult();
+                firstFragment.tv_city.setText(resultBean.getCity()+"市");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");// HH:mm:ss
+                Date date = new Date(System.currentTimeMillis());
+                firstFragment.tv_date.setText(simpleDateFormat.format(date));
+                firstFragment.tv_wendu.setText(resultBean.getWendu()+"℃");
+               List<WeatherBean.ResultBean.ForecastBean>  forecastBeans = resultBean.getForecast();
+                WeatherBean.ResultBean.ForecastBean forecastBean;
+                SimpleDateFormat format1 = new SimpleDateFormat("MM/dd");
+                String data;
+                for(int i=0;i<forecastBeans.size();i++){
+                    forecastBean = forecastBeans.get(i);
+                    data = forecastBean.getDate();
+                    if(i==0){
+                        firstFragment.tv_feng.setText(forecastBean.getFengxiang()+forecastBean.getFengli());
+                        firstFragment.tv_weather.setText(forecastBean.getType());
+                        firstFragment.tv_date_1.setText(format1.format(new Date(System.currentTimeMillis())));
+                        firstFragment.tv_today_1.setText("今天");
+                    }else if(i==1){
+                        firstFragment.tv_date_2.setText(data.substring(0,2));
+                        firstFragment.tv_today_2.setText(data.substring(2,data.length()));
+                    }else if(i==2){
+                        firstFragment.tv_date_3.setText(data.substring(0,2));
+                        firstFragment.tv_today_3.setText(data.substring(2,data.length()));
+                    }else if(i==3){
+                        firstFragment.tv_date_4.setText(data.substring(0,2));
+                        firstFragment.tv_today_4.setText(data.substring(2,data.length()));
+                    }else if(i==4){
+                        firstFragment.tv_date_5.setText(data.substring(0,2));
+                        data = forecastBean.getDate();
+                        firstFragment.tv_today_5.setText(data.substring(2,data.length()));
+                    }
+                }
 
+            }
+        });
+
+    }
 }

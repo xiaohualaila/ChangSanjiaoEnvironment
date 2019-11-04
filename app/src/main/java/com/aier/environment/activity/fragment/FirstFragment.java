@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
@@ -47,48 +48,13 @@ public class FirstFragment extends BaseFragment {
 
     private MeController mMeController;
     private Context mContext;
+    public TextView tv_city,tv_date,tv_wendu,tv_feng,tv_weather,
+            tv_date_1,tv_today_1,tv_date_2,tv_today_2,tv_date_3,tv_today_3,tv_date_4,tv_today_4,tv_date_5,tv_today_5;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this.getActivity();
-        getWeatherData();
-    }
-
-    private void getWeatherData() {
-
-        OkHttpClient client = new OkHttpClient();//创建OkHttpClient对象。
-        MediaType json = MediaType.parse("application/json; charset=utf-8");
-        JSONObject object = new JSONObject();
-
-        try {
-            object.put("method", "ENVIRONMENTAPI_GETCITYWEARTHER");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-        Log.i("sss",object.toString());
-
-        RequestBody body = RequestBody.create(json, object.toString());
-        Request request = new Request.Builder()//创建Request 对象。
-                .url("http://121.41.52.56:3001/environmentalapi")
-                .post(body)
-                .build();
-        Call call = client.newCall(request);
-        //请求加入调度
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(@NonNull Call call, IOException e) {
-
-            }
-
-            @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-
-
-            }
-        });
 
     }
 
@@ -97,6 +63,21 @@ public class FirstFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_first,container,false);
+        tv_city = view.findViewById(R.id.tv_city);
+        tv_date = view.findViewById(R.id.tv_date);
+        tv_wendu = view.findViewById(R.id.tv_wendu);
+        tv_feng = view.findViewById(R.id.tv_feng);
+        tv_weather= view.findViewById(R.id.tv_weather);
+        tv_date_1= view.findViewById(R.id.tv_date_1);
+        tv_today_1 = view.findViewById(R.id.tv_today_1);
+        tv_date_2= view.findViewById(R.id.tv_date_2);
+        tv_today_2 = view.findViewById(R.id.tv_today_2);
+        tv_date_3= view.findViewById(R.id.tv_date_3);
+        tv_today_3 = view.findViewById(R.id.tv_today_3);
+        tv_date_4= view.findViewById(R.id.tv_date_4);
+        tv_today_4 = view.findViewById(R.id.tv_today_4);
+        tv_date_5= view.findViewById(R.id.tv_date_5);
+        tv_today_5 = view.findViewById(R.id.tv_today_5);
         return view;
     }
 
