@@ -54,7 +54,7 @@ public class MeView extends LinearLayout implements SlipButton.OnChangedListener
 //        mOpinion = (RelativeLayout) findViewById(R.id.opinion);
 //        mAbout = (RelativeLayout) findViewById(R.id.about);
         mExit = (RelativeLayout) findViewById(R.id.exit);
-        mRl_personal = (RelativeLayout) findViewById(R.id.rl_personal);
+     //   mRl_personal = (RelativeLayout) findViewById(R.id.rl_personal);
         mSet_noDisturb.setOnChangedListener(R.id.btn_noDisturb, this);
 
         mWidth = width;

@@ -2,41 +2,13 @@ package com.aier.environment.activity.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-
-import com.activeandroid.ActiveAndroid;
-import com.aier.environment.JGApplication;
 import com.aier.environment.R;
-import com.aier.environment.adapter.StickyListAdapter;
 import com.aier.environment.controller.MeController;
-import com.aier.environment.database.FriendEntry;
-import com.aier.environment.model.FriendBean;
-import com.aier.environment.utils.pinyin.HanziToPinyin;
-import com.aier.environment.utils.pinyin.PinyinComparator;
-import com.google.gson.Gson;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 
 /**

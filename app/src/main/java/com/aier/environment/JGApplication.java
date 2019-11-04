@@ -95,7 +95,6 @@ public class JGApplication extends  com.activeandroid.app.Application {
     public static Map<Long, Boolean> isAtMe = new HashMap<>();
     public static Map<Long, Boolean> isAtall = new HashMap<>();
     public static List<Message> forwardMsg = new ArrayList<>();
-   // public static LocationService locationService;
 
     public static List<GroupInfo> mGroupInfoList = new ArrayList<>();
     public static List<UserInfo> mFriendInfoList = new ArrayList<>();

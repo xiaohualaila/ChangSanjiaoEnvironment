@@ -66,11 +66,11 @@ public class MeController implements View.OnClickListener {
                 mDialog.getWindow().setLayout((int) (0.8 * mWidth), WindowManager.LayoutParams.WRAP_CONTENT);
                 mDialog.show();
                 break;
-            case R.id.rl_personal:
-                Intent intent = new Intent(mContext.getContext(), PersonalActivity.class);
-                intent.putExtra(PERSONAL_PHOTO, mBitmap);
-                mContext.startActivity(intent);
-                break;
+//            case R.id.rl_personal:
+//                Intent intent = new Intent(mContext.getContext(), PersonalActivity.class);
+//                intent.putExtra(PERSONAL_PHOTO, mBitmap);
+//                mContext.startActivity(intent);
+//                break;
         }
     }
 }
