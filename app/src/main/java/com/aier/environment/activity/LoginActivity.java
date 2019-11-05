@@ -204,26 +204,26 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
 
     private void initView() {
-        mLogin_userName = (ClearWriteEditText) findViewById(R.id.login_userName);
-        mLogin_passWord = (ClearWriteEditText) findViewById(R.id.login_passWord);
-        mBtn_login = (Button) findViewById(R.id.btn_login);
-        mDe_login_logo = (ImageView) findViewById(R.id.de_login_logo);
-        mLogin_register = (TextView) findViewById(R.id.login_register);
-        mTitleBar = (RelativeLayout) findViewById(R.id.titlebar);
-        mBackground = (RelativeLayout) findViewById(R.id.background);
-        mLl_name_psw = (LinearLayout) findViewById(R.id.ll_name_psw);
-        mLogin_userLogo = (ImageView) findViewById(R.id.login_userLogo);
-        mLogin_pswLogo = (ImageView) findViewById(R.id.login_pswLogo);
+        mLogin_userName =  findViewById(R.id.login_userName);
+        mLogin_passWord =  findViewById(R.id.login_passWord);
+        mBtn_login =  findViewById(R.id.btn_login);
+        mDe_login_logo =  findViewById(R.id.de_login_logo);
+        mLogin_register =  findViewById(R.id.login_register);
+        mTitleBar =  findViewById(R.id.titlebar);
+        mBackground =  findViewById(R.id.background);
+        mLl_name_psw =  findViewById(R.id.ll_name_psw);
+        mLogin_userLogo =  findViewById(R.id.login_userLogo);
+        mLogin_pswLogo =  findViewById(R.id.login_pswLogo);
         mView = findViewById(R.id.view);
         mUserLine = findViewById(R.id.user_line);
         mPswLine = findViewById(R.id.psw_line);
 
-        mNewUser = (TextView) findViewById(R.id.new_user);
-        mLogin_desc = (TextView) findViewById(R.id.login_desc);
+        mNewUser =  findViewById(R.id.new_user);
+        mLogin_desc =  findViewById(R.id.login_desc);
 
-        mRadioGroup = (RadioGroup) findViewById(R.id.rg_group);
-        mRelease = (RadioButton) findViewById(R.id.rb_release);
-        mTest = (RadioButton) findViewById(R.id.rb_test);
+        mRadioGroup =  findViewById(R.id.rg_group);
+        mRelease =  findViewById(R.id.rb_release);
+        mTest =  findViewById(R.id.rb_test);
 
         if (!isTestVisibility) {
             mRadioGroup.setVisibility(View.GONE);
