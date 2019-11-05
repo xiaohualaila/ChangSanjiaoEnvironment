@@ -1,13 +1,12 @@
 package com.aier.environment.activity.fragment;
 
 import android.graphics.Bitmap;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,9 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.aier.environment.JGApplication;
 import com.aier.environment.R;
 import com.aier.environment.location.service.LocationService;
-import com.aier.environment.model.GetAllPostion;
 import com.aier.environment.model.MyMarkerBean;
-import com.aier.environment.model.UserLocation;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -27,6 +24,7 @@ import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
@@ -39,9 +37,6 @@ import com.baidu.mapapi.map.Polyline;
 import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,7 +47,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -82,10 +76,6 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
     private void initMap() {
         //获取地图控件引用
         mBaiduMap = mMapView.getMap();
-        //普通地图
-        mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
-        mBaiduMap.setMyLocationEnabled(true);
-
         //默认显示普通地图
         mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
         //开启交通图
@@ -100,10 +90,11 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
         mLocClient = new LocationClient(getActivity());
         locationService.registerListener(mListener);//是否应该在onStart中注册
         locationService.start();
+        mBaiduMap.setOnMarkerClickListener(this);
         //配置定位SDK参数
         initLocation();
         getAllUserPostion();
-        mBaiduMap.setOnMarkerClickListener(this);
+
     }
 
 
@@ -134,7 +125,6 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_map, container, false);
         mMapView = v.findViewById(R.id.map);
-        mBaiduMap = mMapView.getMap();
         initMap();
 
         return v;
@@ -325,7 +315,6 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
      * 添加覆盖物
      */
 
-    Map<String,String> map = new HashMap<>();
     private void addMapMarks() {
         mBaiduMap.clear();//先清除一下图层
         LatLng latLng = null;
@@ -335,38 +324,18 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
          MyMarkerBean markerBeanData;
         for (int i = 0; i < markInfoList.size(); i++) {
             markerBeanData = markInfoList.get(i);
-            LayoutInflater inflater = LayoutInflater.from(getContext());
-            View view = inflater.inflate(R.layout.item_layout_baidu_map_market, null);//这个是显示的覆盖物，其实是可以显示view的
-//            TextView tv_name = view.findViewById(R.id.tv_name);
-//            tv_name.setText(markInfoList.get(i).name);
             //经纬度对象
             latLng = new LatLng(markerBeanData.latitude, markerBeanData.longitude);//需要创建一个经纬对象，通过该对象就可以定位到处于地图上的某个具体点
-            BitmapDescriptor markerIcon = BitmapDescriptorFactory.fromBitmap(getViewBitmap(view));
-
+            BitmapDescriptor markerIcon = BitmapDescriptorFactory.fromResource(R.drawable.picker_map_local_icon);
             //图标
             options = new MarkerOptions().position(latLng).icon(markerIcon).zIndex(9);
             marker = (Marker) mBaiduMap.addOverlay(options);//将覆盖物添加到地图上
-            mBaiduMap.addOverlay(options);
             Bundle bundle = new Bundle();
             bundle.putSerializable("marker", markerBeanData);
             marker.setExtraInfo(bundle);
         }
         MapStatusUpdate msu = MapStatusUpdateFactory.newLatLng(latLng);//通过这个经纬度对象，地图就可以定位到该点
         mBaiduMap.animateMapStatus(msu);
-    }
-
-    private Bitmap getViewBitmap(View addViewContent) {
-
-        addViewContent.setDrawingCacheEnabled(true);
-
-        addViewContent.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-        addViewContent.layout(0, 0, addViewContent.getMeasuredWidth(), addViewContent.getMeasuredHeight());
-
-        addViewContent.buildDrawingCache();
-        Bitmap cacheBitmap = addViewContent.getDrawingCache();
-        Bitmap bitmap = Bitmap.createBitmap(cacheBitmap);
-
-        return bitmap;
     }
 
 
@@ -376,10 +345,32 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
         Bundle bundle = marker.getExtraInfo();
         MyMarkerBean markerBean = (MyMarkerBean) bundle.getSerializable("marker");
         Log.i("sss",markerBean.name);
+        View view = View.inflate(getActivity(), R.layout.marker_click_window, null);
+        TextView tv_tonghua = view.findViewById(R.id.tv_tonghua);
+        TextView tv_guiji = view.findViewById(R.id.tv_guiji);
 
+        final InfoWindow mInfoWindow = new InfoWindow(view, marker.getPosition(), -47);
+        mBaiduMap.showInfoWindow(mInfoWindow);
+        tv_tonghua.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //关闭InfoWindow
+                mBaiduMap.hideInfoWindow();
+            }
+        });
+        tv_guiji.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //关闭InfoWindow
+                mBaiduMap.hideInfoWindow();
+            }
+        });
 
 
         return true;
 
     }
+
+
+
 }

@@ -18,7 +18,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="14dp"
             android:clickable="true"
-            android:text="JChat"
+            android:text=""
             android:textColor="#fff"
             android:textSize="18sp"/>
 
@@ -154,12 +154,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginLeft="30dip"
-                android:layout_marginRight="30dip"
                 android:layout_marginTop="36dip"
+                android:layout_marginRight="30dip"
                 android:background="@drawable/blue_btn_selector"
-                android:text="login"
+                android:text="登录"
                 android:textColor="@drawable/blue_text_selector"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>
 

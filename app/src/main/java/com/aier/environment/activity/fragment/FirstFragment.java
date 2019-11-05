@@ -135,7 +135,7 @@ public class FirstFragment extends BaseFragment {
 
         RequestBody body = RequestBody.create(json, object.toString());
         Request request = new Request.Builder()//创建Request 对象。
-                .url("http://192.168.0.68:3001/environmentalapi")
+                .url("http://121.41.52.56:3002/environmentalapi")
                 .post(body)
                 .build();
         Call call = client.newCall(request);
