@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="14dp"
-            android:text="JChat"
+            android:text=""
             android:textColor="@android:color/white"
             android:textSize="18sp"/>
 

@@ -1,6 +1,6 @@
 package com.aier.environment.activity;
 
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import android.content.Intent;
@@ -15,20 +15,17 @@ import com.aier.environment.JGApplication;
 import com.aier.environment.R;
 import com.aier.environment.controller.MainController;
 import com.aier.environment.location.service.LocationService;
-import com.aier.environment.model.WeatherBean;
-import com.aier.environment.utils.CityCodeManager;
 import com.aier.environment.utils.SingleSocket;
 import com.aier.environment.view.MainView;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
-import com.google.gson.Gson;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.runtime.Permission;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -37,13 +34,7 @@ import cn.jpush.im.android.api.model.UserInfo;
 import io.socket.client.Socket;
 import cn.jiguang.api.JCoreInterface;
 import io.socket.emitter.Emitter;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -54,12 +45,12 @@ public class MainActivity extends AppCompatActivity {
     private Socket mSocket;
     private Timer timer;
     private Task task;
-
+    LocationClient mLocClient;
     private LocationService locationService;
     private BDLocation mLocation;
     private String userName;
-    public String city,cityCode;
-    private boolean isFirst = true;
+    public String city;
+
     private Handler handler = new Handler()
     {
         @Override
@@ -117,11 +108,36 @@ public class MainActivity extends AppCompatActivity {
         mMainView.setOnPageChangeListener(mMainController);
         UserInfo myInfo = JMessageClient.getMyInfo();
         userName=myInfo.getUserName();
+        mLocClient = new LocationClient(this);
         locationService = JGApplication.locationService;
         locationService.registerListener(mListener);//是否应该在onStart中注册
         locationService.start();
+        initLocation();
         socket();
         heartinterval();
+    }
+
+    //配置定位SDK参数
+    private void initLocation() {
+        LocationClientOption option = new LocationClientOption();
+        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy
+        );//可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
+        option.setCoorType("bd09ll");//可选，默认gcj02，设置返回的定位结果坐标系
+        int span = 1000;
+        option.setScanSpan(span);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
+        option.setIsNeedAddress(true);//可选，设置是否需要地址信息，默认不需要
+        option.setOpenGps(true);//可选，默认false,设置是否使用gps
+        option.setLocationNotify(true);//可选，默认false，设置是否当GPS有效时按照1S/1次频率输出GPS结果
+        option.setIsNeedLocationDescribe(true);//可选，默认false，设置是否需要位置语义化结果，可以在BDLocation
+        // .getLocationDescribe里得到，结果类似于“在北京天安门附近”
+        option.setIsNeedLocationPoiList(true);//可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
+        option.setIgnoreKillProcess(false);
+        option.setOpenGps(true); // 打开gps
+        option.setIsNeedAltitude(true);/**设置海拔高度*/
+        //可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
+        option.SetIgnoreCacheException(false);//可选，默认false，设置是否收集CRASH信息，默认收集
+        option.setEnableSimulateGps(false);//可选，默认false，设置是否需要过滤GPS仿真结果，默认需要
+        mLocClient.setLocOption(option);
     }
 
     /*****
@@ -134,72 +150,18 @@ public class MainActivity extends AppCompatActivity {
             // TODO Auto-generated method stub
             if (null != location && location.getLocType() != BDLocation.TypeServerError) {
                 mLocation= location;
-                city = location.getCity();
-                city = "杭州市";
-               // cityCode = location.getCityCode();
-               // CityCodeManager manager  = new CityCodeManager();
-              //  cityCode = manager.getCityCodeByCity(city.substring(0,city.length()-1));
-               // http://t.weather.sojson.com/api/weather/city/101210101
-             //   Log.i("sss","city "+city );
-                if(isFirst==true&&!TextUtils.isEmpty(city)){
-                    isFirst = false;
-                    getWeatherData();
-                }
+                city = location.getAltitude()+"";//海拔
+                   Log.i("ccc","city "+city );
+
+
+
             }
         }
 
         @Override
         public void onConnectHotSpotMessage(String s, int i) {
         }
-
     };
-
-
-    private void getWeatherData() {
-
-        OkHttpClient client = new OkHttpClient();//创建OkHttpClient对象。
-        MediaType json = MediaType.parse("application/json; charset=utf-8");
-        JSONObject object = new JSONObject();
-
-        try {
-            object.put("method", "ENVIRONMENTAPI_GETCITYWEARTHER");
-            city = city.substring(0,city.length()-1);
-            Log.i("sss",city);
-            object.put("city",city );
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-        Log.i("sss",object.toString());
-
-        RequestBody body = RequestBody.create(json, object.toString());
-        Request request = new Request.Builder()//创建Request 对象。
-                .url("http://192.168.0.68:3001/environmentalapi")
-                .post(body)
-                .build();
-        Call call = client.newCall(request);
-        //请求加入调度
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(@NonNull Call call, IOException e) {
-                   Log.i("sss",e.getMessage());
-            }
-
-            @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-               String string = response.body().string();
-               Log.i("sss",string);
-                Gson gson = new Gson();
-                WeatherBean weatherBean =  gson.fromJson(string, WeatherBean.class);
-               if(weatherBean.isSuccess()){
-                   mMainController.setWeatherBean(weatherBean);
-               }
-
-            }
-        });
-
-    }
 
     private void socket() {
         UserInfo myInfo = JMessageClient.getMyInfo();
@@ -279,13 +241,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void requestPermission() {
-        String[]  perm = {Permission.RECORD_AUDIO,
+        String[]  perm = {
+                Permission.RECORD_AUDIO,
                 Permission.CAMERA,
                 Permission.READ_EXTERNAL_STORAGE,
                 Permission.WRITE_EXTERNAL_STORAGE,
                 Permission.ACCESS_COARSE_LOCATION,
                 Permission.ACCESS_FINE_LOCATION,
-                Permission.RECORD_AUDIO
+                Permission.RECORD_AUDIO,
+                Permission.READ_PHONE_STATE
         };
 
         if (AndPermission.hasPermissions(MainActivity.this,perm)){
@@ -310,40 +274,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //连接成功
-    private Emitter.Listener onConnect = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if(!isConnected) {
-                        isConnected = true;
-                    }
-                    Log.i("aaa","connected success");
-                }
-            });
+    private Emitter.Listener onConnect = args -> runOnUiThread(() -> {
+        if(!isConnected) {
+            isConnected = true;
         }
-    };
+        Log.i("aaa","connected success");
+    });
    //连接失败
-    private Emitter.Listener onDisconnect = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-                    isConnected = false;
-            Log.i("aaa","diconnected");
-        }
+    private Emitter.Listener onDisconnect = args -> {
+                isConnected = false;
+        Log.i("aaa","diconnected");
     };
     //连接错误
-    private Emitter.Listener onConnectError = new Emitter.Listener() {
-        @Override
-        public void call(Object... args) {
-           runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Log.i("aaa","Error connecting");
-                }
-            });
-        }
-    };
+    private Emitter.Listener onConnectError = args -> runOnUiThread(() -> Log.i("aaa","Error connecting"));
 
 
 

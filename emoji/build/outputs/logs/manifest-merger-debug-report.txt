@@ -1,25 +1,25 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\companyapp\ChangSanjiaoEnvironment\emoji\src\main\AndroidManifest.xml:2:1-35
-INJECTED from C:\companyapp\ChangSanjiaoEnvironment\emoji\src\main\AndroidManifest.xml:2:1-35
-INJECTED from C:\companyapp\ChangSanjiaoEnvironment\emoji\src\main\AndroidManifest.xml:2:1-35
+ADDED from F:\company\ChangsanjiaoeEnvironment\emoji\src\main\AndroidManifest.xml:2:1-35
+INJECTED from F:\company\ChangsanjiaoeEnvironment\emoji\src\main\AndroidManifest.xml:2:1-35
+INJECTED from F:\company\ChangsanjiaoeEnvironment\emoji\src\main\AndroidManifest.xml:2:1-35
 	package
-		ADDED from C:\companyapp\ChangSanjiaoEnvironment\emoji\src\main\AndroidManifest.xml:2:11-33
-		INJECTED from C:\companyapp\ChangSanjiaoEnvironment\emoji\src\main\AndroidManifest.xml
-		INJECTED from C:\companyapp\ChangSanjiaoEnvironment\emoji\src\main\AndroidManifest.xml
+		ADDED from F:\company\ChangsanjiaoeEnvironment\emoji\src\main\AndroidManifest.xml:2:11-33
+		INJECTED from F:\company\ChangsanjiaoeEnvironment\emoji\src\main\AndroidManifest.xml
+		INJECTED from F:\company\ChangsanjiaoeEnvironment\emoji\src\main\AndroidManifest.xml
 	xmlns:android
-		ADDED from C:\companyapp\ChangSanjiaoEnvironment\emoji\src\main\AndroidManifest.xml:2:1-35
+		ADDED from F:\company\ChangsanjiaoeEnvironment\emoji\src\main\AndroidManifest.xml:2:1-35
 uses-sdk
-INJECTED from C:\companyapp\ChangSanjiaoEnvironment\emoji\src\main\AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from C:\companyapp\ChangSanjiaoEnvironment\emoji\src\main\AndroidManifest.xml
-INJECTED from C:\companyapp\ChangSanjiaoEnvironment\emoji\src\main\AndroidManifest.xml
-INJECTED from C:\companyapp\ChangSanjiaoEnvironment\emoji\src\main\AndroidManifest.xml
-INJECTED from C:\companyapp\ChangSanjiaoEnvironment\emoji\src\main\AndroidManifest.xml
+INJECTED from F:\company\ChangsanjiaoeEnvironment\emoji\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from F:\company\ChangsanjiaoeEnvironment\emoji\src\main\AndroidManifest.xml
+INJECTED from F:\company\ChangsanjiaoeEnvironment\emoji\src\main\AndroidManifest.xml
+INJECTED from F:\company\ChangsanjiaoeEnvironment\emoji\src\main\AndroidManifest.xml
+INJECTED from F:\company\ChangsanjiaoeEnvironment\emoji\src\main\AndroidManifest.xml
 	android:targetSdkVersion
-		INJECTED from C:\companyapp\ChangSanjiaoEnvironment\emoji\src\main\AndroidManifest.xml
-		ADDED from C:\companyapp\ChangSanjiaoEnvironment\emoji\src\main\AndroidManifest.xml
-		INJECTED from C:\companyapp\ChangSanjiaoEnvironment\emoji\src\main\AndroidManifest.xml
+		INJECTED from F:\company\ChangsanjiaoeEnvironment\emoji\src\main\AndroidManifest.xml
+		ADDED from F:\company\ChangsanjiaoeEnvironment\emoji\src\main\AndroidManifest.xml
+		INJECTED from F:\company\ChangsanjiaoeEnvironment\emoji\src\main\AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from C:\companyapp\ChangSanjiaoEnvironment\emoji\src\main\AndroidManifest.xml
-		ADDED from C:\companyapp\ChangSanjiaoEnvironment\emoji\src\main\AndroidManifest.xml
-		INJECTED from C:\companyapp\ChangSanjiaoEnvironment\emoji\src\main\AndroidManifest.xml
+		INJECTED from F:\company\ChangsanjiaoeEnvironment\emoji\src\main\AndroidManifest.xml
+		ADDED from F:\company\ChangsanjiaoeEnvironment\emoji\src\main\AndroidManifest.xml
+		INJECTED from F:\company\ChangsanjiaoeEnvironment\emoji\src\main\AndroidManifest.xml
