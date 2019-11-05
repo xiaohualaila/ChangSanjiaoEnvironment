@@ -7,6 +7,7 @@
     <color name="titlebar_text_color">#fff</color>
     <color name="item_click_bg_color">#E9EDED</color>
     <color name="white">#FFFFFF</color>
+    <color name="white_90">#40FFFFFF</color>
     <color name="jmui_chat_detail_split_line_color">#d3d3d3</color>
     <color name="menu_item_back_pres_color">#2DD0CF</color>
     <color name="action_bar_txt_color">#999999</color>

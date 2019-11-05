@@ -6,12 +6,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -19,13 +24,11 @@ import androidx.annotation.Nullable;
 
 import com.aier.environment.R;
 import com.aier.environment.activity.LoginActivity;
+import com.aier.environment.activity.PersonalActivity;
 import com.aier.environment.activity.ResetPasswordActivity;
-import com.aier.environment.controller.MeController;
 import com.aier.environment.utils.DialogCreator;
 import com.aier.environment.utils.SharePreferenceManager;
 import com.aier.environment.utils.ToastUtil;
-import com.aier.environment.utils.photochoose.SelectableRoundedImageView;
-import com.aier.environment.view.MeView;
 import com.aier.environment.view.SlipButton;
 
 import cn.jpush.im.android.api.JMessageClient;
@@ -40,24 +43,24 @@ import cn.jpush.im.api.BasicCallback;
  */
 
 public class MeFragment extends BaseFragment implements View.OnClickListener, SlipButton.OnChangedListener {
-    private View mRootView;
-    //public MeView mMeView;
-    private MeController mMeController;
+
     private Context mContext;
     private Dialog mDialog;
-    private Bitmap mBitmap;
+    public Bitmap mBitmap;
 
-    private TextView mSignatureTv;
+    //    private TextView mSignatureTv;
     private TextView mNickNameTv;
-    private SelectableRoundedImageView mTakePhotoBtn;
+    private ImageView mTakePhotoBtn;
     private RelativeLayout mSet_pwd;
     public SlipButton mSet_noDisturb;
     //    private RelativeLayout mOpinion;
 //    private RelativeLayout mAbout;
+
+    private TextView tv_name,tv_yonghu_type,tv_phone;
     private RelativeLayout mExit;
-    private int mWidth;
-    private int mHeight;
-   // private RelativeLayout mRl_personal;
+    private ImageView mRl_personal,iv_record;
+
+    private Bitmap bitmap;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,20 +76,26 @@ public class MeFragment extends BaseFragment implements View.OnClickListener, Sl
         View v = inflater.inflate(R.layout.fragment_me, container, false);
         mTakePhotoBtn = v.findViewById(R.id.take_photo_iv);
         mNickNameTv = v.findViewById(R.id.nickName);
-        mSignatureTv = v.findViewById(R.id.signature);
+//        mSignatureTv = v.findViewById(R.id.signature);//原来的签名
         mSet_pwd = v.findViewById(R.id.setPassword);
         mSet_noDisturb = v.findViewById(R.id.btn_noDisturb);
 //        mOpinion = (RelativeLayout) v.findViewById(R.id.opinion);
 //        mAbout = (RelativeLayout) v.findViewById(R.id.about);
         mExit = v.findViewById(R.id.exit);
-        //     mRl_personal = (RelativeLayout) v.findViewById(R.id.rl_personal);
+        mRl_personal = v.findViewById(R.id.rl_personal);
+
+        tv_name = v.findViewById(R.id.tv_name);
+        tv_yonghu_type= v.findViewById(R.id.tv_yonghu_type);
+        tv_phone= v.findViewById(R.id.tv_phone);
+        iv_record = v.findViewById(R.id.iv_record);
+
         mSet_noDisturb.setOnChangedListener(R.id.btn_noDisturb, this);
 
         mSet_pwd.setOnClickListener(this);
 //        mOpinion.setOnClickListener(onClickListener);
 //        mAbout.setOnClickListener(onClickListener);
         mExit.setOnClickListener(this);
-       // mRl_personal.setOnClickListener(this);
+        mRl_personal.setOnClickListener(this);
 
         final Dialog dialog = DialogCreator.createLoadingDialog(mContext, mContext.getString(R.string.jmui_loading));
         dialog.show();
@@ -115,17 +124,35 @@ public class MeFragment extends BaseFragment implements View.OnClickListener, Sl
             @Override
             public void gotResult(int i, String s, Bitmap bitmap) {
                 if (i == 0) {
-                    showPhoto(bitmap);
-                    mMeController.setBitmap(bitmap);
+                    mBitmap = toRoundBitmap(bitmap);
+                    showPhoto(mBitmap);
                 } else {
                     showPhoto(null);
-                    mMeController.setBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.rc_default_portrait));
+                    mBitmap = toRoundBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.rc_default_portrait));
                 }
             }
         });
         showNickName(myInfo);
-
+        tv_name.setText(myInfo.getUserName());
+        tv_phone.setText("暂无");
     }
+
+    public static Bitmap toRoundBitmap(Bitmap bitmap) {
+        // 前面同上，绘制图像分别需要bitmap，canvas，paint对象
+        bitmap = Bitmap.createScaledBitmap(bitmap, 400, 400, true);
+        Bitmap bm = Bitmap.createBitmap(400, 400, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bm);
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        // 这里需要先画出一个圆
+        canvas.drawCircle(200, 200, 200, paint);
+        // 圆画好之后将画笔重置一下
+        paint.reset();
+        // 设置图像合成模式，该模式为只在源图像和目标图像相交的地方绘制源图像
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, 0, 0, paint);
+        return bm;
+    }
+
 
     private void showPhoto(Bitmap avatarBitmap) {
         if (avatarBitmap != null) {
@@ -141,7 +168,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener, Sl
         } else {
             mNickNameTv.setText(myInfo.getUserName());
         }
-        mSignatureTv.setText(myInfo.getSignature());
+//        mSignatureTv.setText(myInfo.getSignature());//签名隐藏掉
     }
 
     public void cancelNotification() {
@@ -200,11 +227,10 @@ public class MeFragment extends BaseFragment implements View.OnClickListener, Sl
                 mDialog.getWindow().setLayout((int) (0.8 * mWidth), WindowManager.LayoutParams.WRAP_CONTENT);
                 mDialog.show();
                 break;
-//            case R.id.rl_personal:
-//                Intent intent = new Intent(mContext.getContext(), PersonalActivity.class);
-//                intent.putExtra(PERSONAL_PHOTO, mBitmap);
-//                mContext.startActivity(intent);
-//                break;
+            case R.id.rl_personal:
+                Intent intent = new Intent(getActivity(), PersonalActivity.class);
+                getActivity().startActivity(intent);
+                break;
         }
     }
 

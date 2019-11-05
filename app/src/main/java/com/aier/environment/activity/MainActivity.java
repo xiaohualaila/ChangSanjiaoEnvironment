@@ -152,9 +152,6 @@ public class MainActivity extends AppCompatActivity {
                 mLocation= location;
                 city = location.getAltitude()+"";//海拔
                    Log.i("ccc","city "+city );
-
-
-
             }
         }
 

@@ -125,13 +125,13 @@ public class FirstFragment extends BaseFragment {
         try {
             object.put("method", "ENVIRONMENTAPI_GETCITYWEARTHER");
             city = city.substring(0,city.length()-1);
-            Log.i("sss",city);
+         //   Log.i("sss",city);
             object.put("city",city );
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        Log.i("sss",object.toString());
+       // Log.i("sss",object.toString());
 
         RequestBody body = RequestBody.create(json, object.toString());
         Request request = new Request.Builder()//创建Request 对象。
@@ -143,7 +143,7 @@ public class FirstFragment extends BaseFragment {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, IOException e) {
-                Log.i("sss",e.getMessage());
+              //  Log.i("sss",e.getMessage());
             }
 
             @Override
@@ -157,7 +157,7 @@ public class FirstFragment extends BaseFragment {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        Log.i("sss",string);
+                       // Log.i("sss",string);
                         Gson gson = new Gson();
                         WeatherBean weatherBean =  gson.fromJson(string, WeatherBean.class);
                         WeatherBean.ResultBean resultBean =  weatherBean.getResult();
@@ -229,7 +229,7 @@ public class FirstFragment extends BaseFragment {
     }
 
     private void setWeatherPic(String type,ImageView imageView) {
-        Log.i("sss","type   "+type);
+       // Log.i("sss","type   "+type);
         if(type.equals("晴")){
             imageView.setImageDrawable(getResources().getDrawable(R.drawable.weather_qing));
         }else if(type.equals("阴")){
