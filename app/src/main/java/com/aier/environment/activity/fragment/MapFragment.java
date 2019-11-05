@@ -1,11 +1,14 @@
 package com.aier.environment.activity.fragment;
 
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,16 +18,21 @@ import com.aier.environment.JGApplication;
 import com.aier.environment.R;
 import com.aier.environment.location.service.LocationService;
 import com.aier.environment.model.GetAllPostion;
+import com.aier.environment.model.MyMarkerBean;
 import com.aier.environment.model.UserLocation;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatus;
+import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
+import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.Polyline;
@@ -40,8 +48,10 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import okhttp3.Call;
@@ -63,6 +73,7 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
     private boolean isFirstLoc = true; // 是否首次定位
 
     private Polyline mPolyline;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -187,6 +198,8 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
 
     };
 
+    List<MyMarkerBean> markInfoList = new ArrayList<>();
+    LatLng mLatLng;
 
     private void getAllUserPostion() {
         try {
@@ -231,6 +244,7 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
                         e.printStackTrace();
                     }
                     List<LatLng> latLngs;
+                    MyMarkerBean myMarkerBean;
                     boolean success = jsonObj.optBoolean("success");
                     if (success) {
                         JSONObject objResult = jsonObj.optJSONObject("result");
@@ -241,14 +255,23 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
                             latLngs = new ArrayList<>();
                             String key = iterator.next();
                             array = objResult.optJSONArray(key);
-                            Log.i("sss", key+"______________");
+                            Log.i("sss", key + "______________");
+                            myMarkerBean = new MyMarkerBean();
+                            myMarkerBean.name = key;
                             for (int i = 0; i < array.length(); i++) {
                                 obj = array.optJSONObject(i);
-                                Log.i("sss", obj.optString("latitude") + "  " + obj.optString("longitude"));
 
+                                Log.i("sss", obj.optString("latitude") + "  " + obj.optString("longitude"));
+                                mLatLng = new LatLng(Double.parseDouble(obj.optString("latitude")),
+                                        Double.parseDouble(obj.optString("longitude")));
                                 //将points集合中的点绘制轨迹线条图层，显示在地图上
-                                latLngs.add(new LatLng(Double.parseDouble(obj.optString("latitude")),
-                                        Double.parseDouble(obj.optString("longitude"))));
+                                latLngs.add(mLatLng);
+                                if (i == 0) {
+
+                                    myMarkerBean.latitude = Double.parseDouble(obj.optString("latitude"));
+                                    myMarkerBean.longitude = Double.parseDouble(obj.optString("longitude"));
+                                    markInfoList.add(myMarkerBean);
+                                }
                             }
                             OverlayOptions ooPolyline = new PolylineOptions().width(13).color(0xAAFF0000).points(latLngs);
                             mPolyline = (Polyline) mBaiduMap.addOverlay(ooPolyline);
@@ -256,6 +279,7 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
                     }
 
 
+                    addMapMarks();
 //                        }
 //                    });
                 }
@@ -300,41 +324,62 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
      * @author Mikyou
      * 添加覆盖物
      */
-//    private void addMapMarks() {
-//        mBaidumap.clear();//先清除一下图层
-//        LatLng latLng = null;
-//        Marker marker = null;
-//        OverlayOptions options;
-//        LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
-//        View view = inflater.inflate(R.layout.item_layout_baidu_map_market, null);//这个是显示的覆盖物，其实是可以显示view的
-//        ImageView phone = (ImageView) view.findViewById(R.id.iv_dog_baidu_map_market_phone);
-//        //遍历MarkInfo的List一个MarkInfo就是一个Mark
-//        for (int i = 0; i < markInfoList.size(); i++) {
-//
-//            //这是我从网络获取的信息，网络获取就不贴了。。。（不能贴）
-//
-//            Picasso.with(this).load(markInfoList.get(i).getDog_photo()).into(phone);
-//            myMarks = BitmapDescriptorFactory.fromView(view);//引入自定义的覆盖物图标，将其转化成一个BitmapDescriptor对象
-//            //经纬度对象
-//            latLng = new LatLng(markInfoList.get(i).getLatitude(), markInfoList.get(i).getLongitude());//需要创建一个经纬对象，通过该对象就可以定位到处于地图上的某个具体点
-//            //图标
-//            options = new MarkerOptions().position(latLng).icon(myMarks).zIndex(9);
-//            marker = (Marker) mBaidumap.addOverlay(options);//将覆盖物添加到地图上
-//            Bundle bundle = new Bundle();//创建一个Bundle对象将每个mark具体信息传过去，当点击该覆盖物图标的时候就会显示该覆盖物的详细信息
-//            bundle.putSerializable("mark", markInfoList.get(i));
-//            marker.setExtraInfo(bundle);
-//        }
-//        MapStatusUpdate msu = MapStatusUpdateFactory.newLatLng(latLng);//通过这个经纬度对象，地图就可以定位到该点
-//        mBaidumap.animateMapStatus(msu);
-//    }
 
+    Map<String,String> map = new HashMap<>();
+    private void addMapMarks() {
+        mBaiduMap.clear();//先清除一下图层
+        LatLng latLng = null;
+        Marker marker = null;
+        OverlayOptions options;
+
+         MyMarkerBean markerBeanData;
+        for (int i = 0; i < markInfoList.size(); i++) {
+            markerBeanData = markInfoList.get(i);
+            LayoutInflater inflater = LayoutInflater.from(getContext());
+            View view = inflater.inflate(R.layout.item_layout_baidu_map_market, null);//这个是显示的覆盖物，其实是可以显示view的
+//            TextView tv_name = view.findViewById(R.id.tv_name);
+//            tv_name.setText(markInfoList.get(i).name);
+            //经纬度对象
+            latLng = new LatLng(markerBeanData.latitude, markerBeanData.longitude);//需要创建一个经纬对象，通过该对象就可以定位到处于地图上的某个具体点
+            BitmapDescriptor markerIcon = BitmapDescriptorFactory.fromBitmap(getViewBitmap(view));
+
+            //图标
+            options = new MarkerOptions().position(latLng).icon(markerIcon).zIndex(9);
+            marker = (Marker) mBaiduMap.addOverlay(options);//将覆盖物添加到地图上
+            mBaiduMap.addOverlay(options);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("marker", markerBeanData);
+            marker.setExtraInfo(bundle);
+        }
+        MapStatusUpdate msu = MapStatusUpdateFactory.newLatLng(latLng);//通过这个经纬度对象，地图就可以定位到该点
+        mBaiduMap.animateMapStatus(msu);
+    }
+
+    private Bitmap getViewBitmap(View addViewContent) {
+
+        addViewContent.setDrawingCacheEnabled(true);
+
+        addViewContent.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+        addViewContent.layout(0, 0, addViewContent.getMeasuredWidth(), addViewContent.getMeasuredHeight());
+
+        addViewContent.buildDrawingCache();
+        Bitmap cacheBitmap = addViewContent.getDrawingCache();
+        Bitmap bitmap = Bitmap.createBitmap(cacheBitmap);
+
+        return bitmap;
+    }
 
 
     @Override
     public boolean onMarkerClick(Marker marker) {
 
+        Bundle bundle = marker.getExtraInfo();
+        MyMarkerBean markerBean = (MyMarkerBean) bundle.getSerializable("marker");
+        Log.i("sss",markerBean.name);
+
 
 
         return true;
+
     }
 }
