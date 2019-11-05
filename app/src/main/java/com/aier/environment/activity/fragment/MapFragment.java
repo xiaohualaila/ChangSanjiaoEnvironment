@@ -1,12 +1,10 @@
 package com.aier.environment.activity.fragment;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +30,6 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
-import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.Polyline;
@@ -378,6 +375,7 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
                 //关闭InfoWindow  显示轨迹
                 mBaiduMap.hideInfoWindow();
 
+                //将marker移动到地图中间
                 MapStatus mMapStatus = new MapStatus.Builder()
                         .target(new LatLng(markerBean.latitude,markerBean.longitude)).zoom(18).build();
                 MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus);
