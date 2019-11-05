@@ -25,12 +25,14 @@ import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.InfoWindow;
+import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
+import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.Polyline;
@@ -67,7 +69,7 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
     private boolean isFirstLoc = true; // 是否首次定位
 
     private Polyline mPolyline;
-
+    Map<String,List<LatLng>>maps = new HashMap<>();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +93,17 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
         locationService.registerListener(mListener);//是否应该在onStart中注册
         locationService.start();
         mBaiduMap.setOnMarkerClickListener(this);
+        mBaiduMap.setOnMapClickListener(new BaiduMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                mBaiduMap.hideInfoWindow();
+            }
+
+            @Override
+            public boolean onMapPoiClick(MapPoi mapPoi) {
+                return false;
+            }
+        });
         //配置定位SDK参数
         initLocation();
         getAllUserPostion();
@@ -233,6 +246,7 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+
                     List<LatLng> latLngs;
                     MyMarkerBean myMarkerBean;
                     boolean success = jsonObj.optBoolean("success");
@@ -263,8 +277,8 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
                                     markInfoList.add(myMarkerBean);
                                 }
                             }
-                            OverlayOptions ooPolyline = new PolylineOptions().width(13).color(0xAAFF0000).points(latLngs);
-                            mPolyline = (Polyline) mBaiduMap.addOverlay(ooPolyline);
+                            maps.put(key,latLngs);
+
                         }
                     }
 
@@ -361,16 +375,23 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
         tv_guiji.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //关闭InfoWindow
+                //关闭InfoWindow  显示轨迹
                 mBaiduMap.hideInfoWindow();
+
+                MapStatus mMapStatus = new MapStatus.Builder()
+                        .target(new LatLng(markerBean.latitude,markerBean.longitude)).zoom(18).build();
+                MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus);
+                mBaiduMap.animateMapStatus(mMapStatusUpdate);
+
+                maps.get(markerBean.name);
+                OverlayOptions ooPolyline = new PolylineOptions().width(13).color(0xAAFF0000).points(maps.get(markerBean.name));
+                mPolyline = (Polyline) mBaiduMap.addOverlay(ooPolyline);
+               // mPolyline.setZIndex(3);
+
             }
         });
-
-
         return true;
 
     }
-
-
 
 }
