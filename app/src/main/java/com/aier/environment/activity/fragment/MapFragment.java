@@ -1,5 +1,6 @@
 package com.aier.environment.activity.fragment;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,14 +25,21 @@ import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.map.Polyline;
+import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,7 +61,7 @@ public class MapFragment extends Fragment {
     private LatLng latLng;
     private boolean isFirstLoc = true; // 是否首次定位
 
-
+    private Polyline mPolyline;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,11 +117,10 @@ public class MapFragment extends Fragment {
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_map, container, false);
-        mMapView =  v.findViewById(R.id.map);
+        mMapView = v.findViewById(R.id.map);
         mBaiduMap = mMapView.getMap();
         initMap();
         return v;
@@ -149,10 +156,10 @@ public class MapFragment extends Fragment {
 
                     if (location.getLocType() == BDLocation.TypeGpsLocation) {
                         // GPS定位结果
-                  //      Toast.makeText(getActivity(), location.getAddrStr(), Toast.LENGTH_SHORT).show();
+                        //      Toast.makeText(getActivity(), location.getAddrStr(), Toast.LENGTH_SHORT).show();
                     } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {
                         // 网络定位结果
-                     //   Toast.makeText(getActivity(), location.getAddrStr(), Toast.LENGTH_SHORT).show();
+                        //   Toast.makeText(getActivity(), location.getAddrStr(), Toast.LENGTH_SHORT).show();
 
                     } else if (location.getLocType() == BDLocation.TypeOffLineLocation) {
                         // 离线定位结果
@@ -178,7 +185,6 @@ public class MapFragment extends Fragment {
     };
 
 
-
     private void getAllUserPostion() {
         try {
             OkHttpClient client = new OkHttpClient();//创建OkHttpClient对象。
@@ -196,7 +202,7 @@ public class MapFragment extends Fragment {
             call.enqueue(new Callback() {
                 @Override
                 public void onFailure(@NonNull Call call, IOException e) {
-                    Log.i("zxzx",e.getMessage());
+                    Log.i("zxzx", e.getMessage());
                 }
 
                 @Override
@@ -210,7 +216,7 @@ public class MapFragment extends Fragment {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    Log.i("sss",string);
+                    //    Log.i("sss",string);
                     Gson gson = new Gson();
 
 
@@ -221,40 +227,29 @@ public class MapFragment extends Fragment {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    boolean success= jsonObj.optBoolean("success");
-                       if(success) {
-                           jsonObj.optJSONObject("");
+                    List<LatLng> latLngs;
+                    boolean success = jsonObj.optBoolean("success");
+                    if (success) {
+                        JSONObject objResult = jsonObj.optJSONObject("result");
+                        Iterator<String> iterator = objResult.keys();
+                        JSONArray array;
+                        JSONObject obj;
+                        while (iterator.hasNext()) {
+                            latLngs = new ArrayList<>();
+                            String key = iterator.next();
+                            array = objResult.optJSONArray(key);
+                            Log.i("sss", key+"______________");
+                            for (int i = 0; i < array.length(); i++) {
+                                obj = array.optJSONObject(i);
+                                Log.i("sss", obj.optString("latitude") + "  " + obj.optString("longitude"));
 
-
-
-
-
-
-
-
-
-
-//                    GetAllPostion getAllPostion =  gson.fromJson(string, GetAllPostion.class);
-//                    if(getAllPostion.isSuccess()){
-//                        GetAllPostion.ResultBean resultBean =  getAllPostion.getResult();
-//
-//                        if(resultBean.getLists()!=null&&resultBean.getLists().size()>0){
-//                            for(int i=0;i<resultBean.getLists().size();i++){
-//                                List<List<UserLocation>>  lists=  resultBean.getLists();
-//                                if(lists.size()>0){
-//                                    for(int j=0;j<lists.get(i).size();j++){
-//                                        List<UserLocation> userLocations= lists.get(i);
-//                                        if(userLocations.size()>0){
-//                                            for(int z=0;z<lists.get(j).size();z++){
-//                                                Log.i("sss",userLocations.get(z).getLatitude()+""+userLocations.get(z).getLongitude());
-//                                            }
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
-//
-
+                                //将points集合中的点绘制轨迹线条图层，显示在地图上
+                                latLngs.add(new LatLng(Double.parseDouble(obj.optString("latitude")),
+                                        Double.parseDouble(obj.optString("longitude"))));
+                            }
+                            OverlayOptions ooPolyline = new PolylineOptions().width(13).color(0xAAFF0000).points(latLngs);
+                            mPolyline = (Polyline) mBaiduMap.addOverlay(ooPolyline);
+                        }
                     }
 
 
