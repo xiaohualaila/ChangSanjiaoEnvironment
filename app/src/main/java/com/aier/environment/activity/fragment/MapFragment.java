@@ -24,6 +24,7 @@ import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.Polyline;
@@ -52,7 +53,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 
-public class MapFragment extends Fragment {
+public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListener {
     static MapView mMapView = null;
     // 定位相关
     LocationClient mLocClient;
@@ -91,6 +92,7 @@ public class MapFragment extends Fragment {
         //配置定位SDK参数
         initLocation();
         getAllUserPostion();
+        mBaiduMap.setOnMarkerClickListener(this);
     }
 
 
@@ -123,6 +125,7 @@ public class MapFragment extends Fragment {
         mMapView = v.findViewById(R.id.map);
         mBaiduMap = mMapView.getMap();
         initMap();
+
         return v;
     }
 
@@ -290,5 +293,48 @@ public class MapFragment extends Fragment {
         super.onSaveInstanceState(outState);
         mMapView.onSaveInstanceState(outState);
 
+    }
+
+
+    /**
+     * @author Mikyou
+     * 添加覆盖物
+     */
+//    private void addMapMarks() {
+//        mBaidumap.clear();//先清除一下图层
+//        LatLng latLng = null;
+//        Marker marker = null;
+//        OverlayOptions options;
+//        LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
+//        View view = inflater.inflate(R.layout.item_layout_baidu_map_market, null);//这个是显示的覆盖物，其实是可以显示view的
+//        ImageView phone = (ImageView) view.findViewById(R.id.iv_dog_baidu_map_market_phone);
+//        //遍历MarkInfo的List一个MarkInfo就是一个Mark
+//        for (int i = 0; i < markInfoList.size(); i++) {
+//
+//            //这是我从网络获取的信息，网络获取就不贴了。。。（不能贴）
+//
+//            Picasso.with(this).load(markInfoList.get(i).getDog_photo()).into(phone);
+//            myMarks = BitmapDescriptorFactory.fromView(view);//引入自定义的覆盖物图标，将其转化成一个BitmapDescriptor对象
+//            //经纬度对象
+//            latLng = new LatLng(markInfoList.get(i).getLatitude(), markInfoList.get(i).getLongitude());//需要创建一个经纬对象，通过该对象就可以定位到处于地图上的某个具体点
+//            //图标
+//            options = new MarkerOptions().position(latLng).icon(myMarks).zIndex(9);
+//            marker = (Marker) mBaidumap.addOverlay(options);//将覆盖物添加到地图上
+//            Bundle bundle = new Bundle();//创建一个Bundle对象将每个mark具体信息传过去，当点击该覆盖物图标的时候就会显示该覆盖物的详细信息
+//            bundle.putSerializable("mark", markInfoList.get(i));
+//            marker.setExtraInfo(bundle);
+//        }
+//        MapStatusUpdate msu = MapStatusUpdateFactory.newLatLng(latLng);//通过这个经纬度对象，地图就可以定位到该点
+//        mBaidumap.animateMapStatus(msu);
+//    }
+
+
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+
+
+
+        return true;
     }
 }
