@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
     private void socket() {
         UserInfo myInfo = JMessageClient.getMyInfo();
         Log.i("aaa",myInfo.getUserName() + "");
-        String url = "http://192.168.0.68:3002/chat?userid="+myInfo.getUserName()+"&type=mobile";
+        String url = "http://121.41.52.56:3002/chat?userid="+myInfo.getUserName()+"&type=mobile";
         mSocket = SingleSocket.getInstance().getSocket(url);
         //注册  事件
         mSocket.on(Socket.EVENT_CONNECT,onConnect);

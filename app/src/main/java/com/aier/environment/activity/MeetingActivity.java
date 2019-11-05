@@ -82,7 +82,7 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
     private void socket() {
         UserInfo myInfo = JMessageClient.getMyInfo();
         nickname = myInfo.getNickname();
-        String url = "http://192.168.0.68:3002/chat?userid=" + myInfo.getUserName() + "&type=mobile";
+        String url = "http://121.41.52.56:3002/chat?userid=" + myInfo.getUserName() + "&type=mobile";
         mSocket = SingleSocket.getInstance().getSocket(url);
         //注册  事件
         mSocket.on("message", messageData);

@@ -192,7 +192,7 @@ public class ContactsController implements View.OnClickListener, SideBar.OnTouch
             }
 
 
-        Log.i("sss",object.toString());
+      //  Log.i("sss",object.toString());
 
         RequestBody body = RequestBody.create(json, object.toString());
         Request request = new Request.Builder()//创建Request 对象。
@@ -214,7 +214,7 @@ public class ContactsController implements View.OnClickListener, SideBar.OnTouch
                     String str = response.body().string();
                     Gson gson = new Gson();
                     FriendBean bean = gson.fromJson(str, FriendBean.class);
-                    Log.i("sss", str);
+                 //   Log.i("sss", str);
                     if (bean.isSuccess()) {
                         List<FriendBean.ResultBean.UsersBean> list = bean.getResult().getUsers();
                         if (list != null && list.size() != 0) {

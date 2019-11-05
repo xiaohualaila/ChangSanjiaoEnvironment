@@ -75,7 +75,7 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
         userName=myInfo.getUserName();
         nickname = myInfo.getNickname();
         Log.i("aaa", "userName " +userName + "房间号随机数"+roomId);
-        String url = "http://192.168.0.68:3002/chat?userid="+userName+"&type=mobile";
+        String url = "http://121.41.52.56:3002/chat?userid="+userName+"&type=mobile";
         mSocket = SingleSocket.getInstance().getSocket(url);
         //注册  事件
 

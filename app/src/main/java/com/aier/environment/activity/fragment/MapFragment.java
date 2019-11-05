@@ -1,18 +1,20 @@
 package com.aier.environment.activity.fragment;
 
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.aier.environment.JGApplication;
 import com.aier.environment.R;
 import com.aier.environment.location.service.LocationService;
+import com.aier.environment.model.GetAllPostion;
+import com.aier.environment.model.UserLocation;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -23,6 +25,23 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 
 public class MapFragment extends Fragment {
@@ -33,16 +52,11 @@ public class MapFragment extends Fragment {
     private LocationService locationService;
     private LatLng latLng;
     private boolean isFirstLoc = true; // 是否首次定位
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     private void initMap() {
@@ -68,8 +82,9 @@ public class MapFragment extends Fragment {
         locationService.start();
         //配置定位SDK参数
         initLocation();
-
+        getAllUserPostion();
     }
+
 
     //配置定位SDK参数
     private void initLocation() {
@@ -86,7 +101,6 @@ public class MapFragment extends Fragment {
         // .getLocationDescribe里得到，结果类似于“在北京天安门附近”
         option.setIsNeedLocationPoiList(true);//可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
         option.setIgnoreKillProcess(false);
-        option.setOpenGps(true); // 打开gps
 
         //可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
         option.SetIgnoreCacheException(false);//可选，默认false，设置是否收集CRASH信息，默认收集
@@ -154,6 +168,7 @@ public class MapFragment extends Fragment {
                 }
 
             }
+
         }
 
         @Override
@@ -161,6 +176,96 @@ public class MapFragment extends Fragment {
         }
 
     };
+
+
+
+    private void getAllUserPostion() {
+        try {
+            OkHttpClient client = new OkHttpClient();//创建OkHttpClient对象。
+            MediaType json = MediaType.parse("application/json; charset=utf-8");
+            JSONObject object = new JSONObject();
+            object.put("method", "ENVIRONMENTAPI_GETALLPOSTION");
+
+            RequestBody body = RequestBody.create(json, object.toString());
+            Request request = new Request.Builder()//创建Request 对象。
+                    .url("http://121.41.52.56:3001/environmentalapi")
+                    .post(body)
+                    .build();
+            Call call = client.newCall(request);
+            //请求加入调度
+            call.enqueue(new Callback() {
+                @Override
+                public void onFailure(@NonNull Call call, IOException e) {
+                    Log.i("zxzx",e.getMessage());
+                }
+
+                @Override
+                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+//                    getActivity().runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+                    String string = null;
+                    try {
+                        string = response.body().string();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Log.i("sss",string);
+                    Gson gson = new Gson();
+
+
+                    JSONObject jsonObj = null;
+
+                    try {
+                        jsonObj = new JSONObject(string);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    boolean success= jsonObj.optBoolean("success");
+                       if(success) {
+                           jsonObj.optJSONObject("");
+
+
+
+
+
+
+
+
+
+
+//                    GetAllPostion getAllPostion =  gson.fromJson(string, GetAllPostion.class);
+//                    if(getAllPostion.isSuccess()){
+//                        GetAllPostion.ResultBean resultBean =  getAllPostion.getResult();
+//
+//                        if(resultBean.getLists()!=null&&resultBean.getLists().size()>0){
+//                            for(int i=0;i<resultBean.getLists().size();i++){
+//                                List<List<UserLocation>>  lists=  resultBean.getLists();
+//                                if(lists.size()>0){
+//                                    for(int j=0;j<lists.get(i).size();j++){
+//                                        List<UserLocation> userLocations= lists.get(i);
+//                                        if(userLocations.size()>0){
+//                                            for(int z=0;z<lists.get(j).size();z++){
+//                                                Log.i("sss",userLocations.get(z).getLatitude()+""+userLocations.get(z).getLongitude());
+//                                            }
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
+//
+
+                    }
+
+
+//                        }
+//                    });
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onPause() {
@@ -172,6 +277,7 @@ public class MapFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mMapView.onResume();
+
     }
 
     @Override
