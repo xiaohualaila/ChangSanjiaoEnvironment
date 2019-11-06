@@ -9,15 +9,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
 import com.aier.environment.JGApplication;
 import com.aier.environment.R;
 import com.aier.environment.activity.ReceivePhoneActivity;
 import com.aier.environment.location.service.LocationService;
 import com.aier.environment.model.MyMarkerBean;
+import com.aier.environment.model.UserOnlineBean;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -38,7 +37,7 @@ import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.Polyline;
 import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
-import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -71,13 +70,16 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
     private boolean isFirstLoc = true; // 是否首次定位
 
     private Polyline mPolyline;
-    Map<String,List<LatLng>>maps = new HashMap<>();
+    Map<String, List<LatLng>> maps = new HashMap<>();
     private String my_name;
+    public UserOnlineBean userOnlineBean;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UserInfo myInfo = JMessageClient.getMyInfo();
         my_name = myInfo.getUserName();
+
     }
 
     private void initMap() {
@@ -273,10 +275,11 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
 
                                     myMarkerBean.latitude = Double.parseDouble(obj.optString("latitude"));
                                     myMarkerBean.longitude = Double.parseDouble(obj.optString("longitude"));
+                                //    setUserOnline(myMarkerBean);
                                     markInfoList.add(myMarkerBean);
                                 }
                             }
-                            maps.put(key,latLngs);
+                            maps.put(key, latLngs);
                         }
                     }
                     addMapMarks();
@@ -285,6 +288,27 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+     //设置用户在线状态
+    private void setUserOnline(MyMarkerBean myMarkerBean) {
+        if(userOnlineBean!=null){//设置是否在线
+            List<UserOnlineBean.DataBean> all = userOnlineBean.getData();
+            if (all != null && all.size() > 0) {
+                for (int z = 0; z < all.size(); z++) {
+                    Log.i("bbb","============="+myMarkerBean.name + " "+all.get(z).getUsername());
+                    if (myMarkerBean.name.equals(all.get(z).getUsername())) {
+                        myMarkerBean.isOnline = true;
+                    } else {
+                        myMarkerBean.isOnline = false;
+                    }
+                }
+            }
+        }
+    }
+
+    //设置用户在线状态
+    public  void setUserOnline2(UserOnlineBean bean) {
+        userOnlineBean = bean;
     }
 
     @Override
@@ -329,12 +353,19 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
         Marker marker = null;
         OverlayOptions options;
 
-         MyMarkerBean markerBeanData;
+        MyMarkerBean markerBeanData;
         for (int i = 0; i < markInfoList.size(); i++) {
             markerBeanData = markInfoList.get(i);
+            setUserOnline(markerBeanData);
             //经纬度对象
             latLng = new LatLng(markerBeanData.latitude, markerBeanData.longitude);//需要创建一个经纬对象，通过该对象就可以定位到处于地图上的某个具体点
-            BitmapDescriptor markerIcon = BitmapDescriptorFactory.fromResource(R.drawable.picker_map_local_icon);
+            BitmapDescriptor markerIcon;
+            if(markerBeanData.isOnline){
+                 markerIcon = BitmapDescriptorFactory.fromResource(R.drawable.marker_online);
+            }else {
+                markerIcon = BitmapDescriptorFactory.fromResource(R.drawable.marker_offonline);
+            }
+
             //图标
             options = new MarkerOptions().position(latLng).icon(markerIcon).zIndex(9);
             marker = (Marker) mBaiduMap.addOverlay(options);//将覆盖物添加到地图上
@@ -352,7 +383,7 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
 
         Bundle bundle = marker.getExtraInfo();
         MyMarkerBean markerBean = (MyMarkerBean) bundle.getSerializable("marker");
-        Log.i("sss",markerBean.name);
+        Log.i("sss", markerBean.name);
         View view = View.inflate(getActivity(), R.layout.marker_click_window, null);
         TextView tv_tonghua = view.findViewById(R.id.tv_tonghua);
         TextView tv_guiji = view.findViewById(R.id.tv_guiji);
@@ -361,15 +392,15 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
         tv_marker_name.setText(markerBean.name);
         final InfoWindow mInfoWindow = new InfoWindow(view, marker.getPosition(), -47);
         mBaiduMap.showInfoWindow(mInfoWindow);
-        if(!markerBean.isShowGuiji){
+        if (!markerBean.isShowGuiji) {
             tv_guiji.setText("显示轨迹");
-        }else {
+        } else {
             tv_guiji.setText("隐藏轨迹");
         }
-        if(markerBean.name.equals(my_name)){ //如果是他自己隐藏通话按钮
-            Log.i("sss",markerBean.name +"  my_name"+my_name);
+        if (markerBean.name.equals(my_name)) { //如果是他自己隐藏通话按钮
+            Log.i("sss", markerBean.name + "  my_name" + my_name);
             tv_tonghua.setVisibility(View.GONE);
-        }else {
+        } else {
             tv_tonghua.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -396,16 +427,16 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
             public void onClick(View v) {
                 mBaiduMap.hideInfoWindow();
                 //将marker移动到地图中间
-                MapStatus mMapStatus = new MapStatus.Builder().target(new LatLng(markerBean.latitude,markerBean.longitude)).zoom(18).build();
+                MapStatus mMapStatus = new MapStatus.Builder().target(new LatLng(markerBean.latitude, markerBean.longitude)).zoom(18).build();
                 MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus);
                 mBaiduMap.animateMapStatus(mMapStatusUpdate);
-                if(!markerBean.isShowGuiji){
+                if (!markerBean.isShowGuiji) {
                     markerBean.isShowGuiji = true;
                     OverlayOptions ooPolyline = new PolylineOptions().width(13).color(0xAAFF0000).points(maps.get(markerBean.name));
                     mPolyline = (Polyline) mBaiduMap.addOverlay(ooPolyline);
                     tv_guiji.setText("隐藏轨迹");
                     // mPolyline.setZIndex(3);
-                }else {
+                } else {
                     markerBean.isShowGuiji = false;
                     addMapMarks1();
                 }
@@ -424,9 +455,16 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
         MyMarkerBean markerBeanData;
         for (int i = 0; i < markInfoList.size(); i++) {
             markerBeanData = markInfoList.get(i);
+            setUserOnline(markerBeanData);
             //经纬度对象
             latLng = new LatLng(markerBeanData.latitude, markerBeanData.longitude);//需要创建一个经纬对象，通过该对象就可以定位到处于地图上的某个具体点
-            BitmapDescriptor markerIcon = BitmapDescriptorFactory.fromResource(R.drawable.picker_map_local_icon);
+
+            BitmapDescriptor markerIcon;
+            if(markerBeanData.isOnline){
+                markerIcon = BitmapDescriptorFactory.fromResource(R.drawable.marker_online);
+            }else {
+                markerIcon = BitmapDescriptorFactory.fromResource(R.drawable.marker_offonline);
+            }
             //图标
             options = new MarkerOptions().position(latLng).icon(markerIcon).zIndex(9);
             marker = (Marker) mBaiduMap.addOverlay(options);//将覆盖物添加到地图上
@@ -434,8 +472,8 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
             bundle.putSerializable("marker", markerBeanData);
             marker.setExtraInfo(bundle);
         }
-       // MapStatusUpdate msu = MapStatusUpdateFactory.newLatLng(latLng);//通过这个经纬度对象，地图就可以定位到该点
-      //  mBaiduMap.animateMapStatus(msu);
+        // MapStatusUpdate msu = MapStatusUpdateFactory.newLatLng(latLng);//通过这个经纬度对象，地图就可以定位到该点
+        //  mBaiduMap.animateMapStatus(msu);
     }
 
 }

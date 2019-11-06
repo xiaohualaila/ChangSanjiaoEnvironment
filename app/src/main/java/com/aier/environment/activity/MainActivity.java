@@ -15,12 +15,15 @@ import com.aier.environment.JGApplication;
 import com.aier.environment.R;
 import com.aier.environment.controller.MainController;
 import com.aier.environment.location.service.LocationService;
+import com.aier.environment.model.UserOnlineBean;
+import com.aier.environment.utils.SharePreferenceManager;
 import com.aier.environment.utils.SingleSocket;
 import com.aier.environment.view.MainView;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.google.gson.Gson;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.runtime.Permission;
@@ -50,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private BDLocation mLocation;
     private String userName;
     public String city;
-
+    public UserOnlineBean userOnlineBean;
     private Handler handler = new Handler()
     {
         @Override
@@ -192,8 +195,14 @@ public class MainActivity extends AppCompatActivity {
                             startActivity(intent);
                         }
 
+                    }else if(data.optString("type").equals("online-user")){
+                        Gson gson =new Gson();
+                        userOnlineBean = gson.fromJson(data.toString(), UserOnlineBean.class);
+                        mMainController.setUserOnline(userOnlineBean);
+                        Log.i("bbb","得到在线人员数据");
                     }
-                //    Log.i("aaa","message "+data.toString());
+                  Log.i("bbb","main  message "+data.toString());
+
                 }
             });
         }

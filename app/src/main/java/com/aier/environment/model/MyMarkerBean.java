@@ -8,4 +8,5 @@ public class MyMarkerBean implements Serializable {
     public double longitude;
     public String name;
     public Boolean isShowGuiji = false;
+    public boolean isOnline = false;
 }

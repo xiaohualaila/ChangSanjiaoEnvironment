@@ -13,6 +13,7 @@ import com.aier.environment.activity.fragment.MeFragment;
 import com.aier.environment.adapter.ViewPagerAdapter;
 import com.aier.environment.activity.fragment.ChatRoomFragment;
 import com.aier.environment.activity.fragment.ContactsFragment;
+import com.aier.environment.model.UserOnlineBean;
 import com.aier.environment.model.WeatherBean;
 import com.aier.environment.view.MainView;
 
@@ -143,6 +144,11 @@ public class MainController implements View.OnClickListener, ViewPager.OnPageCha
 
             }
         });
+
+    }
+
+    public void setUserOnline(UserOnlineBean userOnlineBean) {
+        mapFragment.setUserOnline2(userOnlineBean);
 
     }
 }

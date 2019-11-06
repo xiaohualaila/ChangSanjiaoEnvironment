@@ -89,9 +89,9 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
                     object.put("data", "");
                     object.put("room", roomId);
                     object.put("type", "is-join");
-                    Log.i("aaa",object.toString());
+                    Log.i("bbb",object.toString());
                     mSocket.emit("call-user", object.toString());// 单个用户呼叫
-                    Log.i("aaa","单个用户呼叫 call-user 用户id "+mTargetId);
+                    Log.i("bbb","单个用户呼叫 call-user 用户id "+mTargetId);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -131,13 +131,13 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
                 public void run() {
 
                     JSONObject data = (JSONObject) args[0];
+                    Log.i("ddd","message "+data.toString());
                     if(data.optString("type").equals("joined")){
                       //  {"type":"joined","data":{"userid":"0002"}}
                         toMeetingActivity();
                     }else {
                         finish();
                     }
-                    Log.i("aaa","message "+data.toString());
                 }
             });
         }
@@ -166,6 +166,7 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
                                 object.put("room", roomId);
                                 object.put("from_type", "mobile");
                                 mSocket.emit("join", object.toString());// 接听电话
+                                Log.i("ddd","接听电话 发送 "+ object.toString());
                                 toMeetingActivity();
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -182,6 +183,7 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
                     object.put("room", "");
                     object.put("from_type", "mobile");
                     mSocket.emit("join", object.toString());// 拒绝电话
+                    Log.i("ddd","拒绝电话 发送 "+ object.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
