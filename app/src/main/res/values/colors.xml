@@ -75,6 +75,7 @@
     <color name="finish_btn_clickable_color">#6fd66b</color>
     <color name="refuse_btn_default">#ea6e76</color>
     <color name="wait_inviting">#2DD09C</color>
+    <color name="ll_green">#902DD09C</color>
     <color name="send_file_action_bar">#2C2C2C</color>
     <color name="send_file_desc_color">#808080</color>
     <color name="send_file_action_bar_selected">#2DD0CF</color>
