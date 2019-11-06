@@ -209,86 +209,97 @@ public class ContactsController implements View.OnClickListener, SideBar.OnTouch
 
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                mContactsView.dismissLoadingHeader();
-                if (response.isSuccessful()) {//回调的方法执行在子线程。
-                    String str = response.body().string();
-                    Gson gson = new Gson();
-                    FriendBean bean = gson.fromJson(str, FriendBean.class);
-                 //   Log.i("sss", str);
-                    if (bean.isSuccess()) {
-                        List<FriendBean.ResultBean.UsersBean> list = bean.getResult().getUsers();
-                        if (list != null && list.size() != 0) {
-                            mContactsView.dismissLine();
-                            ActiveAndroid.beginTransaction();
-
+                mContext.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mContactsView.dismissLoadingHeader();
+                        if (response.isSuccessful()) {//回调的方法执行在子线程。
+                            String str = null;
                             try {
-                                for (int i = 0; i < list.size(); i++) {
+                                str = response.body().string();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            Gson gson = new Gson();
+                            FriendBean bean = gson.fromJson(str, FriendBean.class);
+                            //   Log.i("sss", str);
+                            if (bean.isSuccess()) {
+                                List<FriendBean.ResultBean.UsersBean> list = bean.getResult().getUsers();
+                                if (list != null && list.size() != 0) {
+                                    mContactsView.dismissLine();
+                                    ActiveAndroid.beginTransaction();
 
-                                    FriendBean.ResultBean.UsersBean usersBean = list.get(i);
-                                    String displayName = usersBean.getUsername();
-                                    String letter;
-                                    if (!TextUtils.isEmpty(displayName.trim())) {
-                                        ArrayList<HanziToPinyin.Token> tokens = HanziToPinyin.getInstance().get(displayName);
-                                        StringBuilder sb = new StringBuilder();
-                                        if (tokens != null && tokens.size() > 0) {
-                                            for (HanziToPinyin.Token token : tokens) {
-                                                if (token.type == HanziToPinyin.Token.PINYIN) {
-                                                    sb.append(token.target);
-                                                } else {
-                                                    sb.append(token.source);
+                                    try {
+                                        for (int i = 0; i < list.size(); i++) {
+
+                                            FriendBean.ResultBean.UsersBean usersBean = list.get(i);
+                                            String displayName = usersBean.getUsername();
+                                            String letter;
+                                            if (!TextUtils.isEmpty(displayName.trim())) {
+                                                ArrayList<HanziToPinyin.Token> tokens = HanziToPinyin.getInstance().get(displayName);
+                                                StringBuilder sb = new StringBuilder();
+                                                if (tokens != null && tokens.size() > 0) {
+                                                    for (HanziToPinyin.Token token : tokens) {
+                                                        if (token.type == HanziToPinyin.Token.PINYIN) {
+                                                            sb.append(token.target);
+                                                        } else {
+                                                            sb.append(token.source);
+                                                        }
+                                                    }
                                                 }
+                                                String sortString = sb.toString().substring(0, 1).toUpperCase();
+                                                if (sortString.matches("[A-Z]")) {
+                                                    letter = sortString.toUpperCase();
+                                                } else {
+                                                    letter = "#";
+                                                }
+                                            } else {
+                                                letter = "#";
                                             }
-                                        }
-                                        String sortString = sb.toString().substring(0, 1).toUpperCase();
-                                        if (sortString.matches("[A-Z]")) {
-                                            letter = sortString.toUpperCase();
-                                        } else {
-                                            letter = "#";
-                                        }
-                                    } else {
-                                        letter = "#";
-                                    }
-                                    //避免重复请求时导致数据重复A
-                                    FriendEntry friend = FriendEntry.getFriend(user, usersBean.getUsername(), appkey);
-                                    if (null == friend) {
+                                            //避免重复请求时导致数据重复A
+                                            FriendEntry friend = FriendEntry.getFriend(user, usersBean.getUsername(), appkey);
+                                            if (null == friend) {
 //                                    if (TextUtils.isEmpty(usersBean.getAvatar())) {
 //                                        friend = new FriendEntry(userInfo.getUserID(), userInfo.getUserName(), userInfo.getNotename(),
 //                                        userInfo.getNickname(), userInfo.getAppKey(),
 //                                        null, displayName, letter, user);
-                                        friend = new FriendEntry(10201101L, usersBean.getUsername(), usersBean.getNickname(),
-                                                usersBean.getNickname(), appkey,
-                                                null, displayName, letter, user);
+                                                friend = new FriendEntry(10201101L, usersBean.getUsername(), usersBean.getNickname(),
+                                                        usersBean.getNickname(), appkey,
+                                                        null, displayName, letter, user);
 //                                    } else {
 //                                        friend = new FriendEntry(usersBean.getUsername(), usersBean.getUsername(),
 //                                        usersBean.getUsername(), usersBean.getNickname(), userInfo.getAppKey(),
 //                                                usersBean.getAvatarFile().getAbsolutePath(), displayName, letter, user);
 //                                    }
-                                        friend.save();
-                                        mList.add(friend);
+                                                friend.save();
+                                                mList.add(friend);
+                                            }
+                                            forDelete.add(friend);
+                                        }
+                                        ActiveAndroid.setTransactionSuccessful();
+                                    } finally {
+                                        ActiveAndroid.endTransaction();
                                     }
-                                    forDelete.add(friend);
+
+
+                                }else {
+                                    mContactsView.showLine();
                                 }
-                                ActiveAndroid.setTransactionSuccessful();
-                            } finally {
-                                ActiveAndroid.endTransaction();
+                                //其他端删除好友后,登陆时把数据库中的也删掉
+                                List<FriendEntry> friends = JGApplication.getUserEntry().getFriends();
+                                friends.removeAll(forDelete);
+                                for (FriendEntry del : friends) {
+                                    del.delete();
+                                    mList.remove(del);
+                                }
+                                Collections.sort(mList, new PinyinComparator());//按拼音排序
+                                mAdapter = new StickyListAdapter(mContext, mList, false);
+                                mContactsView.setAdapter(mAdapter);
                             }
-
-
-                        }else {
-                            mContactsView.showLine();
                         }
-                        //其他端删除好友后,登陆时把数据库中的也删掉
-                        List<FriendEntry> friends = JGApplication.getUserEntry().getFriends();
-                        friends.removeAll(forDelete);
-                        for (FriendEntry del : friends) {
-                            del.delete();
-                            mList.remove(del);
-                        }
-                        Collections.sort(mList, new PinyinComparator());//按拼音排序
-                        mAdapter = new StickyListAdapter(mContext, mList, false);
-                        mContactsView.setAdapter(mAdapter);
                     }
-                }
+                });
+
             }
         });
     }

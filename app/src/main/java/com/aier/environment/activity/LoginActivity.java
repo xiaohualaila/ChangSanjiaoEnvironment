@@ -257,7 +257,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mDe_login_logo.setImageResource(R.drawable.no_avatar);
+                mDe_login_logo.setImageResource(R.drawable.logo_pic);
                 if (mLogin_userName.getText().length() == 0 || mLogin_passWord.getText().length() == 0) {
                     mBtn_login.setEnabled(false);
                 } else {

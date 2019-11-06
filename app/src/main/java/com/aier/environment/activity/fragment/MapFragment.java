@@ -161,13 +161,13 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
             if (null != location && location.getLocType() != BDLocation.TypeServerError) {
                 latLng = new LatLng(location.getLatitude(), location.getLongitude());
                 // 构造定位数据
-                MyLocationData locData = new MyLocationData.Builder()
-                        .accuracy(location.getRadius())
-                        // 此处设置开发者获取到的方向信息，顺时针0-360
-                        .direction(100).latitude(location.getLatitude())
-                        .longitude(location.getLongitude()).build();
-                // 设置定位数据
-                mBaiduMap.setMyLocationData(locData);
+//                MyLocationData locData = new MyLocationData.Builder()
+//                        .accuracy(location.getRadius())
+//                        // 此处设置开发者获取到的方向信息，顺时针0-360
+//                        .direction(100).latitude(location.getLatitude())
+//                        .longitude(location.getLongitude()).build();
+//                // 设置定位数据
+//                mBaiduMap.setMyLocationData(locData);
                 // 当不需要定位图层时关闭定位图层
                 //mBaiduMap.setMyLocationEnabled(false);
                 if (isFirstLoc) {
@@ -385,23 +385,61 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
         Bundle bundle = marker.getExtraInfo();
         MyMarkerBean markerBean = (MyMarkerBean) bundle.getSerializable("marker");
         Log.i("sss", markerBean.name);
-        View view = View.inflate(getActivity(), R.layout.marker_click_window, null);
-        TextView tv_tonghua = view.findViewById(R.id.tv_tonghua);
-        TextView tv_guiji = view.findViewById(R.id.tv_guiji);
-        ImageView iv_x = view.findViewById(R.id.iv_x);
-        TextView tv_marker_name = view.findViewById(R.id.tv_marker_name);
-        tv_marker_name.setText(markerBean.name);
-        final InfoWindow mInfoWindow = new InfoWindow(view, marker.getPosition(), -47);
-        mBaiduMap.showInfoWindow(mInfoWindow);
-        if (!markerBean.isShowGuiji) {
-            tv_guiji.setText("显示轨迹");
-        } else {
-            tv_guiji.setText("隐藏轨迹");
-        }
         if (markerBean.name.equals(my_name)) { //如果是他自己隐藏通话按钮
+            View view1 = View.inflate(getActivity(), R.layout.marker_click_not_tonghua_window, null);
+            TextView tv_guiji = view1.findViewById(R.id.tv_guiji);
+            ImageView iv_x = view1.findViewById(R.id.iv_x);
+            TextView tv_marker_name = view1.findViewById(R.id.tv_marker_name);
+            tv_marker_name.setText(markerBean.name);
+            final InfoWindow mInfoWindow = new InfoWindow(view1, marker.getPosition(), -47);
+            mBaiduMap.showInfoWindow(mInfoWindow);
+            if (!markerBean.isShowGuiji) {
+                tv_guiji.setText("显示轨迹");
+            } else {
+                tv_guiji.setText("隐藏轨迹");
+            }
             Log.i("sss", markerBean.name + "  my_name" + my_name);
-            tv_tonghua.setVisibility(View.GONE);
-        } else {
+            iv_x.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mBaiduMap.hideInfoWindow();
+                }
+            });
+            tv_guiji.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mBaiduMap.hideInfoWindow();
+                    //将marker移动到地图中间
+                    MapStatus mMapStatus = new MapStatus.Builder().target(new LatLng(markerBean.latitude, markerBean.longitude)).zoom(18).build();
+                    MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus);
+                    mBaiduMap.animateMapStatus(mMapStatusUpdate);
+                    if (!markerBean.isShowGuiji) {
+                        markerBean.isShowGuiji = true;
+                        OverlayOptions ooPolyline = new PolylineOptions().width(13).color(0xAAFF0000).points(maps.get(markerBean.name));
+                        mPolyline = (Polyline) mBaiduMap.addOverlay(ooPolyline);
+                        tv_guiji.setText("隐藏轨迹");
+                        // mPolyline.setZIndex(3);
+                    } else {
+                        markerBean.isShowGuiji = false;
+                        addMapMarks1();
+                    }
+                }
+            });
+        }else {
+            View view = View.inflate(getActivity(), R.layout.marker_click_window, null);
+            TextView tv_tonghua = view.findViewById(R.id.tv_tonghua);
+            TextView tv_guiji = view.findViewById(R.id.tv_guiji);
+            ImageView iv_x = view.findViewById(R.id.iv_x);
+            TextView tv_marker_name = view.findViewById(R.id.tv_marker_name);
+            tv_marker_name.setText(markerBean.name);
+            final InfoWindow mInfoWindow = new InfoWindow(view, marker.getPosition(), -47);
+            mBaiduMap.showInfoWindow(mInfoWindow);
+            if (!markerBean.isShowGuiji) {
+                tv_guiji.setText("显示轨迹");
+            } else {
+                tv_guiji.setText("隐藏轨迹");
+            }
+            tv_tonghua.setVisibility(View.VISIBLE);
             tv_tonghua.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -414,35 +452,33 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
                     startActivity(intent);
                 }
             });
-        }
-
-
-        iv_x.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mBaiduMap.hideInfoWindow();
-            }
-        });
-        tv_guiji.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mBaiduMap.hideInfoWindow();
-                //将marker移动到地图中间
-                MapStatus mMapStatus = new MapStatus.Builder().target(new LatLng(markerBean.latitude, markerBean.longitude)).zoom(18).build();
-                MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus);
-                mBaiduMap.animateMapStatus(mMapStatusUpdate);
-                if (!markerBean.isShowGuiji) {
-                    markerBean.isShowGuiji = true;
-                    OverlayOptions ooPolyline = new PolylineOptions().width(13).color(0xAAFF0000).points(maps.get(markerBean.name));
-                    mPolyline = (Polyline) mBaiduMap.addOverlay(ooPolyline);
-                    tv_guiji.setText("隐藏轨迹");
-                    // mPolyline.setZIndex(3);
-                } else {
-                    markerBean.isShowGuiji = false;
-                    addMapMarks1();
+            iv_x.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mBaiduMap.hideInfoWindow();
                 }
-            }
-        });
+            });
+            tv_guiji.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mBaiduMap.hideInfoWindow();
+                    //将marker移动到地图中间
+                    MapStatus mMapStatus = new MapStatus.Builder().target(new LatLng(markerBean.latitude, markerBean.longitude)).zoom(18).build();
+                    MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus);
+                    mBaiduMap.animateMapStatus(mMapStatusUpdate);
+                    if (!markerBean.isShowGuiji) {
+                        markerBean.isShowGuiji = true;
+                        OverlayOptions ooPolyline = new PolylineOptions().width(13).color(0xAAFF0000).points(maps.get(markerBean.name));
+                        mPolyline = (Polyline) mBaiduMap.addOverlay(ooPolyline);
+                        tv_guiji.setText("隐藏轨迹");
+                        // mPolyline.setZIndex(3);
+                    } else {
+                        markerBean.isShowGuiji = false;
+                        addMapMarks1();
+                    }
+                }
+            });
+        }
         return true;
 
     }
