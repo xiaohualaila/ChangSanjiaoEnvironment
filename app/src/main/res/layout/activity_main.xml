@@ -25,8 +25,9 @@
                 <Button
                     android:id="@+id/actionbar_msg_btn"
                     style="@style/ActionBarItem"
+                    android:layout_height="match_parent"
                     android:drawableTop="@drawable/first"
-                    android:text="首页"/>
+                    android:text="首页" />
 
                 <TextView
                     android:id="@+id/all_unread_number"
