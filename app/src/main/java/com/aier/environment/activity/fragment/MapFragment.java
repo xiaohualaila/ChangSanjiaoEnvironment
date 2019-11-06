@@ -295,9 +295,10 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
             List<UserOnlineBean.DataBean> all = userOnlineBean.getData();
             if (all != null && all.size() > 0) {
                 for (int z = 0; z < all.size(); z++) {
-                    Log.i("bbb","============="+myMarkerBean.name + " "+all.get(z).getUsername());
+                  //  Log.i("bbb","============="+myMarkerBean.name + " "+all.get(z).getUsername());
                     if (myMarkerBean.name.equals(all.get(z).getUsername())) {
                         myMarkerBean.isOnline = true;
+                        return;
                     } else {
                         myMarkerBean.isOnline = false;
                     }
