@@ -1,5 +1,6 @@
 package com.aier.environment.activity.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import com.aier.environment.JGApplication;
 import com.aier.environment.R;
+import com.aier.environment.activity.ReceivePhoneActivity;
 import com.aier.environment.location.service.LocationService;
 import com.aier.environment.model.MyMarkerBean;
 import com.baidu.location.BDLocation;
@@ -48,6 +50,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import cn.jpush.im.android.api.JMessageClient;
+import cn.jpush.im.android.api.model.UserInfo;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -68,9 +72,12 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
 
     private Polyline mPolyline;
     Map<String,List<LatLng>>maps = new HashMap<>();
+    private String my_name;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        UserInfo myInfo = JMessageClient.getMyInfo();
+        my_name = myInfo.getUserName();
     }
 
     private void initMap() {
@@ -359,13 +366,25 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
         }else {
             tv_guiji.setText("隐藏轨迹");
         }
+        if(markerBean.name.equals(my_name)){ //如果是他自己隐藏通话按钮
+            Log.i("sss",markerBean.name +"  my_name"+my_name);
+            tv_tonghua.setVisibility(View.GONE);
+        }else {
+            tv_tonghua.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mBaiduMap.hideInfoWindow();
+                    Intent intent = new Intent(getActivity(), ReceivePhoneActivity.class);
+                    intent.putExtra("isCallToOther", true);
+                    intent.putExtra("mIsSingle", true);
+                    intent.putExtra("mTargetId", markerBean.name);
+                    intent.putExtra("mGroupId", "");
+                    startActivity(intent);
+                }
+            });
+        }
 
-        tv_tonghua.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mBaiduMap.hideInfoWindow();
-            }
-        });
+
         iv_x.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
