@@ -3,8 +3,6 @@ package com.aier.environment.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ImageView;
-
 import androidx.appcompat.app.AppCompatActivity;
 import com.aier.environment.R;
 import cn.jpush.im.android.api.JMessageClient;
