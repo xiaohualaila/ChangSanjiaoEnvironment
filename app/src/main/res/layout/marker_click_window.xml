@@ -84,7 +84,6 @@
         android:layout_marginTop="20dp"
         android:orientation="horizontal">
 
-
         <TextView
             android:id="@+id/tv_tonghua"
             android:layout_width="0dp"
