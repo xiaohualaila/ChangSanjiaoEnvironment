@@ -397,40 +397,28 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
     @Override
     public boolean onMarkerClick(Marker marker) {
 
+
         Bundle bundle = marker.getExtraInfo();
         MyMarkerBean markerBean = (MyMarkerBean) bundle.getSerializable("marker");
-        Log.i("ZZZ", markerBean.name);
-
-        View view = View.inflate(getActivity(), R.layout.marker_click_window, null);
-        TextView tv_tonghua = view.findViewById(R.id.tv_tonghua);
-        TextView tv_guiji = view.findViewById(R.id.tv_guiji);
-        ImageView iv_x = view.findViewById(R.id.iv_x);
-        TextView tv_marker_name = view.findViewById(R.id.tv_marker_name);
-        tv_marker_name.setText(markerBean.name);
-        LinearLayout ll_1 = view.findViewById(R.id.ll_1);
-        LinearLayout ll_2 = view.findViewById(R.id.ll_2);
-        TextView tv_guiji_ = view.findViewById(R.id.tv_guiji_);
-
-        if (!markerBean.isShowGuiji) {
-            tv_guiji.setText("显示轨迹");
-        } else {
-            tv_guiji.setText("隐藏轨迹");
-        }
-
+        Log.i("sss", markerBean.name);
         if (markerBean.name.equals(my_name)) { //如果是他自己隐藏通话按钮
-            ll_1.setVisibility(View.GONE);
-            ll_2.setVisibility(View.VISIBLE);
-            tv_tonghua.setVisibility(View.VISIBLE);
-            tv_tonghua.setOnClickListener(new View.OnClickListener() {
+            View view1 = View.inflate(getActivity(), R.layout.marker_click_not_tonghua_window, null);
+            TextView tv_guiji = view1.findViewById(R.id.tv_guiji);
+            ImageView iv_x = view1.findViewById(R.id.iv_x);
+            TextView tv_marker_name = view1.findViewById(R.id.tv_marker_name);
+            tv_marker_name.setText(markerBean.name);
+            final InfoWindow mInfoWindow = new InfoWindow(view1, marker.getPosition(), -47);
+            mBaiduMap.showInfoWindow(mInfoWindow);
+            if (!markerBean.isShowGuiji) {
+                tv_guiji.setText("显示轨迹");
+            } else {
+                tv_guiji.setText("隐藏轨迹");
+            }
+            Log.i("sss", markerBean.name + "  my_name" + my_name);
+            iv_x.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mBaiduMap.hideInfoWindow();
-                    Intent intent = new Intent(getActivity(), ReceivePhoneActivity.class);
-                    intent.putExtra("isCallToOther", true);
-                    intent.putExtra("mIsSingle", true);
-                    intent.putExtra("mTargetId", markerBean.name);
-                    intent.putExtra("mGroupId", "");
-                    startActivity(intent);
                 }
             });
             tv_guiji.setOnClickListener(new View.OnClickListener() {
@@ -453,10 +441,40 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
                     }
                 }
             });
-        } else {
-            ll_1.setVisibility(View.VISIBLE);
-            ll_2.setVisibility(View.GONE);
-            tv_guiji_.setOnClickListener(new View.OnClickListener() {
+        }else {
+            View view = View.inflate(getActivity(), R.layout.marker_click_window, null);
+            TextView tv_tonghua = view.findViewById(R.id.tv_tonghua);
+            TextView tv_guiji = view.findViewById(R.id.tv_guiji);
+            ImageView iv_x = view.findViewById(R.id.iv_x);
+            TextView tv_marker_name = view.findViewById(R.id.tv_marker_name);
+            tv_marker_name.setText(markerBean.name);
+            final InfoWindow mInfoWindow = new InfoWindow(view, marker.getPosition(), -47);
+            mBaiduMap.showInfoWindow(mInfoWindow);
+            if (!markerBean.isShowGuiji) {
+                tv_guiji.setText("显示轨迹");
+            } else {
+                tv_guiji.setText("隐藏轨迹");
+            }
+            tv_tonghua.setVisibility(View.VISIBLE);
+            tv_tonghua.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mBaiduMap.hideInfoWindow();
+                    Intent intent = new Intent(getActivity(), ReceivePhoneActivity.class);
+                    intent.putExtra("isCallToOther", true);
+                    intent.putExtra("mIsSingle", true);
+                    intent.putExtra("mTargetId", markerBean.name);
+                    intent.putExtra("mGroupId", "");
+                    startActivity(intent);
+                }
+            });
+            iv_x.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mBaiduMap.hideInfoWindow();
+                }
+            });
+            tv_guiji.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mBaiduMap.hideInfoWindow();
@@ -478,14 +496,6 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
             });
         }
 
-        iv_x.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mBaiduMap.hideInfoWindow();
-            }
-        });
-        final InfoWindow mInfoWindow = new InfoWindow(view, marker.getPosition(), -47);
-        mBaiduMap.showInfoWindow(mInfoWindow);
         return true;
 
     }
