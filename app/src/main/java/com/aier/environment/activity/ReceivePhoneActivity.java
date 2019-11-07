@@ -141,7 +141,10 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
                         Log.i("ddd","message "+data.toString());
                     } else if(data.optString("type").equals("position")){
 
-                    }else {
+                    }else if(data.optString("type").equals("online-user")){
+
+                    }
+                    else {
                         Log.i("ddd","message "+data.toString());
                         //finish();
                     }
