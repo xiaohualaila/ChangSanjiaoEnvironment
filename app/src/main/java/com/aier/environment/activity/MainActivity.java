@@ -184,8 +184,10 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     //{"type":"is-join","data":{"from":"0002","room":"51289945","from_type":"pc"}}
+
                     //接听外面打进的电话
                     JSONObject data = (JSONObject) args[0];
+                    Log.i("ddd"," main _message "+data.toString());
                     if(data.optString("type").equals("is-join")) {
                        JSONObject obj = data.optJSONObject("data");
                         String roomId = obj.optString("room");
@@ -225,9 +227,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mSocket.off();
-        SingleSocket.getInstance().disConnect();
-
         if (timer != null) {
             timer.cancel();
             timer = null;
@@ -236,6 +235,9 @@ public class MainActivity extends AppCompatActivity {
             task.cancel();
             task = null;
         }
+        Log.i("ddd","++++++++++++++++");
+        mSocket.off();
+        SingleSocket.getInstance().disConnect();
         handler.removeCallbacksAndMessages(null);
         locationService.unregisterListener(mListener); // 注销掉监听
         locationService.stop();

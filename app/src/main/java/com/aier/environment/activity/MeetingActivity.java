@@ -150,7 +150,7 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
         option.setMediaType(ARVideoCommon.ARMediaType.Video);
         mMeetKit = new ARMeetKit(arMeetEvent);
         mMeetKit.setFrontCameraMirrorEnable(true);
-        mMeetKit.setNetworkStatus(true);
+        mMeetKit.setNetworkStatus(false);
         VideoRenderer localVideoRender = mVideoView.openLocalVideoRender();
         mMeetKit.setLocalVideoCapturer(localVideoRender.GetRenderPointer());
         mMeetKit.joinRTCByToken("", meetId, userId, getUserInfo());
