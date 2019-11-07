@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ZoomControls;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -33,6 +34,7 @@ import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MapViewLayoutParams;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationData;
@@ -77,16 +79,12 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
     private String my_name;
     public UserOnlineBean userOnlineBean;
 
-    private TextView tv_lat;
-    private TextView tv_long;
-    private LinearLayout ll_bottom_latLng;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         UserInfo myInfo = JMessageClient.getMyInfo();
         my_name = myInfo.getUserName();
-
     }
 
     private void initMap() {
@@ -118,6 +116,11 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
                 return false;
             }
         });
+        // 隐藏logo
+        View child = mMapView.getChildAt(1);
+        if (child != null && (child instanceof ImageView || child instanceof ZoomControls)){
+            child.setVisibility(View.INVISIBLE);
+        }
         //配置定位SDK参数
         initLocation();
         getAllUserPostion();
@@ -152,9 +155,6 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_map, container, false);
         mMapView = v.findViewById(R.id.map);
-//        tv_lat = v.findViewById(R.id.tv_lat);
-//        tv_long=v.findViewById(R.id.tv_long);
-//        ll_bottom_latLng = v.findViewById(R.id.ll_bottom_latLng);
         initMap();
         return v;
     }
@@ -179,13 +179,9 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
 //                mBaiduMap.setMyLocationData(locData);
                 // 当不需要定位图层时关闭定位图层
                 //mBaiduMap.setMyLocationEnabled(false);
-//                    if(!(location.getLatitude()+"").isEmpty()){
-//                        ll_bottom_latLng.setVisibility(View.VISIBLE);
-//                        tv_lat.setText("北纬"+location.getLatitude()+"度");
-//                        tv_long.setText("东经"+location.getLongitude()+"度");
-//                    }
 
                 if (isFirstLoc) {
+                //    showLation(location);
                     isFirstLoc = false;
                     LatLng ll = new LatLng(location.getLatitude(),
                             location.getLongitude());
@@ -212,9 +208,7 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
                         Toast.makeText(getActivity(), "手机模式错误，请检查是否飞行", Toast.LENGTH_SHORT).show();
                     }
                 }
-
             }
-
         }
 
         @Override
@@ -243,7 +237,7 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
             call.enqueue(new Callback() {
                 @Override
                 public void onFailure(@NonNull Call call, IOException e) {
-                    Log.i("zxzx", e.getMessage());
+                  //  Log.i("sss", e.getMessage());
                 }
 
                 @Override
@@ -275,13 +269,13 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
                             latLngs = new ArrayList<>();
                             String key = iterator.next();
                             array = objResult.optJSONArray(key);
-                            Log.i("sss", key + "______________");
+                        //    Log.i("sss", key + "______________");
                             myMarkerBean = new MyMarkerBean();
                             myMarkerBean.name = key;
                             for (int i = 0; i < array.length(); i++) {
                                 obj = array.optJSONObject(i);
 
-                                Log.i("sss", obj.optString("latitude") + "  " + obj.optString("longitude"));
+                              //  Log.i("sss", obj.optString("latitude") + "  " + obj.optString("longitude"));
                                 mLatLng = new LatLng(Double.parseDouble(obj.optString("latitude")),
                                         Double.parseDouble(obj.optString("longitude")));
                                 //将points集合中的点绘制轨迹线条图层，显示在地图上
@@ -354,7 +348,6 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mMapView.onSaveInstanceState(outState);
-
     }
 
 
@@ -400,21 +393,20 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
 
         Bundle bundle = marker.getExtraInfo();
         MyMarkerBean markerBean = (MyMarkerBean) bundle.getSerializable("marker");
-        Log.i("sss", markerBean.name);
+     //   Log.i("sss", markerBean.name);
         if (markerBean.name.equals(my_name)) { //如果是他自己隐藏通话按钮
             View view1 = View.inflate(getActivity(), R.layout.marker_click_not_tonghua_window, null);
             TextView tv_guiji = view1.findViewById(R.id.tv_guiji);
             ImageView iv_x = view1.findViewById(R.id.iv_x);
             TextView tv_marker_name = view1.findViewById(R.id.tv_marker_name);
             tv_marker_name.setText(markerBean.name);
-            final InfoWindow mInfoWindow = new InfoWindow(view1, marker.getPosition(), -47);
-            mBaiduMap.showInfoWindow(mInfoWindow);
+
             if (!markerBean.isShowGuiji) {
                 tv_guiji.setText("显示轨迹");
             } else {
                 tv_guiji.setText("隐藏轨迹");
             }
-            Log.i("sss", markerBean.name + "  my_name" + my_name);
+         //   Log.i("sss", markerBean.name + "  my_name" + my_name);
             iv_x.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -441,6 +433,8 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
                     }
                 }
             });
+            final InfoWindow mInfoWindow = new InfoWindow(view1, marker.getPosition(), -47);
+            mBaiduMap.showInfoWindow(mInfoWindow);
         }else {
             View view = View.inflate(getActivity(), R.layout.marker_click_window, null);
             TextView tv_tonghua = view.findViewById(R.id.tv_tonghua);
@@ -448,8 +442,7 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
             ImageView iv_x = view.findViewById(R.id.iv_x);
             TextView tv_marker_name = view.findViewById(R.id.tv_marker_name);
             tv_marker_name.setText(markerBean.name);
-            final InfoWindow mInfoWindow = new InfoWindow(view, marker.getPosition(), -47);
-            mBaiduMap.showInfoWindow(mInfoWindow);
+
             if (!markerBean.isShowGuiji) {
                 tv_guiji.setText("显示轨迹");
             } else {
@@ -494,6 +487,17 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
                     }
                 }
             });
+            final InfoWindow mInfoWindow = new InfoWindow(view, marker.getPosition(), -47);
+            mBaiduMap.showInfoWindow(mInfoWindow);
+//            ViewGroup.LayoutParams params1 = new MapViewLayoutParams.Builder()
+//                    .layoutMode(MapViewLayoutParams.ELayoutMode.mapMode)
+//                    .position(new LatLng(markerBean.latitude,markerBean.longitude))
+//                    .width(MapViewLayoutParams.WRAP_CONTENT)
+//                    .height(MapViewLayoutParams.WRAP_CONTENT)
+//                    .yOffset(-32)
+//                    .build();
+//
+//            mMapView.addView(view,params1);
         }
 
         return true;

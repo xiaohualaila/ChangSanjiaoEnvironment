@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -22,6 +23,7 @@ public class MainView extends RelativeLayout {
     private int[] mBtnListID;
     private ScrollControlViewPager mViewContainer;
     private TextView mAllContactNumber;
+    private LinearLayout ll_bottom_latLng;
 
     public MainView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -46,6 +48,7 @@ public class MainView extends RelativeLayout {
         } else {
             mAllContactNumber.setVisibility(GONE);
         }
+        ll_bottom_latLng = findViewById(R.id.ll_bottom_latLng);
     }
 
     public void setOnClickListener(OnClickListener onclickListener) {
@@ -107,9 +110,18 @@ public class MainView extends RelativeLayout {
                     Drawable drawable = getResources().getDrawable(R.drawable.me_);
                     drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
                     mBtnList[i].setCompoundDrawables(null,drawable,null,null);
+
                 }
             }
         }
+    }
+
+
+    public void setll_latlngVisibility(boolean flag) {
+        if(flag){
+            ll_bottom_latLng.setVisibility(VISIBLE);
+        }else
+            ll_bottom_latLng.setVisibility(GONE);
     }
 
 

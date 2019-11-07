@@ -166,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
     private void socket() {
         UserInfo myInfo = JMessageClient.getMyInfo();
         Log.i("aaa",myInfo.getUserName() + "");
-        String url = "http://121.41.52.56:3002/chat?userid="+myInfo.getUserName()+"&type=mobile";
+        String url = "https://www.airer.com?userid="+myInfo.getUserName()+"&type=mobile";
         mSocket = SingleSocket.getInstance().getSocket(url);
         //注册  事件
         mSocket.on(Socket.EVENT_CONNECT,onConnect);
@@ -211,7 +211,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         JCoreInterface.onResume(this);
-        mMainController.sortConvList();
         super.onResume();
     }
 

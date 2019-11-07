@@ -112,8 +112,37 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0.33dp"
-            android:layout_above="@+id/actionbar_layout_tmp"
+            android:layout_above="@+id/ll_bottom_latLng"
             android:background="#D2D2D2"/>
+        <LinearLayout
+            android:id="@+id/ll_bottom_latLng"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@drawable/ll_green_bg"
+            android:orientation="horizontal"
+            android:layout_above="@+id/actionbar_layout_tmp"
+            android:visibility="gone"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp">
 
+            <TextView
+                android:id="@+id/tv_lat"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="@color/white" />
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@color/white" />
+            <TextView
+                android:id="@+id/tv_long"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="@color/white" />
+
+
+        </LinearLayout>
     </RelativeLayout>
 </com.aier.environment.view.MainView>

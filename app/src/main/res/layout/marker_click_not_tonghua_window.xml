@@ -21,7 +21,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:textColor="@color/black"
-            android:text="姓名"/>
+            android:text="姓名:"/>
         <TextView
             android:id="@+id/tv_marker_name"
             android:layout_width="wrap_content"
@@ -48,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:text="电话"/>
+            android:text="电话:"/>
         <TextView
             android:id="@+id/tv_telephone"
             android:layout_width="wrap_content"
@@ -66,7 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:text="地址"/>
+            android:text="地址:"/>
         <TextView
             android:id="@+id/tv_addr"
             android:layout_width="wrap_content"
