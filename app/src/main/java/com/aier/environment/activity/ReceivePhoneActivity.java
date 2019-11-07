@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.aier.environment.R;
 import com.aier.environment.utils.SingleSocket;
+import com.aier.environment.utils.ToastUtil;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.runtime.Permission;
@@ -74,7 +75,7 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
         UserInfo myInfo = JMessageClient.getMyInfo();
         userName=myInfo.getUserName();
         nickname = myInfo.getNickname();
-        Log.i("aaa", "userName " +userName + "房间号随机数"+roomId);
+        Log.i("ddd", "userName " +userName + "房间号随机数"+roomId);
         String url = "https://www.airer.com?userid="+userName+"&type=mobile";
         mSocket = SingleSocket.getInstance().getSocket(url);
         //注册  事件
@@ -89,9 +90,9 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
                     object.put("data", "");
                     object.put("room", roomId);
                     object.put("type", "is-join");
-                    Log.i("bbb",object.toString());
+                    Log.i("ddd",object.toString());
                     mSocket.emit("call-user", object.toString());// 单个用户呼叫
-                    Log.i("bbb","单个用户呼叫 call-user 用户id "+mTargetId);
+                    Log.i("ddd","单个用户呼叫 call-user 用户id "+mTargetId);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -110,9 +111,9 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
                             object.put("data", "");
                             object.put("room", roomId);
                             object.put("type", "is-join");
-                            Log.i("aaa",object.toString());
+                            Log.i("ddd",object.toString());
                             mSocket.emit("call-user", object.toString());// 单个用户呼叫
-                            Log.i("aaa","单个用户呼叫 call-user 用户id "+mTargetId);
+                            Log.i("ddd","单个用户呼叫 call-user 用户id "+mTargetId);
                         }
                     }
                 } catch (JSONException e) {
@@ -129,14 +130,20 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-
                     JSONObject data = (JSONObject) args[0];
-                    Log.i("ddd","message "+data.toString());
                     if(data.optString("type").equals("joined")){
                       //  {"type":"joined","data":{"userid":"0002"}}
+                        Log.i("ddd","message "+data.toString());
                         toMeetingActivity();
-                    }else {
+                    }else if(data.optString("type").equals("join_reject")){
+                        ToastUtil.shortToast(ReceivePhoneActivity.this,"用户拒接视频通话");
                         finish();
+                        Log.i("ddd","message "+data.toString());
+                    } else if(data.optString("type").equals("position")){
+
+                    }else {
+                        Log.i("ddd","message "+data.toString());
+                        //finish();
                     }
                 }
             });

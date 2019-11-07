@@ -195,15 +195,15 @@ public class MainActivity extends AppCompatActivity {
                             intent.putExtra("meet_id", roomId);
                             startActivity(intent);
                         }
-
                     }else if(data.optString("type").equals("online-user")){
                         Gson gson =new Gson();
                         userOnlineBean = gson.fromJson(data.toString(), UserOnlineBean.class);
                         mMainController.setUserOnline(userOnlineBean);
-                        Log.i("bbb","得到在线人员数据");
-                    }
-                  Log.i("bbb","main  message "+data.toString());
+                    } else if(data.optString("type").equals("position")){
 
+                    }else {
+                        Log.i("ddd"," main _message "+data.toString());
+                    }
                 }
             });
         }
@@ -284,12 +284,12 @@ public class MainActivity extends AppCompatActivity {
         if(!isConnected) {
             isConnected = true;
         }
-        Log.i("aaa","connected success");
+        Log.i("ddd","connected success");
     });
    //连接失败
     private Emitter.Listener onDisconnect = args -> {
                 isConnected = false;
-        Log.i("aaa","diconnected");
+        Log.i("ddd","diconnected");
     };
     //连接错误
     private Emitter.Listener onConnectError = args -> runOnUiThread(() -> Log.i("aaa","Error connecting"));
