@@ -84,13 +84,13 @@
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="100dp"
             android:layout_marginLeft="80dp"
-            android:textColor="@color/line_press"
+            android:textColor="#16786E "
             android:text="晴转小雨"/>
         <TextView
             android:id="@+id/tv_feng"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/line_press"
+            android:textColor="#16786E"
             app:layout_constraintTop_toBottomOf="@+id/tv_weather"
             app:layout_constraintLeft_toLeftOf="@+id/tv_weather"
             android:text="东南风"/>
@@ -101,7 +101,7 @@
             app:layout_constraintRight_toRightOf="parent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/jmui_jpush_blue"
+            android:textColor="#16786E"
             android:textSize="50sp" />
 
         <TextView
