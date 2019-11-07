@@ -16,6 +16,7 @@ import com.aier.environment.activity.fragment.ContactsFragment;
 import com.aier.environment.model.UserOnlineBean;
 import com.aier.environment.model.WeatherBean;
 import com.aier.environment.view.MainView;
+import com.baidu.location.BDLocation;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class MainController implements View.OnClickListener, ViewPager.OnPageCha
     private ChatRoomFragment mChatRoomFragment;//改成地图
     private ContactsFragment mContactsFragment;
     private MeFragment mMeFragment;
+    private BDLocation mLocation;
 
 
     public MainController(MainView mMainView, MainActivity context) {
@@ -76,6 +78,7 @@ public class MainController implements View.OnClickListener, ViewPager.OnPageCha
             case R.id.actionbar_chatroom_btn:
                 mMainView.setCurrentItem(1, false);
                 mMainView.setll_latlngVisibility(true);
+                mMainView.setLocation(mLocation);
                 break;
             case R.id.actionbar_contact_btn:
                 mMainView.setCurrentItem(2, false);
@@ -108,5 +111,9 @@ public class MainController implements View.OnClickListener, ViewPager.OnPageCha
     public void setUserOnline(UserOnlineBean userOnlineBean) {
         mapFragment.setUserOnline2(userOnlineBean);
 
+    }
+
+    public void setLocation(BDLocation location) {
+        mLocation = location;
     }
 }

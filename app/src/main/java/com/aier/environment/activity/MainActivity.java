@@ -154,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
             if (null != location && location.getLocType() != BDLocation.TypeServerError) {
                 mLocation= location;
                 city = location.getAltitude()+"";//海拔
+                mMainController.setLocation(location);
                    Log.i("ccc","city "+city );
             }
         }

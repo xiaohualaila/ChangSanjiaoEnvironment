@@ -118,6 +118,7 @@
             android:id="@+id/ll_bottom_latLng"
             android:layout_width="match_parent"
             android:layout_height="30dp"
+            android:gravity="center"
             android:background="@drawable/ll_green_bg"
             android:orientation="horizontal"
             android:layout_above="@+id/actionbar_layout_tmp"
@@ -133,8 +134,8 @@
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:background="@color/white" />
             <TextView
                 android:id="@+id/tv_long"

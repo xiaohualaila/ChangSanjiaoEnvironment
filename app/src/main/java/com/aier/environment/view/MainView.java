@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import com.aier.environment.R;
 import com.aier.environment.utils.SharePreferenceManager;
+import com.baidu.location.BDLocation;
 
 
 /**
@@ -24,7 +25,7 @@ public class MainView extends RelativeLayout {
     private ScrollControlViewPager mViewContainer;
     private TextView mAllContactNumber;
     private LinearLayout ll_bottom_latLng;
-
+    private TextView tv_lat,tv_long;
     public MainView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
@@ -49,6 +50,8 @@ public class MainView extends RelativeLayout {
             mAllContactNumber.setVisibility(GONE);
         }
         ll_bottom_latLng = findViewById(R.id.ll_bottom_latLng);
+        tv_lat  = findViewById(R.id.tv_lat);
+        tv_long  = findViewById(R.id.tv_long);
     }
 
     public void setOnClickListener(OnClickListener onclickListener) {
@@ -125,4 +128,11 @@ public class MainView extends RelativeLayout {
     }
 
 
+    public void setLocation(BDLocation mLocation) {
+        if(mLocation!=null){
+            tv_lat.setText("北纬"+mLocation.getLatitude()+"°");
+            tv_long.setText("东经"+mLocation.getLongitude()+"°");
+        }
+
+    }
 }
