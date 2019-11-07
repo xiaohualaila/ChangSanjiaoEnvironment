@@ -3,6 +3,9 @@ package com.aier.environment.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +14,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
+
 import com.aier.environment.JGApplication;
 import com.aier.environment.R;
 import com.aier.environment.controller.MainController;
@@ -27,11 +31,14 @@ import com.google.gson.Gson;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.runtime.Permission;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.model.UserInfo;
 import io.socket.client.Socket;
@@ -54,40 +61,38 @@ public class MainActivity extends AppCompatActivity {
     private String userName;
     public String city;
     public UserOnlineBean userOnlineBean;
-    private Handler handler = new Handler()
-    {
+    private Handler handler = new Handler() {
         @Override
         //重写handleMessage方法,根据msg中what的值判断是否执行后续操作
         public void handleMessage(Message msg) {
-        if(msg.what == 0x123)
-        {
-            //你要做的事
-            if(mLocation!=null){
-            //    Log.i("sss",">>>>>>>>>>>>>心跳"+"location" + mLocation.getLatitude()+" Longitude" + mLocation.getLongitude());
+            if (msg.what == 0x123) {
+                //你要做的事
+                if (mLocation != null) {
+                    //    Log.i("sss",">>>>>>>>>>>>>心跳"+"location" + mLocation.getLatitude()+" Longitude" + mLocation.getLongitude());
 
-                try {
-                    JSONObject object = new JSONObject();
-                    JSONObject obj = new JSONObject();
-                    JSONObject obj1 = new JSONObject();
-                    object.put("username", userName);
-                    obj1.put("longitude", String.valueOf(mLocation.getLongitude()));
-                    obj1.put("latitude",String.valueOf(mLocation.getLatitude()));
-                    obj.put("position", obj1);
-                    object.put("data",obj);
-                    Log.i("aaa",object.toString());
-                    mSocket.emit("push-position",object.toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    try {
+                        JSONObject object = new JSONObject();
+                        JSONObject obj = new JSONObject();
+                        JSONObject obj1 = new JSONObject();
+                        object.put("username", userName);
+                        obj1.put("longitude", String.valueOf(mLocation.getLongitude()));
+                        obj1.put("latitude", String.valueOf(mLocation.getLatitude()));
+                        obj.put("position", obj1);
+                        object.put("data", obj);
+                        Log.i("aaa", object.toString());
+                        mSocket.emit("push-position", object.toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
-    }
     };
 
-    private void heartinterval(){
-       timer = new Timer();
-       task = new Task();
-       timer.schedule(task, 2000,1000*60);
+    private void heartinterval() {
+        timer = new Timer();
+        task = new Task();
+        timer.schedule(task, 2000, 1000 * 60);
     }
 
     public class Task extends TimerTask {
@@ -103,14 +108,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         requestPermission();
-        mMainView =  findViewById(R.id.main_view);
+        mMainView = findViewById(R.id.main_view);
         mMainView.initModule();
         mMainController = new MainController(mMainView, this);
 
         mMainView.setOnClickListener(mMainController);
         mMainView.setOnPageChangeListener(mMainController);
         UserInfo myInfo = JMessageClient.getMyInfo();
-        userName=myInfo.getUserName();
+        userName = myInfo.getUserName();
         mLocClient = new LocationClient(this);
         locationService = JGApplication.locationService;
         locationService.registerListener(mListener);//是否应该在onStart中注册
@@ -152,10 +157,10 @@ public class MainActivity extends AppCompatActivity {
         public void onReceiveLocation(BDLocation location) {
             // TODO Auto-generated method stub
             if (null != location && location.getLocType() != BDLocation.TypeServerError) {
-                mLocation= location;
-                city = location.getAltitude()+"";//海拔
+                mLocation = location;
+                city = location.getAltitude() + "";//海拔
                 mMainController.setLocation(location);
-                   Log.i("ccc","city "+city );
+                Log.i("ccc", "city " + city);
             }
         }
 
@@ -166,12 +171,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void socket() {
         UserInfo myInfo = JMessageClient.getMyInfo();
-        Log.i("aaa",myInfo.getUserName() + "");
-        String url = "https://www.airer.com?userid="+myInfo.getUserName()+"&type=mobile";
+        Log.i("aaa", myInfo.getUserName() + "");
+        String url = "https://www.airer.com?userid=" + myInfo.getUserName() + "&type=mobile";
         mSocket = SingleSocket.getInstance().getSocket(url);
         //注册  事件
-        mSocket.on(Socket.EVENT_CONNECT,onConnect);
-        mSocket.on(Socket.EVENT_DISCONNECT,onDisconnect);
+        mSocket.on(Socket.EVENT_CONNECT, onConnect);
+        mSocket.on(Socket.EVENT_DISCONNECT, onDisconnect);
         mSocket.on(Socket.EVENT_CONNECT_ERROR, onConnectError);
         mSocket.on(Socket.EVENT_CONNECT_TIMEOUT, onConnectError);
         mSocket.on("message", messageData);
@@ -187,24 +192,26 @@ public class MainActivity extends AppCompatActivity {
 
                     //接听外面打进的电话
                     JSONObject data = (JSONObject) args[0];
-                    Log.i("ddd"," main _message "+data.toString());
-                    if(data.optString("type").equals("is-join")) {
-                       JSONObject obj = data.optJSONObject("data");
+                    Log.i("ddd", " main _message " + data.toString());
+                    if (data.optString("type").equals("is-join")) {
+                        JSONObject obj = data.optJSONObject("data");
                         String roomId = obj.optString("room");
-                        if(!TextUtils.isEmpty(roomId)){//外面打进电话
+                        if (!TextUtils.isEmpty(roomId)) {//外面打进电话
+                            ActivityManager am = (ActivityManager) MainActivity.this.getSystemService(Context.ACTIVITY_SERVICE);
+                            am.moveTaskToFront(getTaskId(), ActivityManager.MOVE_TASK_WITH_HOME);
                             Intent intent = new Intent(MainActivity.this, ReceivePhoneActivity.class);
                             intent.putExtra("isCallToOther", false);
                             intent.putExtra("meet_id", roomId);
                             startActivity(intent);
                         }
-                    }else if(data.optString("type").equals("online-user")){
-                        Gson gson =new Gson();
+                    } else if (data.optString("type").equals("online-user")) {
+                        Gson gson = new Gson();
                         userOnlineBean = gson.fromJson(data.toString(), UserOnlineBean.class);
                         mMainController.setUserOnline(userOnlineBean);
-                    } else if(data.optString("type").equals("position")){
+                    } else if (data.optString("type").equals("position")) {
 
                     } else {
-                        Log.i("ddd"," main _message "+data.toString());
+                        Log.i("ddd", " main _message " + data.toString());
                     }
                 }
             });
@@ -235,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
             task.cancel();
             task = null;
         }
-        Log.i("ddd","++++++++++++++++");
+        Log.i("ddd", "++++++++++++++++");
         mSocket.off();
         SingleSocket.getInstance().disConnect();
         handler.removeCallbacksAndMessages(null);
@@ -249,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void requestPermission() {
-        String[]  perm = {
+        String[] perm = {
                 Permission.RECORD_AUDIO,
                 Permission.CAMERA,
                 Permission.READ_EXTERNAL_STORAGE,
@@ -260,9 +267,9 @@ public class MainActivity extends AppCompatActivity {
                 Permission.READ_PHONE_STATE
         };
 
-        if (AndPermission.hasPermissions(MainActivity.this,perm)){
+        if (AndPermission.hasPermissions(MainActivity.this, perm)) {
             return;
-        }else {
+        } else {
             AndPermission.with(MainActivity.this).runtime().permission(perm).onDenied(new Action<List<String>>() {
                 @Override
                 public void onAction(List<String> data) {
@@ -283,19 +290,18 @@ public class MainActivity extends AppCompatActivity {
 
     //连接成功
     private Emitter.Listener onConnect = args -> runOnUiThread(() -> {
-        if(!isConnected) {
+        if (!isConnected) {
             isConnected = true;
         }
-        Log.i("ddd","connected success");
+        Log.i("ddd", "connected success");
     });
-   //连接失败
+    //连接失败
     private Emitter.Listener onDisconnect = args -> {
-                isConnected = false;
-        Log.i("ddd","diconnected");
+        isConnected = false;
+        Log.i("ddd", "diconnected");
     };
     //连接错误
-    private Emitter.Listener onConnectError = args -> runOnUiThread(() -> Log.i("aaa","Error connecting"));
-
+    private Emitter.Listener onConnectError = args -> runOnUiThread(() -> Log.i("aaa", "Error connecting"));
 
 
 }
