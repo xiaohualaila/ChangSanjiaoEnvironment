@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
                         mMainController.setUserOnline(userOnlineBean);
                     } else if(data.optString("type").equals("position")){
 
-                    }else {
+                    } else {
                         Log.i("ddd"," main _message "+data.toString());
                     }
                 }
