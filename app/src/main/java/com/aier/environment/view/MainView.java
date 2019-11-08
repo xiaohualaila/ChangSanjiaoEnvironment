@@ -42,6 +42,7 @@ public class MainView extends RelativeLayout {
         mViewContainer.setOffscreenPageLimit(2);
         mBtnList[0].setTextColor(getResources().getColor(R.color.menu_item_back_pres_color));
         mBtnList[0].setSelected(true);
+        mViewContainer.setScroll(false);
         mAllContactNumber = findViewById(R.id.all_contact_number);
         if (SharePreferenceManager.getCachedNewFriendNum() > 0) {
             mAllContactNumber.setVisibility(VISIBLE);

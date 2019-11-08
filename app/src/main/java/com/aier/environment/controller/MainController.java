@@ -1,6 +1,5 @@
 package com.aier.environment.controller;
 
-
 import android.view.View;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -14,13 +13,9 @@ import com.aier.environment.adapter.ViewPagerAdapter;
 import com.aier.environment.activity.fragment.ChatRoomFragment;
 import com.aier.environment.activity.fragment.ContactsFragment;
 import com.aier.environment.model.UserOnlineBean;
-import com.aier.environment.model.WeatherBean;
 import com.aier.environment.view.MainView;
 import com.baidu.location.BDLocation;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -38,7 +33,6 @@ public class MainController implements View.OnClickListener, ViewPager.OnPageCha
     private ContactsFragment mContactsFragment;
     private MeFragment mMeFragment;
     private BDLocation mLocation;
-
 
     public MainController(MainView mMainView, MainActivity context) {
         this.mMainView = mMainView;
@@ -106,7 +100,6 @@ public class MainController implements View.OnClickListener, ViewPager.OnPageCha
     public void onPageScrollStateChanged(int state) {
 
     }
-
 
     public void setUserOnline(UserOnlineBean userOnlineBean) {
         mapFragment.setUserOnline2(userOnlineBean);
