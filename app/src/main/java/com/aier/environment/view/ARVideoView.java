@@ -143,10 +143,10 @@ public class ARVideoView implements View.OnTouchListener {
             mLayout = new PercentFrameLayout(ctx);
             mLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
             View view = View.inflate(ctx, R.layout.layout_arvideo, null);//这个View可完全自定义 需要显示名字或者其他图标可以在里面加
-            flLoading = (FrameLayout) view.findViewById(R.id.fl_video_loading);
+            flLoading =  view.findViewById(R.id.fl_video_loading);
             rl_root = view.findViewById(R.id.rl_root);
             tv_net = view.findViewById(R.id.tv_net);
-            surfaceViewRenderer = (TextureViewRenderer) view.findViewById(R.id.sv_video_render);
+            surfaceViewRenderer =  view.findViewById(R.id.sv_video_render);
             surfaceViewRenderer.init(eglBase.getEglBaseContext(), null);
             surfaceViewRenderer.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
             mLayout.addView(view);//将SurfaceView添加到自定义宽高为百分比的布局控件中
@@ -218,14 +218,14 @@ public class ARVideoView implements View.OnTouchListener {
             Map.Entry<String, VideoView> entry = iter.next();
             VideoView render = entry.getValue();
             if (render.videoId.equals(publishId)) {
-                render.tv_net.setText("接收：" + net + "Kbps");
+            //    render.tv_net.setText("接收：" + net + "Kbps");
             }
         }
     }
 
     public void updateLocalNetStatus(String net) {
         if (LocalVideoRender != null) {
-            LocalVideoRender.tv_net.setText("发送：" + net + "Kbps");
+         //   LocalVideoRender.tv_net.setText("发送：" + net + "Kbps");
         }
     }
 

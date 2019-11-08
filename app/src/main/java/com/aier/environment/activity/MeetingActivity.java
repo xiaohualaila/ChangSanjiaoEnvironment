@@ -409,7 +409,7 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
                 @Override
                 public void run() {
                     if (mVideoView != null) {
-                        mVideoView.updateRemoteNetStatus(publishId, String.valueOf(nNetSpeed / 1024 * 8));
+                       mVideoView.updateRemoteNetStatus(publishId, String.valueOf(nNetSpeed / 1024 * 8));
                     }
 
                 }

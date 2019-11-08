@@ -17,8 +17,7 @@
         android:textColor="#FF8C00"
         android:textStyle="bold"
         android:layout_margin="4dp"
-        android:textSize="14sp"
-        android:text="0Kbps"/>
+        android:textSize="14sp" />
 
     <FrameLayout
         android:id="@+id/fl_video_loading"
