@@ -218,7 +218,7 @@ public class ARVideoView implements View.OnTouchListener {
             Map.Entry<String, VideoView> entry = iter.next();
             VideoView render = entry.getValue();
             if (render.videoId.equals(publishId)) {
-            //    render.tv_net.setText("接收：" + net + "Kbps");
+                render.tv_net.setText("接收：" + net + "Kbps");
             }
         }
     }

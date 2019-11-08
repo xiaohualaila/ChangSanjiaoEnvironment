@@ -139,6 +139,7 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
                         //  {"type":"joined","data":{"userid":"0002"}}
                         Log.i("ddd", "message " + data.toString());
                         Intent intent = new Intent(ReceivePhoneActivity.this, MeetingActivity.class);
+                        intent.putExtra("user_id", userName);
                         intent.putExtra("meet_id", roomId);
                         intent.putExtra("nickname", nickname);
                         intent.putExtra("isCallToOther", isCallToOther);

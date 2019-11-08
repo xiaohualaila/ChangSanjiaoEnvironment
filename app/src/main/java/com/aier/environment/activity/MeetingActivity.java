@@ -55,14 +55,14 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
     private ARVideoView mVideoView;
     private ARMeetKit mMeetKit;
     private String meetId = "";
-    private String userId = (int) ((Math.random() * 9 + 1) * 100000) + "";
-    //    private String userId="654321";
+
     AR_AudioManager arAudioManager;
     private String nickname = "";
 
     private Socket mSocket;
     private boolean isCallToOther;
     private boolean mIsSingle;
+    String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +71,13 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
         this.setContentView(this.getLayoutId());
         mImmersionBar = ImmersionBar.with(this);
         mImmersionBar.init();
-        this.initView();
         Intent intent = getIntent();
+        userId = intent.getStringExtra("user_id");
         isCallToOther = intent.getBooleanExtra("isCallToOther", false);
         mIsSingle = intent.getBooleanExtra("mIsSingle", false);
+        this.initView();
+
+
         socket();
     }
 
@@ -153,6 +156,7 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
         mMeetKit.setNetworkStatus(false);
         VideoRenderer localVideoRender = mVideoView.openLocalVideoRender();
         mMeetKit.setLocalVideoCapturer(localVideoRender.GetRenderPointer());
+        Log.i("ccc","getUserInfo()"+ getUserInfo()+" meetId  "+ meetId + " userId "+userId);
         mMeetKit.joinRTCByToken("", meetId, userId, getUserInfo());
         arAudioManager = AR_AudioManager.create(this, new Runnable() {
             @Override
@@ -170,7 +174,7 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
         try {
             jsonObject.put("MaxJoiner", 6);
             jsonObject.put("userId", userId);
-            jsonObject.put("nickName", nickname);
+            jsonObject.put("nickname", nickname);
             jsonObject.put("headUrl", "");
         } catch (JSONException e) {
             e.printStackTrace();

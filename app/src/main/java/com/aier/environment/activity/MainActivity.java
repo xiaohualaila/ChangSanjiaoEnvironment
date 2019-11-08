@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
                 mLocation = location;
                 city = location.getAltitude() + "";//海拔
                 mMainController.setLocation(location);
-            //    Log.i("ccc", "city " + "" + location.getAltitude() + "m");
+                Log.i("ccc", "city " + "" + location.getAltitude() + "m");
             }
         }
 
