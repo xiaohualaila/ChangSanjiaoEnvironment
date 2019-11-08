@@ -38,10 +38,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 
-/**
- * Created by ${chenyn} on 2017/2/20.
- */
-
 public class ContactsController implements View.OnClickListener, SideBar.OnTouchingLetterChangedListener {
     private ContactsView mContactsView;
     private Activity mContext;
