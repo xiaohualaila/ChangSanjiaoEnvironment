@@ -121,15 +121,18 @@ public class FirstFragment extends BaseFragment {
 
 
     private void getWeatherData() {
-        OkHttpClient client = new OkHttpClient();//创建OkHttpClient对象。
-        MediaType json = MediaType.parse("application/json; charset=utf-8");
-        JSONObject object = new JSONObject();
+        tv_city .setText(city);
+            OkHttpClient client = new OkHttpClient();//创建OkHttpClient对象。
+            MediaType json = MediaType.parse("application/json; charset=utf-8");
+            JSONObject object = new JSONObject();
+            JSONObject object1 = new JSONObject();
+            try {
+                city = city.substring(0, city.length() - 1);
+                object.put("method", "ENVIRONMENTAPI_GETCITYWEARTHER");
+                object1.put("city", city);
+                object.put("params",object1);
 
-        try {
-            object.put("method", "ENVIRONMENTAPI_GETCITYWEARTHER");
-            city = city.substring(0, city.length() - 1);
-            //   Log.i("sss",city);
-            object.put("city", city);
+                   Log.i("sss",city);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -166,12 +169,12 @@ public class FirstFragment extends BaseFragment {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        // Log.i("sss",string);
+                         Log.i("sss",string);
                         Gson gson = new Gson();
                         WeatherBean weatherBean = gson.fromJson(string, WeatherBean.class);
                         WeatherBean.ResultBean resultBean = weatherBean.getResult();
                         if (weatherBean.isSuccess()) {
-                            tv_city.setText(resultBean.getCity() + "市");
+
                             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");// HH:mm:ss
                             Date date = new Date(System.currentTimeMillis());
                             tv_date.setText(simpleDateFormat.format(date));
