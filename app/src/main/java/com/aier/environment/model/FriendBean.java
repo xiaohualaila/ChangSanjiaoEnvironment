@@ -85,7 +85,7 @@ public class FriendBean {
             private String ctime;
             private String mtime;
             private String username;
-
+            private String avatar;
             public String getNickname() {
                 return nickname;
             }
@@ -116,6 +116,14 @@ public class FriendBean {
 
             public void setUsername(String username) {
                 this.username = username;
+            }
+
+            public String getAvatar() {
+                return avatar;
+            }
+
+            public void setAvatar(String avatar) {
+                this.avatar = avatar;
             }
         }
     }
