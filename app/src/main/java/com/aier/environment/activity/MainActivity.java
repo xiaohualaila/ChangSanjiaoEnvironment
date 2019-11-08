@@ -20,7 +20,6 @@ import com.aier.environment.R;
 import com.aier.environment.controller.MainController;
 import com.aier.environment.location.service.LocationService;
 import com.aier.environment.model.UserOnlineBean;
-import com.aier.environment.utils.SharePreferenceManager;
 import com.aier.environment.utils.SingleSocket;
 import com.aier.environment.view.MainView;
 import com.baidu.location.BDLocation;
@@ -123,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
         initLocation();
         socket();
         heartinterval();
+
     }
 
     //配置定位SDK参数
@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy
         );//可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
-        option.setCoorType("bd09ll");//可选，默认gcj02，设置返回的定位结果坐标系
+        option.setCoorType("gcj02gcj02");//可选，默认gcj02，设置返回的定位结果坐标系
         int span = 1000;
         option.setScanSpan(span);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
         option.setIsNeedAddress(true);//可选，设置是否需要地址信息，默认不需要
@@ -140,7 +140,8 @@ public class MainActivity extends AppCompatActivity {
         // .getLocationDescribe里得到，结果类似于“在北京天安门附近”
         option.setIsNeedLocationPoiList(true);//可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
         option.setIgnoreKillProcess(false);
-        option.setOpenGps(true); // 打开gps
+        option.setAddrType("all");
+
         option.setIsNeedAltitude(true);/**设置海拔高度*/
         //可选，默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
         option.SetIgnoreCacheException(false);//可选，默认false，设置是否收集CRASH信息，默认收集
@@ -160,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
                 mLocation = location;
                 city = location.getAltitude() + "";//海拔
                 mMainController.setLocation(location);
-                Log.i("ccc", "city " + city);
+                Log.i("ccc", "city " + "" + location.getAltitude() + "m");
             }
         }
 
@@ -171,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void socket() {
         UserInfo myInfo = JMessageClient.getMyInfo();
-        Log.i("aaa", myInfo.getUserName() + "");
+      //  Log.i("aaa", myInfo.getUserName() + "");
         String url = "https://www.airer.com?userid=" + myInfo.getUserName() + "&type=mobile";
         mSocket = SingleSocket.getInstance().getSocket(url);
         //注册  事件
