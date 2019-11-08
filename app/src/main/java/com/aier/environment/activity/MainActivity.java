@@ -161,13 +161,10 @@ public class MainActivity extends AppCompatActivity {
                 mLocation = location;
                 city = location.getAltitude() + "";//海拔
                 mMainController.setLocation(location);
-                Log.i("ccc", "city " + "" + location.getAltitude() + "m");
+            //    Log.i("ccc", "city " + "" + location.getAltitude() + "m");
             }
         }
 
-        @Override
-        public void onConnectHotSpotMessage(String s, int i) {
-        }
     };
 
     private void socket() {

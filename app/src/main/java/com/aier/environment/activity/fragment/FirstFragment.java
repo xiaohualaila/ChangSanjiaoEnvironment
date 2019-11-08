@@ -117,10 +117,6 @@ public class FirstFragment extends BaseFragment {
             }
         }
 
-        @Override
-        public void onConnectHotSpotMessage(String s, int i) {
-        }
-
     };
 
 

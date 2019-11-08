@@ -442,9 +442,6 @@ public class MapPickerActivity extends AppCompatActivity implements AdapterView.
 
         }
 
-        @Override
-        public void onConnectHotSpotMessage(String s, int i) {
-        }
 
     };
     // 地理编码监听器

@@ -2,12 +2,10 @@ package com.aier.environment.activity.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ZoomControls;
@@ -34,26 +32,21 @@ import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
-import com.baidu.mapapi.map.MapViewLayoutParams;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
-import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.Polyline;
 import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import cn.jpush.im.android.api.JMessageClient;
 import cn.jpush.im.android.api.model.UserInfo;
 import okhttp3.Call;
@@ -112,8 +105,8 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
             }
 
             @Override
-            public boolean onMapPoiClick(MapPoi mapPoi) {
-                return false;
+            public void onMapPoiClick(MapPoi mapPoi) {
+
             }
         });
         // 隐藏logo
@@ -209,10 +202,6 @@ public class MapFragment extends Fragment implements BaiduMap.OnMarkerClickListe
                     }
                 }
             }
-        }
-
-        @Override
-        public void onConnectHotSpotMessage(String s, int i) {
         }
 
     };
