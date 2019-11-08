@@ -78,7 +78,6 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
         }
         UserInfo myInfo = JMessageClient.getMyInfo();
         userName = myInfo.getUserName();
-        nickname = myInfo.getNickname();
         Log.i("ddd", "userName " + userName + "房间号随机数" + roomId);
         String url = "https://www.airer.com?userid=" + userName + "&type=mobile";
         mSocket = SingleSocket.getInstance().getSocket(url);
@@ -141,7 +140,6 @@ public class ReceivePhoneActivity extends BaseActivity implements View.OnClickLi
                         Intent intent = new Intent(ReceivePhoneActivity.this, MeetingActivity.class);
                         intent.putExtra("user_id", userName);
                         intent.putExtra("meet_id", roomId);
-                        intent.putExtra("nickname", nickname);
                         intent.putExtra("isCallToOther", isCallToOther);
                         intent.putExtra("mIsSingle", mIsSingle);
                         startActivity(intent);

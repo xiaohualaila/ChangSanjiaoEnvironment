@@ -11,17 +11,13 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.aier.environment.R;
-import com.aier.environment.adapter.LogAdapter;
+
 import com.aier.environment.utils.SingleSocket;
 import com.aier.environment.view.ARVideoView;
+import com.google.gson.Gson;
 import com.gyf.barlibrary.ImmersionBar;
 
 import org.ar.common.enums.ARNetQuality;
@@ -75,10 +71,11 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
         userId = intent.getStringExtra("user_id");
         isCallToOther = intent.getBooleanExtra("isCallToOther", false);
         mIsSingle = intent.getBooleanExtra("mIsSingle", false);
+        socket();
         this.initView();
 
 
-        socket();
+
     }
 
 
@@ -139,9 +136,9 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
     //    logAdapter = new LogAdapter();
 
         meetId = getIntent().getStringExtra("meet_id");
-        nickname = getIntent().getStringExtra("nickname");
         mVideoView = new ARVideoView(rlVideo, ARMeetEngine.Inst().Egl(), this);
         mVideoView.setVideoViewLayout(false, Gravity.CENTER, LinearLayout.HORIZONTAL);
+
         //获取配置类
         ARMeetOption option = ARMeetEngine.Inst().getARMeetOption();
         //设置默认为前置摄像头
@@ -278,16 +275,33 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
             });
         }
 
+        /**
+         * 其他与会者加入视频
+         * @param peerId
+         * @param publishId
+         * @param userId
+         * @param userData
+         */
         @Override
         public void onRTCOpenRemoteVideoRender(final String peerId, final String publishId, final String userId, String userData) {
+            //{"MaxJoiner":6,"userId":"hushaohu","nickname":"","headUrl":""}
+            Log.i("ccc"," onRTCOpenRemoteVideoRender   peerId "+peerId +"publishId" + publishId + "  userId "+userId + "userData" + userData);
+
             MeetingActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
               //      logAdapter.addData("回调：onRTCOpenRemoteVideoRender 远程视频流接入即将渲染显示 publishId：" + publishId + "\n peerId:" + peerId + "user:" + userId);
+                    try {
 
-                    final VideoRenderer render = mVideoView.openRemoteVideoRender(publishId);
-                    if (null != render) {
-                        mMeetKit.setRemoteVideoRender(publishId, render.GetRenderPointer());
+                        final VideoRenderer render = mVideoView.openRemoteVideoRender(publishId);
+                        if (null != render) {
+                            mMeetKit.setRemoteVideoRender(publishId, render.GetRenderPointer());
+                            JSONObject json = new JSONObject(userData);
+                            String nickname = json.getString("nickname");
+                            mVideoView.setNickName(publishId,nickname);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 }
             });
@@ -390,6 +404,7 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
 
         @Override
         public void onRTCRemoteAudioActive(final String peerId, String userId, final int nLevel, int nTime) {
+            Log.i("ccc"," userId "+userId);
             MeetingActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -409,6 +424,7 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
 
         @Override
         public void onRTCRemoteNetworkStatus(final String publishId, String userId, final int nNetSpeed, final int nPacketLost, final ARNetQuality netQuality) {
+            Log.i("ccc"," userId "+userId);
             MeetingActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -444,6 +460,7 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
 
         @Override
         public void onRTCUserMessage(String userId, final String userName, String headUrl, final String message) {
+            Log.i("ccc"," userId "+userId+" userName "+ userName + " headUrl "+ headUrl + " message "+ message);
             MeetingActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -464,6 +481,7 @@ public class MeetingActivity extends AppCompatActivity implements View.OnClickLi
 
         @Override
         public void onRTCShareOpen(final int type, final String shareInfo, String userId, String userData) {
+            Log.i("ccc"," type "+type+" shareInfo "+ shareInfo + " userId "+ userId + " userData "+ userData);
             MeetingActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

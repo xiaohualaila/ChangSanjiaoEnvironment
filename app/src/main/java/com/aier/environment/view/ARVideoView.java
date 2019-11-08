@@ -115,6 +115,9 @@ public class ARVideoView implements View.OnTouchListener {
         return false;
     }
 
+
+
+
     /**
      * 一个VideoView对象 就是一个视频渲染对象 里面的方法 UI 可以根据需求自定义
      */
@@ -152,6 +155,10 @@ public class ARVideoView implements View.OnTouchListener {
             mLayout.addView(view);//将SurfaceView添加到自定义宽高为百分比的布局控件中
         }
 
+
+        public void setName(String nickname) {
+            tv_net.setText(nickname);
+        }
         /**
          * 该视频对象是否全屏显示
          *
@@ -219,6 +226,17 @@ public class ARVideoView implements View.OnTouchListener {
             VideoView render = entry.getValue();
             if (render.videoId.equals(publishId)) {
                 render.tv_net.setText("接收：" + net + "Kbps");
+            }
+        }
+    }
+
+    public void setNickName(final String publishId,String nickname) {
+        Iterator<Map.Entry<String, VideoView>> iter = allVideoList.entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry<String, VideoView> entry = iter.next();
+            VideoView render = entry.getValue();
+            if (render.videoId.equals(publishId)) {
+                render.tv_net.setText(nickname);
             }
         }
     }
