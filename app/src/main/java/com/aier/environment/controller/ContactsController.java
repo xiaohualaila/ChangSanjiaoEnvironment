@@ -213,7 +213,7 @@ public class ContactsController implements View.OnClickListener, SideBar.OnTouch
                     }
                     Gson gson = new Gson();
                     FriendBean bean = gson.fromJson(str, FriendBean.class);
-                    Log.i("sss", str);
+                 //   Log.i("sss", str);
                     if (bean.isSuccess()) {
                         List<FriendBean.ResultBean.UsersBean> list = bean.getResult().getUsers();
                         mListUsersBean.clear();
