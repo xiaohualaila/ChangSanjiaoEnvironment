@@ -6,10 +6,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
-
 import com.activeandroid.ActiveAndroid;
 import com.aier.environment.JGApplication;
 import com.aier.environment.R;
@@ -24,15 +22,12 @@ import com.aier.environment.utils.pinyin.PinyinComparator;
 import com.aier.environment.utils.sidebar.SideBar;
 import com.aier.environment.view.ContactsView;
 import com.google.gson.Gson;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import cn.jpush.im.android.api.JMessageClient;
 import okhttp3.Call;
 import okhttp3.Callback;
