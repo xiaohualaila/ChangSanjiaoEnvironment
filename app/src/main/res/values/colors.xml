@@ -3,13 +3,13 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="jmui_jpush_blue">#2DD0CF</color>
+    <color name="jmui_jpush_blue">#11B6A0</color>
     <color name="titlebar_text_color">#fff</color>
     <color name="item_click_bg_color">#E9EDED</color>
     <color name="white">#FFFFFF</color>
     <color name="white_90">#90FFFFFF</color>
     <color name="jmui_chat_detail_split_line_color">#d3d3d3</color>
-    <color name="menu_item_back_pres_color">#2DD0CF</color>
+    <color name="menu_item_back_pres_color">#11B6A0</color>
     <color name="action_bar_txt_color">#999999</color>
     <color name="actionbar_pres_color">#2C2C2C</color>
     <color name="conv_list_split_line_color">#d6d6d6</color>
@@ -107,9 +107,9 @@
     <color name="message_no_receipt">#2DD0CF</color>
 
 
-    <color name="blue_btn_cannot_pressed">#6CDEDD</color>
-    <color name="blue_btn_normal">#2DD0CF</color>
-    <color name="blue_btn_pressed">#02BDBC</color>
+    <color name="blue_btn_cannot_pressed">#11B6A0</color>
+    <color name="blue_btn_normal">#05F0D1</color>
+    <color name="blue_btn_pressed">#5DE6D3</color>
     <color name="red_btn_normal">#EB424D</color>
     <color name="red_btn_press">#CC3139</color>
 

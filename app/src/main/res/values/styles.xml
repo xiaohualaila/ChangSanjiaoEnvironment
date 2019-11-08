@@ -349,7 +349,7 @@
     </style>
 
     <style name="BaseThemes" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:statusBarColor">#FF2DD0CF</item>
+        <item name="android:statusBarColor">#11B6A0</item>
         <item name="android:windowNoTitle">true</item>
     </style>
 
