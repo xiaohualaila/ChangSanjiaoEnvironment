@@ -6,8 +6,10 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
+
 import com.activeandroid.ActiveAndroid;
 import com.aier.environment.JGApplication;
 import com.aier.environment.R;
@@ -22,12 +24,15 @@ import com.aier.environment.utils.pinyin.PinyinComparator;
 import com.aier.environment.utils.sidebar.SideBar;
 import com.aier.environment.view.ContactsView;
 import com.google.gson.Gson;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 import cn.jpush.im.android.api.JMessageClient;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -49,7 +54,7 @@ public class ContactsController implements View.OnClickListener, SideBar.OnTouch
     private StickyListAdapter mAdapter;
     private TextView mAllContactNumber;
     private List<FriendEntry> forDelete = new ArrayList<>();
-    List<FriendBean.ResultBean.UsersBean> mListUsersBean =new ArrayList<>();
+    List<FriendBean.ResultBean.UsersBean> mListUsersBean = new ArrayList<>();
     private String appkey;
     private String my_user_name;
 
@@ -93,7 +98,7 @@ public class ContactsController implements View.OnClickListener, SideBar.OnTouch
     public void initContacts() {
         final UserEntry user = UserEntry.getUser(JMessageClient.getMyInfo().getUserName(),
                 JMessageClient.getMyInfo().getAppKey());
-        my_user_name= JMessageClient.getMyInfo().getUserName();
+        my_user_name = JMessageClient.getMyInfo().getUserName();
         appkey = JMessageClient.getMyInfo().getAppKey();
         mContactsView.showLoadingHeader();
 //        ContactManager.getFriendList(new GetUserInfoListCallback() {
@@ -321,7 +326,7 @@ public class ContactsController implements View.OnClickListener, SideBar.OnTouch
                             }
                             Gson gson = new Gson();
                             FriendBean bean = gson.fromJson(str, FriendBean.class);
-                      //      Log.i("zzz", str);
+                            //      Log.i("zzz", str);
                             if (bean.isSuccess()) {
                                 List<FriendBean.ResultBean.UsersBean> list = bean.getResult().getUsers();
                                 list.addAll(mListUsersBean);
@@ -333,7 +338,7 @@ public class ContactsController implements View.OnClickListener, SideBar.OnTouch
                                         for (int i = 0; i < list.size(); i++) {
 
                                             FriendBean.ResultBean.UsersBean usersBean = list.get(i);
-                                            if(usersBean.getUsername().equals(my_user_name)){
+                                            if (usersBean.getUsername().equals(my_user_name)) {
                                                 continue;
                                             }
                                             String displayName = usersBean.getUsername();
@@ -362,21 +367,15 @@ public class ContactsController implements View.OnClickListener, SideBar.OnTouch
                                             //避免重复请求时导致数据重复A
                                             FriendEntry friend = FriendEntry.getFriend(user, usersBean.getUsername(), appkey);
                                             if (null == friend) {
-                                   if (TextUtils.isEmpty(usersBean.getAvatar())) {
-//                                        friend = new FriendEntry(userInfo.getUserID(), userInfo.getUserName(), userInfo.getNotename(),
-//                                        userInfo.getNickname(), userInfo.getAppKey(),
-//                                        null, displayName, letter, user);
-                                                friend = new FriendEntry(10201101L, usersBean.getUsername(), usersBean.getNickname(),
-                                                        usersBean.getNickname(), appkey,
-                                                        null, displayName, letter, user);
-                                    } else {
-//                                        friend = new FriendEntry(usersBean.getUsername(), usersBean.getUsername(),
-//                                        usersBean.getUsername(), usersBean.getNickname(), userInfo.getAppKey(),
-//                                                usersBean.getAvatarFile().getAbsolutePath(), displayName, letter, user);
-                                       friend = new FriendEntry(10201101L, usersBean.getUsername(), usersBean.getNickname(),
-                                               usersBean.getNickname(), appkey,
-                                               usersBean.getAvatar(), displayName, letter, user);
-                                    }
+                                                if (TextUtils.isEmpty(usersBean.getAvatar())) {
+                                                    friend = new FriendEntry(10201101L, usersBean.getUsername(), usersBean.getNickname(),
+                                                            usersBean.getNickname(), appkey,
+                                                            null, displayName, letter, user);
+                                                } else {
+                                                    friend = new FriendEntry(10201101L, usersBean.getUsername(), usersBean.getNickname(),
+                                                            usersBean.getNickname(), appkey,
+                                                            usersBean.getAvatar(), displayName, letter, user);
+                                                }
                                                 friend.save();
                                                 mList.add(friend);
                                             }
